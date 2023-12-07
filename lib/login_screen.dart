@@ -69,7 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20,),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Align(
                             alignment: Alignment.center,
                             child: Text(
@@ -98,7 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 5,),
+                                SizedBox(
+                                  height: 5,
+                                ),
                                 RegisterTextFieldWidget(
                                   controller: emailController,
                                   color: Colors.white,
@@ -130,7 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: 5,),
+                                SizedBox(
+                                  height: 5,
+                                ),
                                 RegisterTextFieldWidget(
                                   controller: passwordController,
                                   color: Colors.white,
@@ -146,7 +152,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20,),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Column(
@@ -154,7 +162,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 CommonButtonBlue(
                                   onPressed: () async {
+                                    // if(_formKey.currentState!.validate()) {
                                     Get.to(const InfoClientScreen());
+                                    // }
                                   },
                                   title: 'Login'.tr,
                                 ),

@@ -48,7 +48,7 @@ class _MuretScreenState extends State<MuretScreen> {
                       color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 1,
                       blurRadius: 2,
-                      offset: Offset(0, 1),
+                      offset: const Offset(0, 1),
                     ),
                   ],
                 ),
@@ -469,7 +469,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                   style: GoogleFonts.poppins(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
-                                      color: Color(0xff019444)),
+                                      color: const Color(0xff019444)),
                                 ),
                               ),
                             ),

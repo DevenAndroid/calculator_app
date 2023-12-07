@@ -46,7 +46,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                       color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 1,
                       blurRadius: 2,
-                      offset: Offset(0, 1),
+                      offset: const Offset(0, 1),
                     ),
                   ],
                 ),
@@ -482,7 +482,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 icon: const Icon(Icons.add_circle_outline,color: Color(0xff019444),),
                                 label: Text(
                                   "Add New".tr.toUpperCase(),
-                                  style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff019444)),
+                                  style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
                                 ),
                               ),
                             ),
