@@ -1,5 +1,7 @@
 import 'package:calculator_app/infoclient_screen.dart';
+import 'package:calculator_app/repo/login_repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
+import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -29,12 +31,20 @@ class _LoginScreenState extends State<LoginScreen> {
         body: SingleChildScrollView(
             child: Container(
                 height: Get.height,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: AssetImage('assets/images/background.png'))),
+                        colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.7),
+                            BlendMode.darken
+                        ),
+                        image: const AssetImage('assets/images/background.png'))),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 4.0, right: 4),
+                  padding: MediaQuery.of(context).size.width > 800
+                      ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
+                      : MediaQuery.of(context).size.width > 600
+                      ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 7)
+                      : const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -162,9 +172,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 CommonButtonBlue(
                                   onPressed: () async {
-                                    // if(_formKey.currentState!.validate()) {
-                                    Get.to(const InfoClientScreen());
-                                    // }
+                                    if(_formKey.currentState!.validate()) {
+                                      login(emailController.text,passwordController.text,context).then((value) {
+                                        if(value.status == true){
+                                          showToast(value.message);
+                                           Get.to(const InfoClientScreen());
+
+                                        }
+                                        else{
+                                          showToast(value.message);
+
+                                        }
+                                      });
+                                    }
                                   },
                                   title: 'Login'.tr,
                                 ),

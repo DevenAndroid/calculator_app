@@ -117,7 +117,7 @@ class CommonButtonBlue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(6), color: AppTheme.primaryColor),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppTheme.primaryColor),
       child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(

@@ -43,7 +43,7 @@ dependencies:
   file_picker:
   fluttertoast: ^8.2.2
   loading_animation_widget: ^1.2.0+4
-
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:calculator_app/selectpoolinfo.dart';
+import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,22 +24,14 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
     return Scaffold(
       body: SingleChildScrollView(
           child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10,top: 20,bottom: 20),
+            padding: MediaQuery.of(context).size.width > 800
+                ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
+                : MediaQuery.of(context).size.width > 600
+                ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 7)
+                : const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
         child: Form(
           key: _formKey,
           child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(11),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: Offset(0, 1),
-                ),
-              ],
-            ),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +159,8 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           color: Colors.white,
                           // length: 10,
                           validator: RequiredValidator(
-                                  errorText: 'Please enter your Telephone Number')
+                                  errorText:
+                                      'Please enter your Telephone Number')
                               .call,
                           // keyboardType: TextInputType.none,
                           // textInputAction: TextInputAction.next,
@@ -244,7 +238,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                       children: [
                         CommonButtonBlue(
                           onPressed: () async {
-                            Get.to(const SelectPoolInfoScreen());
+                            Get.to(const TourbeListScreen());
                           },
                           title: 'suivant',
                         ),

@@ -33,22 +33,14 @@ class _TourbeScreenState extends State<TourbeScreen> {
     return Scaffold(
       body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10,top: 20,bottom: 20),
+            padding: MediaQuery.of(context).size.width > 800
+                ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
+                : MediaQuery.of(context).size.width > 600
+                ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 7)
+                : const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
             child: Form(
               key: _formKey,
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(11),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 2,
-                      offset: Offset(0, 1),
-                    ),
-                  ],
-                ),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
