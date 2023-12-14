@@ -9,6 +9,7 @@ class ApiUrl {
   static const String baseUrl =
       "https://pc.eoxyslive.com/api/";
   static const String loginUrl = "${baseUrl}login";
+  static const String saveclientUrl = "${baseUrl}save-client-info";
 
 }
 

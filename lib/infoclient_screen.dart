@@ -1,6 +1,8 @@
+import 'package:calculator_app/repo/client_info_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
+import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -16,7 +18,12 @@ class InfoClientScreen extends StatefulWidget {
 
 class _InfoClientScreenState extends State<InfoClientScreen> {
   final _formKey = GlobalKey<FormState>();
-
+  TextEditingController nomPreNomController =  TextEditingController();
+  TextEditingController addressController =  TextEditingController();
+  TextEditingController villeController =  TextEditingController();
+  TextEditingController telephoneNumberController =  TextEditingController();
+  TextEditingController emailController =  TextEditingController();
+  TextEditingController codePostalController =  TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -71,6 +78,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: nomPreNomController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -100,6 +108,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: addressController,
                           color: Colors.white,
                           // length: 10,
                           validator: RequiredValidator(
@@ -128,6 +137,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: villeController,
                           color: Colors.white,
                           // length: 10,
                           validator: RequiredValidator(
@@ -156,6 +166,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: telephoneNumberController,
                           color: Colors.white,
                           // length: 10,
                           validator: RequiredValidator(
@@ -185,6 +196,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: emailController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -216,6 +228,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: codePostalController,
                           color: Colors.white,
                           // length: 10,
                           validator: RequiredValidator(
@@ -238,7 +251,27 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                       children: [
                         CommonButtonBlue(
                           onPressed: () async {
-                            Get.to(const TourbeListScreen());
+                            Client_Info_Repo(
+                              nomPreNomController.text,
+                                telephoneNumberController.text,
+                                emailController.text,
+                                addressController.text,
+                              villeController.text,
+                                codePostalController.text,
+                              context
+
+                            ).then((value) {
+                              if(value.status == true){
+                                showToast(value.message);
+                                Get.to(const TourbeListScreen());
+
+                              }else{
+                                showToast(value.message);
+
+                              }
+
+                            }
+                            );
                           },
                           title: 'suivant',
                         ),
