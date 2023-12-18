@@ -1,5 +1,6 @@
 import 'package:calculator_app/repo/client_info_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
+import 'package:calculator_app/tourbeScreen.dart';
 import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -173,7 +174,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                                   errorText:
                                       'Please enter your Telephone Number')
                               .call,
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '987123456',
                         ),
@@ -234,7 +235,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                           validator: RequiredValidator(
                                   errorText: 'Please enter your Code Postal')
                               .call,
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: 'J3B 0K7',
                         ),
@@ -259,11 +260,11 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                               villeController.text,
                                 codePostalController.text,
                               context
-
                             ).then((value) {
                               if(value.status == true){
+                                var id = value.data.toString();
                                 showToast(value.message);
-                                Get.to(const TourbeListScreen());
+                                Get.to(()=>TourbeScreen(id: id,));
 
                               }else{
                                 showToast(value.message);

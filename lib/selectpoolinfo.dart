@@ -53,7 +53,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const TourbeScreen());
                       },
                       title: 'Submit',
                     ),

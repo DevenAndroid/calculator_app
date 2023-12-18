@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:calculator_app/infoclient_screen.dart';
 import 'package:calculator_app/repo/login_repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -173,8 +176,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 CommonButtonBlue(
                                   onPressed: () async {
                                     if(_formKey.currentState!.validate()) {
-                                      login(emailController.text,passwordController.text,context).then((value) {
+                                      login(emailController.text,passwordController.text,context).then((value) async {
                                         if(value.status == true){
+                                          SharedPreferences pref = await SharedPreferences.getInstance();
+                                          pref.setString('auth', jsonEncode(value));
                                           showToast(value.message);
                                            Get.to(const InfoClientScreen());
 

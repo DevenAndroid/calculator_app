@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:calculator_app/paveuni_screen.dart';
-import 'package:calculator_app/widget/apptheme.dart';
+import 'package:calculator_app/repo/tourbescreen_repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -12,20 +13,32 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'model/client_info_model.dart';
+
 class TourbeScreen extends StatefulWidget {
-  const TourbeScreen({super.key});
+  String id;
+   TourbeScreen({required this.id, super.key});
 
   @override
   State<TourbeScreen> createState() => _TourbeScreenState();
 }
 
 class _TourbeScreenState extends State<TourbeScreen> {
+  Client_Info_Model? client_info_model;
+
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+  TextEditingController clientController  = TextEditingController();
+  TextEditingController superficieController  = TextEditingController();
+  TextEditingController profondeurController  = TextEditingController();
+  TextEditingController positionnementController  = TextEditingController();
+  TextEditingController detourberController  = TextEditingController();
+  TextEditingController type_de_dechetController  = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -80,6 +93,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: superficieController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -109,6 +123,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: profondeurController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -137,6 +152,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: positionnementController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -165,6 +181,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: detourberController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -193,6 +210,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: type_de_dechetController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -285,6 +303,24 @@ class _TourbeScreenState extends State<TourbeScreen> {
                           children: [
                             CommonButtonBlue(
                               onPressed: () async {
+                               print(widget.id.toString());
+                                Map<String, String> mapData = {
+                                  "client": widget.id,
+                                  "superficie": superficieController.text,
+                                  "profondeur": profondeurController.text,
+                                  "positionnement": positionnementController.text,
+                                  "detourber": detourberController.text,
+                                  "type_de_dechet": type_de_dechetController.text,
+                                };
+                                print(mapData.toString());
+                                tourbeScreenRepo(
+                                    context: context,
+                                    mapData: mapData,
+                                    fieldName1: 'photo_video',
+                                    file1: categoryFile.value
+                                ).then((value) {
+                                  Get.to(PaveUniScreen(id: widget.id,));
+                                });
                               },
                               title: 'Save',
                             ),
@@ -296,7 +332,6 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               width: Get.width,
                               child: ElevatedButton.icon(
                                 onPressed: () {
-                                  Get.to(const PaveUniScreen());
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,

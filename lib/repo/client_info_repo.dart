@@ -2,18 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:calculator_app/model/login_mode.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/client_info_model.dart';
-import '../model/login_mode.dart';
 import '../widget/apiUrl.dart';
 
 
 Future<Client_Info_Model> Client_Info_Repo(name, phone, email,address,city,postalcode,context) async {
   OverlayEntry loader = Helper.overlayLoader(context);
   Overlay.of(context)?.insert(loader);
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  LoginModel loginModel = LoginModel.fromJson(jsonDecode(preferences.getString('auth')!));
   var map = <String, dynamic>{};
   map['name'] = name;
   map['phone'] = phone;
@@ -24,6 +27,8 @@ Future<Client_Info_Model> Client_Info_Repo(name, phone, email,address,city,posta
   var header = {
     HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.acceptHeader: "application/json",
+    HttpHeaders.authorizationHeader: 'Bearer ${loginModel.authToken}'
+
   };
   print(map);
   final response = await http.post(Uri.parse(ApiUrl.saveclientUrl),

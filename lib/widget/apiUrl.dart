@@ -10,6 +10,7 @@ class ApiUrl {
       "https://pc.eoxyslive.com/api/";
   static const String loginUrl = "${baseUrl}login";
   static const String saveclientUrl = "${baseUrl}save-client-info";
+  static const String tourbeScreenUrl = "${baseUrl}save-tourbe-data";
 
 }
 

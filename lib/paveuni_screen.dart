@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:calculator_app/repo/pavaUniRepo.dart';
 import 'package:calculator_app/widget/apptheme.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -14,7 +15,8 @@ import 'package:image_picker/image_picker.dart';
 import 'asphalte_screen.dart';
 
 class PaveUniScreen extends StatefulWidget {
-  const PaveUniScreen({super.key});
+  String id;
+  PaveUniScreen({required this.id, super.key});
 
   @override
   State<PaveUniScreen> createState() => _PaveUniScreenState();
@@ -27,6 +29,17 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+
+  TextEditingController perimeterController = TextEditingController();
+  TextEditingController type_de_bordureController = TextEditingController();
+  TextEditingController positionnementController = TextEditingController();
+  TextEditingController superficieController = TextEditingController();
+  TextEditingController couleur_de_paveController = TextEditingController();
+  TextEditingController polymer_sand_colorController = TextEditingController();
+  TextEditingController photoController = TextEditingController();
+  TextEditingController infrastructureController = TextEditingController();
+  TextEditingController type_of_wasteController = TextEditingController();
+  TextEditingController type_to_pavageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -81,6 +94,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: superficieController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -115,6 +129,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                         height: 5,
                                       ),
                                       RegisterTextFieldWidget(
+                                        controller: perimeterController,
                                         color: Colors.white,
                                         // length: 10,
                                         validator: MultiValidator([
@@ -148,6 +163,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                         height: 5,
                                       ),
                                       RegisterTextFieldWidget(
+                                        controller: type_de_bordureController,
                                         color: Colors.white,
                                         // length: 10,
                                         validator: MultiValidator([
@@ -182,6 +198,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: positionnementController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -210,6 +227,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: type_of_wasteController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -238,6 +256,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: type_to_pavageController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -267,6 +286,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: couleur_de_paveController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -296,6 +316,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: polymer_sand_colorController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -325,6 +346,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: photoController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -354,6 +376,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: infrastructureController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -447,6 +470,29 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           children: [
                             CommonButtonBlue(
                               onPressed: () async {
+                                print(widget.id.toString());
+                                Map<String, String> mapData = {
+                                  "perimeter": superficieController.text,
+                                  "type_de_bordure": type_de_bordureController.text,
+                                  "positionnement": positionnementController.text,
+                                  "client": widget.id,
+                                  "superficie": superficieController.text,
+                                  "couleur_de_pave": couleur_de_paveController.text,
+                                  "couleur_de_sable_polymère": polymer_sand_colorController.text,
+                                  "photo": photoController.text,
+                                  "infrastructure": infrastructureController.text,
+                                  "type_to_pavage": type_to_pavageController.text,
+                                  "type_of_waste": type_of_wasteController.text,
+                                };
+                                print(mapData.toString());
+                                pavauniScreenRepo(
+                                    context: context,
+                                    mapData: mapData,
+                                    fieldName1: 'photo_video',
+                                    file1: categoryFile.value
+                                ).then((value) {
+                                  Get.to(AsphalteScreen());
+                                });
                               },
                               title: 'Save',
                             ),
@@ -458,8 +504,8 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               width: Get.width,
                               child: ElevatedButton.icon(
                                 onPressed: () {
-                                 Get.to(const AsphalteScreen());
-                                },
+
+                                  },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,
                                   surfaceTintColor: Colors.white,
