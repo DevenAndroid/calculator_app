@@ -16,6 +16,7 @@ class ApiUrl {
   static const String muretScreenUrl = "${baseUrl}save-muret-data";
   static const String margelleScreenUrl = "${baseUrl}save-margelle-data";
   static const String drainScreenUrl = "${baseUrl}save-drain-data";
+  static const String detailsListScreenUrl = "${baseUrl}get-service-details";
 
 }
 

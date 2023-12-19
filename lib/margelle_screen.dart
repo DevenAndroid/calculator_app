@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:js_util';
 
 import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/Margelle_repo.dart';

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:calculator_app/repo/pavaUniRepo.dart';
-import 'package:calculator_app/widget/apptheme.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -16,8 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'asphalte_screen.dart';
 
 class PaveUniScreen extends StatefulWidget {
-  String id;
-  PaveUniScreen({required this.id, super.key});
+  PaveUniScreen({ super.key});
 
   @override
   State<PaveUniScreen> createState() => _PaveUniScreenState();
@@ -473,7 +471,6 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               onPressed: () async {
                                 SharedPreferences pref = await SharedPreferences.getInstance();
                                 var id =pref.getString("client_id");
-                                print(widget.id.toString());
                                 Map<String, String> mapData = {
                                   "perimeter": superficieController.text,
                                   "type_de_bordure": type_de_bordureController.text,

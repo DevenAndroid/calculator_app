@@ -140,6 +140,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                     width: Get.width,
                     child: ElevatedButton.icon(
                       onPressed: () {
+                        Get.to(TourbeScreen());
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,

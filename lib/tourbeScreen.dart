@@ -17,8 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'model/client_info_model.dart';
 
 class TourbeScreen extends StatefulWidget {
-  String id;
-   TourbeScreen({required this.id, super.key});
+   TourbeScreen({ super.key});
 
   @override
   State<TourbeScreen> createState() => _TourbeScreenState();
@@ -304,7 +303,6 @@ class _TourbeScreenState extends State<TourbeScreen> {
                           children: [
                             CommonButtonBlue(
                               onPressed: () async {
-                               print(widget.id.toString());
                                SharedPreferences pref = await SharedPreferences.getInstance();
                                var id =pref.getString("client_id");
                                 Map<String, String> mapData = {
@@ -322,7 +320,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value
                                 ).then((value) {
-                                  Get.to(PaveUniScreen(id: widget.id,));
+                                  Get.to(PaveUniScreen());
                                 });
                               },
                               title: 'Save',
@@ -335,6 +333,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               width: Get.width,
                               child: ElevatedButton.icon(
                                 onPressed: () {
+
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.white,

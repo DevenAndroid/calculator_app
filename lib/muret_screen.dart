@@ -469,7 +469,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                     .then((value) {
-                                  Get.to(const MuretScreen());
+                                  Get.to(const DrainScreen());
                                 });
                               },
                               title: 'Save',

@@ -265,9 +265,8 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                               if(value.status == true){
                                 SharedPreferences pref = await SharedPreferences.getInstance();
                                 pref.setString("client_id", value.data.toString());
-                                var id = value.data.toString();
                                 showToast(value.message);
-                                Get.to(()=>TourbeScreen(id: id,));
+                                Get.to(()=>const TourbeListScreen());
 
                               }else{
                                 showToast(value.message);
