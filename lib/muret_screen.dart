@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:calculator_app/platesbandes_screen.dart';
+import 'package:calculator_app/repo/muret_repo.dart';
 import 'package:calculator_app/widget/apptheme.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -11,6 +12,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'drain_screen.dart';
 
@@ -28,6 +30,16 @@ class _MuretScreenState extends State<MuretScreen> {
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+
+  TextEditingController superficieController = TextEditingController();
+  TextEditingController hauteurController = TextEditingController();
+  TextEditingController linear_feetController = TextEditingController();
+  TextEditingController positionnementController = TextEditingController();
+  TextEditingController type_of_wasteController = TextEditingController();
+  TextEditingController paver_colorController = TextEditingController();
+  TextEditingController couronnementController = TextEditingController();
+  TextEditingController couleur_du_couronnementController = TextEditingController();
+  TextEditingController infrastructureController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -82,6 +94,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: superficieController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -111,6 +124,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: hauteurController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -139,6 +153,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: linear_feetController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -167,6 +182,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: positionnementController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -198,6 +214,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: type_of_wasteController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -228,6 +245,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: paver_colorController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -259,6 +277,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: couronnementController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -288,6 +307,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: couleur_du_couronnementController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -317,6 +337,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: infrastructureController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -426,6 +447,30 @@ class _MuretScreenState extends State<MuretScreen> {
                           children: [
                             CommonButtonBlue(
                               onPressed: () async {
+                                SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                Map<String, String> mapData = {
+                                  "client": id.toString(),
+                                  "superficie": superficieController.text,
+                                  "hauteur": hauteurController.text,
+                                  "linear_feet": linear_feetController.text,
+                                  "positionnement": positionnementController.text,
+                                  "type_of_waste": type_of_wasteController.text,
+                                  "paver_color": paver_colorController.text,
+                                  "couronnement": couronnementController.text,
+                                  "couleur_du_couronnement": couleur_du_couronnementController.text,
+                                  "infrastructure": infrastructureController.text,
+                                };
+                                print(mapData.toString());
+                                muretScreenRepo(
+                                    context: context,
+                                    mapData: mapData,
+                                    fieldName1: 'photo_video',
+                                    file1: categoryFile.value)
+                                    .then((value) {
+                                  Get.to(const MuretScreen());
+                                });
                               },
                               title: 'Save',
                             ),

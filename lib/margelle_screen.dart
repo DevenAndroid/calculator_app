@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:js_util';
 
 import 'package:calculator_app/platesbandes_screen.dart';
+import 'package:calculator_app/repo/Margelle_repo.dart';
 import 'package:calculator_app/widget/apptheme.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -11,6 +13,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'downloadthequote_screen.dart';
 import 'drain_screen.dart';
@@ -30,6 +33,9 @@ class _MargelleScreenState extends State<MargelleScreen> {
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+  TextEditingController coping_quantityController = TextEditingController();
+  TextEditingController mesureController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -84,6 +90,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: coping_quantityController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -113,6 +120,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: mesureController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -141,6 +149,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: noteController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -252,6 +261,24 @@ class _MargelleScreenState extends State<MargelleScreen> {
                           children: [
                             CommonButtonBlue(
                               onPressed: () async {
+                                SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                Map<String, String> mapData = {
+                                  "client": id.toString(),
+                                  "coping_quantity": coping_quantityController.text,
+                                  "mesure": mesureController.text,
+                                  "note": noteController.text,
+                                };
+                                print(mapData.toString());
+                                margelleScreenRepo(
+                                    context: context,
+                                    mapData: mapData,
+                                    fieldName1: 'photo_video',
+                                    file1: categoryFile.value)
+                                    .then((value) {
+                                  Get.to(const MargelleScreen());
+                                });
                               },
                               title: 'Save',
                             ),

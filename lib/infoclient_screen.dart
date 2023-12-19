@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InfoClientScreen extends StatefulWidget {
   const InfoClientScreen({super.key});
@@ -260,8 +261,10 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                               villeController.text,
                                 codePostalController.text,
                               context
-                            ).then((value) {
+                            ).then((value) async {
                               if(value.status == true){
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                pref.setString("client_id", value.data.toString());
                                 var id = value.data.toString();
                                 showToast(value.message);
                                 Get.to(()=>TourbeScreen(id: id,));

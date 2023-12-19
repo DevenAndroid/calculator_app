@@ -12,6 +12,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/client_info_model.dart';
 
@@ -304,8 +305,10 @@ class _TourbeScreenState extends State<TourbeScreen> {
                             CommonButtonBlue(
                               onPressed: () async {
                                print(widget.id.toString());
+                               SharedPreferences pref = await SharedPreferences.getInstance();
+                               var id =pref.getString("client_id");
                                 Map<String, String> mapData = {
-                                  "client": widget.id,
+                                  "client": id.toString(),
                                   "superficie": superficieController.text,
                                   "profondeur": profondeurController.text,
                                   "positionnement": positionnementController.text,

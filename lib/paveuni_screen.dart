@@ -11,6 +11,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'asphalte_screen.dart';
 
@@ -470,12 +471,14 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           children: [
                             CommonButtonBlue(
                               onPressed: () async {
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id =pref.getString("client_id");
                                 print(widget.id.toString());
                                 Map<String, String> mapData = {
                                   "perimeter": superficieController.text,
                                   "type_de_bordure": type_de_bordureController.text,
                                   "positionnement": positionnementController.text,
-                                  "client": widget.id,
+                                  "client": id.toString(),
                                   "superficie": superficieController.text,
                                   "couleur_de_pave": couleur_de_paveController.text,
                                   "couleur_de_sable_polymère": polymer_sand_colorController.text,

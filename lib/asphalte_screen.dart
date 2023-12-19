@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:calculator_app/platesbandes_screen.dart';
+import 'package:calculator_app/repo/asphalteScreenRepo.dart';
 import 'package:calculator_app/widget/apptheme.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -11,6 +12,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AsphalteScreen extends StatefulWidget {
   const AsphalteScreen({super.key});
@@ -26,6 +28,17 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+  TextEditingController superficieController = TextEditingController();
+  TextEditingController nouvelleInfraController = TextEditingController();
+  TextEditingController positionnementController = TextEditingController();
+  TextEditingController type_of_wasteController = TextEditingController();
+  TextEditingController poucesasphalteController = TextEditingController();
+  TextEditingController contourenPaveController = TextEditingController();
+  TextEditingController type_de_dechetController = TextEditingController();
+  TextEditingController type_of_plain_paversController = TextEditingController();
+  TextEditingController paver_colorController = TextEditingController();
+  TextEditingController polymer_sand_colorController = TextEditingController();
+  TextEditingController Contour_en_PaveController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -81,6 +94,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: superficieController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -110,6 +124,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: nouvelleInfraController,
                           color: Colors.white,
                           // length: 10,
                           validator: RequiredValidator(
@@ -138,6 +153,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: positionnementController,
                           color: Colors.white,
                           // length: 10,
                           validator: RequiredValidator(
@@ -166,6 +182,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: type_de_dechetController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -197,6 +214,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: poucesasphalteController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -227,6 +245,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: contourenPaveController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -259,6 +278,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         ),
                         RegisterTextFieldWidget(
                           color: Colors.white,
+                          controller: type_of_plain_paversController,
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
@@ -287,6 +307,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
+                          controller: contourenPaveController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -316,6 +337,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                     height: 5,
                   ),
                   RegisterTextFieldWidget(
+                    controller: polymer_sand_colorController,
                     color: Colors.white,
                     // length: 10,
                     validator: MultiValidator([
@@ -424,7 +446,32 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CommonButtonBlue(
-                          onPressed: () async {},
+                          onPressed: () async {
+                            SharedPreferences pref = await SharedPreferences.getInstance();
+                            var id =pref.getString("client_id");
+                            Map<String, String> mapData = {
+                              "client": id.toString(),
+                              "superficie": superficieController.text,
+                              "nouvelle_infra": nouvelleInfraController.text,
+                              "positionnement": positionnementController.text,
+                              "type_of_waste": type_of_wasteController.text,
+                              "pouces_asphalte": poucesasphalteController.text,
+                              "contour_en_pave": contourenPaveController.text,
+                              "type_de_dechet": type_de_dechetController.text,
+                              "type_of_plain_pavers": type_of_plain_paversController.text,
+                              "paver_color": paver_colorController.text,
+                              "polymer_sand_color": polymer_sand_colorController.text,
+                            };
+                            print(mapData.toString());
+                            asphalteScreenRepo(
+                                context: context,
+                                mapData: mapData,
+                                fieldName1: 'photo_video',
+                                file1: categoryFile.value
+                            ).then((value) {
+                              Get.to(const PlatesBandesScreen());
+                            });
+                          },
                           title: 'Save',
                         ),
                         const SizedBox(

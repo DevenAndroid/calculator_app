@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:calculator_app/platesbandes_screen.dart';
-import 'package:calculator_app/widget/apptheme.dart';
+import 'package:calculator_app/repo/drain_repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -11,6 +10,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'drain_screen.dart';
 import 'margelle_screen.dart';
@@ -28,6 +28,8 @@ class _DrainScreenState extends State<DrainScreen> {
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+  TextEditingController type_de_drainController =  TextEditingController();
+  TextEditingController longeurController =  TextEditingController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -82,6 +84,7 @@ class _DrainScreenState extends State<DrainScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: type_de_drainController,
                               color: Colors.white,
                               // length: 10,
                               validator: MultiValidator([
@@ -111,6 +114,7 @@ class _DrainScreenState extends State<DrainScreen> {
                               height: 5,
                             ),
                             RegisterTextFieldWidget(
+                              controller: longeurController,
                               color: Colors.white,
                               // length: 10,
                               validator: RequiredValidator(
@@ -220,6 +224,23 @@ class _DrainScreenState extends State<DrainScreen> {
                           children: [
                             CommonButtonBlue(
                               onPressed: () async {
+                                SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                Map<String, String> mapData = {
+                                  "client": id.toString(),
+                                  "type_de_drain": type_de_drainController.text,
+                                  "longeur": longeurController.text,
+                                };
+                                print(mapData.toString());
+                                drainScreenRepo(
+                                    context: context,
+                                    mapData: mapData,
+                                    fieldName1: 'photo_video',
+                                    file1: categoryFile.value)
+                                    .then((value) {
+                                  Get.to(const MargelleScreen());
+                                });
                               },
                               title: 'Save',
                             ),

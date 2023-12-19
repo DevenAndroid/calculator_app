@@ -4,7 +4,6 @@ import 'package:calculator_app/infoclient_screen.dart';
 import 'package:calculator_app/repo/login_repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
@@ -26,6 +25,23 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showOtpField = false;
   String verificationId = "";
   String code = "+353";
+
+  Future<void> alreadyLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isLoggedIn = prefs.getBool("loggedIn");
+    if (isLoggedIn != null && isLoggedIn) {
+      Get.to(const LoginScreen());
+    } else {
+      Get.to(const InfoClientScreen());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    alreadyLogin();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -38,16 +54,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     image: DecorationImage(
                         fit: BoxFit.fill,
                         colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.7),
-                            BlendMode.darken
-                        ),
-                        image: const AssetImage('assets/images/background.png'))),
+                            Colors.black.withOpacity(0.7), BlendMode.darken),
+                        image:
+                            const AssetImage('assets/images/background.png'))),
                 child: Padding(
                   padding: MediaQuery.of(context).size.width > 800
-                      ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
+                      ? EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 3)
                       : MediaQuery.of(context).size.width > 600
-                      ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 7)
-                      : const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                          ? EdgeInsets.symmetric(
+                              horizontal: MediaQuery.of(context).size.width / 7)
+                          : const EdgeInsets.only(
+                              left: 10, right: 10, top: 20, bottom: 20),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -113,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 RegisterTextFieldWidget(
@@ -147,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 RegisterTextFieldWidget(
@@ -175,18 +193,20 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 CommonButtonBlue(
                                   onPressed: () async {
-                                    if(_formKey.currentState!.validate()) {
-                                      login(emailController.text,passwordController.text,context).then((value) async {
-                                        if(value.status == true){
-                                          SharedPreferences pref = await SharedPreferences.getInstance();
-                                          pref.setString('auth', jsonEncode(value));
+                                    if (_formKey.currentState!.validate()) {
+                                      login(emailController.text,
+                                              passwordController.text, context)
+                                          .then((value) async {
+                                        if (value.status == true) {
+                                          SharedPreferences pref =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          pref.setString(
+                                              'auth', jsonEncode(value));
                                           showToast(value.message);
-                                           Get.to(const InfoClientScreen());
-
-                                        }
-                                        else{
+                                          Get.to(const InfoClientScreen());
+                                        } else {
                                           showToast(value.message);
-
                                         }
                                       });
                                     }
