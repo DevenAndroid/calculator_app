@@ -1,6 +1,12 @@
 import 'dart:developer';
 
-import 'package:calculator_app/paveuni_list_screen.dart';
+import 'package:calculator_app/PlatesBandesListScreen.dart';
+import 'package:calculator_app/asphalte_screen.dart';
+import 'package:calculator_app/paveuni_screen.dart';
+import 'package:calculator_app/platesbandes_screen.dart';
+import 'package:calculator_app/repo/asphalte_list_repo.dart';
+import 'package:calculator_app/repo/pavaUniRepo.dart';
+import 'package:calculator_app/repo/paveuni_list_repo.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/tourbeScreen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
@@ -9,31 +15,33 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'model/asphalte_list_model.dart';
+import 'model/paveuni_list_model.dart';
 import 'model/tourbe_list_model.dart';
 
-class TourbeListScreen extends StatefulWidget {
-  const TourbeListScreen({super.key});
+class AsphalteListScreen extends StatefulWidget {
+  const AsphalteListScreen({super.key});
 
   @override
-  State<TourbeListScreen> createState() => _TourbeListScreenState();
+  State<AsphalteListScreen> createState() => _AsphalteListScreenState();
 }
 
-class _TourbeListScreenState extends State<TourbeListScreen> {
-  Rx<DetailsListModel> detailsListModel = DetailsListModel().obs;
+class _AsphalteListScreenState extends State<AsphalteListScreen> {
+  Rx<Asphalte_list_model> asphalteListModel = Asphalte_list_model().obs;
 
   @override
   initState() {
     super.initState();
-    detailsListRepoFunction();
+    asphalteListRepoFunction();
   }
 
-  detailsListRepoFunction() async {
+  asphalteListRepoFunction() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var id = pref.getString("client_id");
     log("999999${id.toString()}");
 
-    detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
-      detailsListModel.value = value;
+    asphalteListRepo(clientId: id, serviceType: "asphalte").then((value) {
+      asphalteListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
     });
@@ -51,16 +59,17 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
               ),
               const Center(
                   child: Text(
-                'Tourbe Details',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              )),
+                    'Asphalte Details',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  )),
+              asphalteListModel.value.data != null ?
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: detailsListModel.value.data!.length,
+                  itemCount: asphalteListModel.value.data!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                      height: 90,
+
                       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       width: Get.width,
                       decoration: BoxDecoration(
@@ -85,23 +94,35 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Superficie:',
+                                'superficie:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Profondeur:',
+                                'nouvelle_infra:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Positionnement:',
+                                'positionnement:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Detourber:',
+                                'type_of_waste:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Type de dechet:',
+                                'pouces_asphalte',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'contour_en_pave',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'type_of_plain_pavers',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'paver_color',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'polymer_sand_color',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                             ],
@@ -112,25 +133,42 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                detailsListModel.value.data![index].superficie.toString(),
+                                asphalteListModel.value.data![index].superficie.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].profondeur.toString(),
+                                asphalteListModel.value.data![index].nouvelleInfra.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].positionnement.toString(),
+                                asphalteListModel.value.data![index].positionnement.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].detourber.toString(),
+                                asphalteListModel.value.data![index].typeOfWaste.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].typeDeDechet.toString(),
+                                asphalteListModel.value.data![index].poucesAsphalte.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
+                              Text(
+                                asphalteListModel.value.data![index].contourEnPave.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                asphalteListModel.value.data![index].typeOfPlainPavers.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                asphalteListModel.value.data![index].paverColor.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                asphalteListModel.value.data![index].polymerSandColor.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+
                             ],
                           ),
                           const SizedBox(
@@ -139,7 +177,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                         ],
                       ),
                     );
-                  }),
+                  }) :
+              const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -147,7 +186,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const PaveuniListScreen());
+                        Get.to(const PlatesBandesListScreen());
                       },
                       title: 'Edit',
                     ),
@@ -159,7 +198,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(TourbeScreen());
+                          Get.to(const AsphalteScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -195,3 +234,4 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
     });
   }
 }
+

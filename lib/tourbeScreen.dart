@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:calculator_app/paveuni_screen.dart';
 import 'package:calculator_app/repo/tourbescreen_repo.dart';
+import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -320,7 +321,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value
                                 ).then((value) {
-                                  Get.to(PaveUniScreen());
+                                  Get.to(()=>TourbeListScreen());
                                 });
                               },
                               title: 'Save',

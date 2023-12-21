@@ -1,6 +1,9 @@
 import 'dart:developer';
 
-import 'package:calculator_app/paveuni_list_screen.dart';
+import 'package:calculator_app/asphalte_screen.dart';
+import 'package:calculator_app/paveuni_screen.dart';
+import 'package:calculator_app/repo/pavaUniRepo.dart';
+import 'package:calculator_app/repo/paveuni_list_repo.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/tourbeScreen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
@@ -9,31 +12,33 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'AsphalteListScreen.dart';
+import 'model/paveuni_list_model.dart';
 import 'model/tourbe_list_model.dart';
 
-class TourbeListScreen extends StatefulWidget {
-  const TourbeListScreen({super.key});
+class PaveuniListScreen extends StatefulWidget {
+  const PaveuniListScreen({super.key});
 
   @override
-  State<TourbeListScreen> createState() => _TourbeListScreenState();
+  State<PaveuniListScreen> createState() => _PaveuniListScreenState();
 }
 
-class _TourbeListScreenState extends State<TourbeListScreen> {
-  Rx<DetailsListModel> detailsListModel = DetailsListModel().obs;
+class _PaveuniListScreenState extends State<PaveuniListScreen> {
+  Rx<PaveuniListModel> paveuniListModel = PaveuniListModel().obs;
 
   @override
   initState() {
     super.initState();
-    detailsListRepoFunction();
+    paveuniListRepoFunction();
   }
 
-  detailsListRepoFunction() async {
+  paveuniListRepoFunction() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var id = pref.getString("client_id");
     log("999999${id.toString()}");
 
-    detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
-      detailsListModel.value = value;
+    PaveuniListRepo(clientId: id, serviceType: "pave_uni").then((value) {
+      paveuniListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
     });
@@ -51,16 +56,17 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
               ),
               const Center(
                   child: Text(
-                'Tourbe Details',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              )),
+                    'PaveUni Details',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  )),
+              paveuniListModel.value.data != null ?
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: detailsListModel.value.data!.length,
+                  itemCount: paveuniListModel.value.data!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                      height: 90,
+
                       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       width: Get.width,
                       decoration: BoxDecoration(
@@ -89,7 +95,11 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Profondeur:',
+                                'Périmètre:',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                'Type de Bordure:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
@@ -97,11 +107,22 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Detourber:',
+                                'Type de déchets',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'Type de dechet:',
+                              ),Text(
+                                'Type to Pavage (FABRIQUANT)',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'Couleur de Pave',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'Couleur de sable polymère',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'Photo(s)',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'Infrastructure',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                             ],
@@ -112,25 +133,46 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                detailsListModel.value.data![index].superficie.toString(),
+                                paveuniListModel.value.data![index].superficie.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].profondeur.toString(),
+                                paveuniListModel.value.data![index].perimeter.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].positionnement.toString(),
+                                paveuniListModel.value.data![index].typeDeBordure.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].detourber.toString(),
+                                paveuniListModel.value.data![index].positionnement.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].typeDeDechet.toString(),
+                                paveuniListModel.value.data![index].typeOfWaste.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
+                              Text(
+                                paveuniListModel.value.data![index].typeToPavage.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                paveuniListModel.value.data![index].couleurDePave.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                paveuniListModel.value.data![index].polymerSandColor.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                paveuniListModel.value.data![index].photo.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                paveuniListModel.value.data![index].infrastructure.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+
                             ],
                           ),
                           const SizedBox(
@@ -139,7 +181,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                         ],
                       ),
                     );
-                  }),
+                  }) :
+                  const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -147,7 +190,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const PaveuniListScreen());
+                        Get.to(const AsphalteListScreen());
                       },
                       title: 'Edit',
                     ),
@@ -159,7 +202,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(TourbeScreen());
+                          Get.to(PaveUniScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -195,3 +238,4 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
     });
   }
 }
+

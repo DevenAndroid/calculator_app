@@ -11,6 +11,7 @@ class ApiUrl {
   static const String loginUrl = "${baseUrl}login";
   static const String saveclientUrl = "${baseUrl}save-client-info";
   static const String tourbeScreenUrl = "${baseUrl}save-tourbe-data";
+  static const String paveUriScreenUrl = "${baseUrl}save-pavuni-data";
   static const String asphalteScreenUrl = "${baseUrl}save-asphalte-data";
   static const String platesBandesScreenUrl = "${baseUrl}save-platesbandes-data";
   static const String muretScreenUrl = "${baseUrl}save-muret-data";

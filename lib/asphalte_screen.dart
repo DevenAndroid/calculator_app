@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:calculator_app/AsphalteListScreen.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/asphalteScreenRepo.dart';
 import 'package:calculator_app/widget/apptheme.dart';
@@ -34,11 +35,10 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   TextEditingController type_of_wasteController = TextEditingController();
   TextEditingController poucesasphalteController = TextEditingController();
   TextEditingController contourenPaveController = TextEditingController();
-  TextEditingController type_de_dechetController = TextEditingController();
   TextEditingController type_of_plain_paversController = TextEditingController();
   TextEditingController paver_colorController = TextEditingController();
   TextEditingController polymer_sand_colorController = TextEditingController();
-  TextEditingController Contour_en_PaveController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -182,7 +182,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
-                          controller: type_de_dechetController,
+                          controller: type_of_wasteController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -294,7 +294,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'Couleur de pavé',
+                            'paver_color',
                             style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.normal,
@@ -307,7 +307,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
-                          controller: contourenPaveController,
+                          controller: paver_colorController,
                           color: Colors.white,
                           // length: 10,
                           validator: MultiValidator([
@@ -457,7 +457,6 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                               "type_of_waste": type_of_wasteController.text,
                               "pouces_asphalte": poucesasphalteController.text,
                               "contour_en_pave": contourenPaveController.text,
-                              "type_de_dechet": type_de_dechetController.text,
                               "type_of_plain_pavers": type_of_plain_paversController.text,
                               "paver_color": paver_colorController.text,
                               "polymer_sand_color": polymer_sand_colorController.text,
@@ -469,7 +468,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                 fieldName1: 'photo_video',
                                 file1: categoryFile.value
                             ).then((value) {
-                              Get.to(const PlatesBandesScreen());
+                              Get.to(const AsphalteListScreen());
                             });
                           },
                           title: 'Save',

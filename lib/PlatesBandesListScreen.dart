@@ -1,39 +1,38 @@
 import 'dart:developer';
-
-import 'package:calculator_app/paveuni_list_screen.dart';
-import 'package:calculator_app/repo/tourbe_list_repo.dart';
-import 'package:calculator_app/tourbeScreen.dart';
+import 'package:calculator_app/platesbandes_screen.dart';
+import 'package:calculator_app/repo/plates_bandeslist_repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'model/tourbe_list_model.dart';
+import 'model/PlatesBandesListModel.dart';
 
-class TourbeListScreen extends StatefulWidget {
-  const TourbeListScreen({super.key});
+
+class PlatesBandesListScreen extends StatefulWidget {
+  const PlatesBandesListScreen({super.key});
 
   @override
-  State<TourbeListScreen> createState() => _TourbeListScreenState();
+  State<PlatesBandesListScreen> createState() => _PlatesBandesListScreenState();
 }
 
-class _TourbeListScreenState extends State<TourbeListScreen> {
-  Rx<DetailsListModel> detailsListModel = DetailsListModel().obs;
+class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
+  Rx<plates_bandes_model> platesbandesListModel = plates_bandes_model().obs;
 
   @override
   initState() {
     super.initState();
-    detailsListRepoFunction();
+    platesbandesListRepoFunction();
   }
 
-  detailsListRepoFunction() async {
+  platesbandesListRepoFunction() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var id = pref.getString("client_id");
     log("999999${id.toString()}");
 
-    detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
-      detailsListModel.value = value;
+    platesbandesListRepo(clientId: id, serviceType: "plates_bandes").then((value) {
+      platesbandesListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
     });
@@ -51,16 +50,17 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
               ),
               const Center(
                   child: Text(
-                'Tourbe Details',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              )),
+                    'plates bandes Details',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  )),
+              platesbandesListModel.value.data != null ?
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: detailsListModel.value.data!.length,
+                  itemCount: platesbandesListModel.value.data!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-                      height: 90,
+
                       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       width: Get.width,
                       decoration: BoxDecoration(
@@ -85,23 +85,38 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Superficie:',
+                                'superficie:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Profondeur:',
+                                'profondeur:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Positionnement:',
+                                'perimeter:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Detourber:',
+                                'positionnement:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'Type de dechet:',
+                                'finition',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'couleur_finition',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'combien_de_pouces',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'bordure',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'couleur',
+                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),Text(
+                                'plantation',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                             ],
@@ -112,25 +127,45 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                detailsListModel.value.data![index].superficie.toString(),
+                                platesbandesListModel.value.data![index].superficie.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].profondeur.toString(),
+                                platesbandesListModel.value.data![index].profondeur.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].positionnement.toString(),
+                                platesbandesListModel.value.data![index].perimeter.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].detourber.toString(),
+                                platesbandesListModel.value.data![index].positionnement.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                detailsListModel.value.data![index].typeDeDechet.toString(),
+                                platesbandesListModel.value.data![index].finition.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
+                              Text(
+                                platesbandesListModel.value.data![index].couleurFinition.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                platesbandesListModel.value.data![index].combienDePouces.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                platesbandesListModel.value.data![index].bordure.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+                              Text(
+                                platesbandesListModel.value.data![index].couleur.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ), Text(
+                                platesbandesListModel.value.data![index].plantation.toString(),
+                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              ),
+
                             ],
                           ),
                           const SizedBox(
@@ -139,7 +174,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                         ],
                       ),
                     );
-                  }),
+                  }) :
+              const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -147,7 +183,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const PaveuniListScreen());
+                        Get.to(const PlatesBandesScreen());
                       },
                       title: 'Edit',
                     ),
@@ -159,7 +195,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(TourbeScreen());
+                          Get.to(const PlatesBandesScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -195,3 +231,4 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
     });
   }
 }
+

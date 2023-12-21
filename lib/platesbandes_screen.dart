@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'PlatesBandesListScreen.dart';
 import 'muret_screen.dart';
 
 class PlatesBandesScreen extends StatefulWidget {
@@ -502,8 +503,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               "positionnement": positionnementController.text,
                               "finition": finitionconController.text,
                               "couleur_finition": couleur_finitiController.text,
-                              "combien_de_pouces":
-                                  combien_de_pouController.text,
+                              "combien_de_pouces": combien_de_pouController.text,
                               "bordure": bordurepaveController.text,
                               "couleur": couleurpolyController.text,
                               "plantation": plantationpController.text,
@@ -515,7 +515,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                 .then((value) {
-                              Get.to(const MuretScreen());
+                              Get.to(const PlatesBandesListScreen());
                             });
                           },
                           title: 'Save',
