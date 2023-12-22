@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/muret_repo.dart';
 import 'package:calculator_app/widget/apptheme.dart';
@@ -451,7 +452,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                 await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 Map<String, String> mapData = {
-                                  "client": id.toString(),
+                                  "client_id": id.toString(),
                                   "superficie": superficieController.text,
                                   "hauteur": hauteurController.text,
                                   "linear_feet": linear_feetController.text,
@@ -469,7 +470,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                     .then((value) {
-                                  Get.to(const DrainScreen());
+                                  Get.to(const MuretListScreen());
                                 });
                               },
                               title: 'Save',

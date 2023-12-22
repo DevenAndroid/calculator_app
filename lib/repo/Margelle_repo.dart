@@ -22,7 +22,7 @@ Future<MargelleScreenModel> margelleScreenRepo({
     OverlayEntry loader = Helper.overlayLoader(context);
     Overlay.of(context)?.insert(loader);
     var request =
-    http.MultipartRequest('POST', Uri.parse(ApiUrl.muretScreenUrl));
+    http.MultipartRequest('POST', Uri.parse(ApiUrl.margelleScreenUrl));
     Helper.hideLoader(loader);
 
     SharedPreferences pref = await SharedPreferences.getInstance();

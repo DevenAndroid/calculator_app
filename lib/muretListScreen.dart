@@ -1,39 +1,48 @@
 import 'dart:developer';
-import 'package:calculator_app/muretListScreen.dart';
-import 'package:calculator_app/platesbandes_screen.dart';
-import 'package:calculator_app/repo/plates_bandeslist_repo.dart';
+
+import 'package:calculator_app/asphalte_screen.dart';
+import 'package:calculator_app/drainListScreen.dart';
+import 'package:calculator_app/muret_screen.dart';
+import 'package:calculator_app/paveuni_screen.dart';
+import 'package:calculator_app/repo/MuretListRepo.dart';
+import 'package:calculator_app/repo/pavaUniRepo.dart';
+import 'package:calculator_app/repo/paveuni_list_repo.dart';
+import 'package:calculator_app/repo/tourbe_list_repo.dart';
+import 'package:calculator_app/tourbeScreen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'model/PlatesBandesListModel.dart';
+import 'AsphalteListScreen.dart';
+import 'model/MuretListModel.dart';
+import 'model/paveuni_list_model.dart';
+import 'model/tourbe_list_model.dart';
 
-
-class PlatesBandesListScreen extends StatefulWidget {
-  const PlatesBandesListScreen({super.key});
+class MuretListScreen extends StatefulWidget {
+  const MuretListScreen({super.key});
 
   @override
-  State<PlatesBandesListScreen> createState() => _PlatesBandesListScreenState();
+  State<MuretListScreen> createState() => _MuretListScreenState();
 }
 
-class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
-  Rx<plates_bandes_model> platesbandesListModel = plates_bandes_model().obs;
+class _MuretListScreenState extends State<MuretListScreen> {
+  Rx<MuretListModel> muretListModel = MuretListModel().obs;
 
   @override
   initState() {
     super.initState();
-    platesbandesListRepoFunction();
+    muretListRepoFunction();
   }
 
-  platesbandesListRepoFunction() async {
+  muretListRepoFunction() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var id = pref.getString("client_id");
     log("999999${id.toString()}");
 
-    platesbandesListRepo(clientId: id, serviceType: "plates_bandes").then((value) {
-      platesbandesListModel.value = value;
+    muretListRepo(clientId: id, serviceType: "muret").then((value) {
+      muretListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
     });
@@ -51,13 +60,13 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
               ),
               const Center(
                   child: Text(
-                    'plates bandes Details',
+                    'Muret Details',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   )),
-              platesbandesListModel.value.data != null ?
+              muretListModel.value.data != null ?
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: platesbandesListModel.value.data!.length,
+                  itemCount: muretListModel.value.data!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
@@ -86,15 +95,15 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'superficie:',
+                                'Superficie:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'profondeur:',
+                                'hauteur:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'perimeter:',
+                                'linear_feet:',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
@@ -102,22 +111,19 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                'finition',
+                                'type_of_waste',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),Text(
-                                'couleur_finition',
+                                'paver_color',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),Text(
-                                'combien_de_pouces',
+                                'couronnement',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),Text(
-                                'bordure',
+                                'couleur_du_couronnement',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),Text(
-                                'couleur',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'plantation',
+                                'infrastructure',
                                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                             ],
@@ -128,44 +134,38 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                platesbandesListModel.value.data![index].superficie.toString(),
+                                muretListModel.value.data![index].superficie.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                platesbandesListModel.value.data![index].profondeur.toString(),
+                                muretListModel.value.data![index].hauteur.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                platesbandesListModel.value.data![index].perimeter.toString(),
+                                muretListModel.value.data![index].positionnement.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                platesbandesListModel.value.data![index].positionnement.toString(),
+                                muretListModel.value.data![index].typeOfWaste.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                platesbandesListModel.value.data![index].finition.toString(),
+                                muretListModel.value.data![index].paverColor.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                platesbandesListModel.value.data![index].couleurFinition.toString(),
+                                muretListModel.value.data![index].couronnement.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                platesbandesListModel.value.data![index].combienDePouces.toString(),
+                                muretListModel.value.data![index].couleurDuCouronnement.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
                               Text(
-                                platesbandesListModel.value.data![index].bordure.toString(),
+                                muretListModel.value.data![index].infrastructure.toString(),
                                 style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
                               ),
-                              Text(
-                                platesbandesListModel.value.data![index].couleur.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ), Text(
-                                platesbandesListModel.value.data![index].plantation.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
+
 
                             ],
                           ),
@@ -184,7 +184,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const MuretListScreen());
+                        Get.to(const DrainListScreen());
                       },
                       title: 'Edit',
                     ),
@@ -196,7 +196,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(const PlatesBandesScreen());
+                          Get.to(MuretScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

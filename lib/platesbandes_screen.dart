@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:calculator_app/repo/platesBandesScreenRepo.dart';
@@ -5,6 +6,7 @@ import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
@@ -495,8 +497,9 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
                             var id = pref.getString("client_id");
+                            log("wwwwwww${id.toString()}");
                             Map<String, String> mapData = {
-                              "client": id.toString(),
+                              "client_id": id.toString(),
                               "superficie": superficieController.text,
                               "profondeur": profondeurController.text,
                               "perimeter": perimeterController.text,
@@ -508,14 +511,20 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               "couleur": couleurpolyController.text,
                               "plantation": plantationpController.text,
                             };
-                            print(mapData.toString());
+                            if (kDebugMode) {
+                              print(mapData.toString());
+                            }
                             platesBandesScreenRepo(
                                     context: context,
                                     mapData: mapData,
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                 .then((value) {
-                              Get.to(const PlatesBandesListScreen());
+                                  log(value.toJson().toString());
+                                  if(value.status ==  true){
+                                    Get.to(const PlatesBandesListScreen());
+                                  }
+
                             });
                           },
                           title: 'Save',
