@@ -88,7 +88,6 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                           ),
                           CachedNetworkImage(imageUrl: detailsListModel.value.data![index].photoVideo
                           ,width: 100,height: 100,),
-
                           const SizedBox(
                             width: 10,
                           ),
@@ -148,11 +147,22 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                           const SizedBox(
                             width: 10,
                           ),
+                          const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.edit,color: Colors.black,),
+                              SizedBox(height: 10,),
+                              Icon(Icons.delete,color: Colors.black,),
+
+                            ],
+                          ),
+                          const SizedBox(width: 10,),
                         ],
                       ),
                     );
                   }) :
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(

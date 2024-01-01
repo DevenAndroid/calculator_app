@@ -82,7 +82,6 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                 width: 100,
                                 errorWidget: (_, __, ___) => const SizedBox(),
                                 placeholder: (_, __) => const SizedBox(),
-                                fit: BoxFit.cover,
                               ),
                               const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
