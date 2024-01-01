@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calculator_app/PlatesBandesListScreen.dart';
 import 'package:calculator_app/asphalte_screen.dart';
 import 'package:calculator_app/paveuni_screen.dart';
@@ -8,6 +9,7 @@ import 'package:calculator_app/repo/asphalte_list_repo.dart';
 import 'package:calculator_app/repo/pavaUniRepo.dart';
 import 'package:calculator_app/repo/paveuni_list_repo.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
+import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/tourbeScreen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:flutter/material.dart';
@@ -51,17 +53,24 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Asphalte Details',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          ),
+          leading: GestureDetector(
+              onTap: (){
+                Get.to( const SelectPoolInfoScreen());
+              },
+              child: Icon(Icons.arrow_back)),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
                 height: 50,
               ),
-              const Center(
-                  child: Text(
-                    'Asphalte Details',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                  )),
               asphalteListModel.value.data != null ?
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
@@ -81,11 +90,8 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                           const SizedBox(
                             width: 10,
                           ),
-                          Image.asset(
-                            'assets/images/baby.jpeg',
-                            height: 100,
-                            width: 70,
-                          ),
+                          CachedNetworkImage(imageUrl: asphalteListModel.value.data![index].photoVideo
+                            ,width: 100,height: 100,),
                           const SizedBox(
                             width: 10,
                           ),
@@ -186,9 +192,9 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const PlatesBandesListScreen());
+                        Get.to(const SelectPoolInfoScreen());
                       },
-                      title: 'Edit',
+                      title: 'Final Save',
                     ),
                     const SizedBox(
                       height: 20,

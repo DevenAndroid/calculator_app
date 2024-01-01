@@ -56,7 +56,7 @@ class Data {
     copingQuantity = json['coping_quantity'];
     mesure = json['mesure'];
     note = json['note'];
-    photoVideo = json['photo_video'];
+    photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -69,7 +69,7 @@ class Data {
     data['coping_quantity'] = this.copingQuantity;
     data['mesure'] = this.mesure;
     data['note'] = this.note;
-    data['photo_video'] = this.photoVideo;
+    data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

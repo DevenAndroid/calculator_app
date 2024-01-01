@@ -28,22 +28,22 @@ class plates_bandes_model {
 }
 
 class Data {
-  int? id;
-  int? salesmanId;
-  int? clientId;
-  int? superficie;
-  int? profondeur;
-  int? perimeter;
-  String? positionnement;
-  String? finition;
-  String? couleurFinition;
-  int? combienDePouces;
-  String? bordure;
-  String? couleur;
-  String? plantation;
-  String? photoVideo;
-  String? createdAt;
-  String? updatedAt;
+  dynamic id;
+  dynamic salesmanId;
+  dynamic clientId;
+  dynamic superficie;
+  dynamic profondeur;
+  dynamic perimeter;
+  dynamic positionnement;
+  dynamic finition;
+  dynamic couleurFinition;
+  dynamic combienDePouces;
+  dynamic bordure;
+  dynamic couleur;
+  dynamic plantation;
+  dynamic photoVideo;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Data(
       {this.id,
@@ -77,7 +77,7 @@ class Data {
     bordure = json['bordure'];
     couleur = json['couleur'];
     plantation = json['plantation'];
-    photoVideo = json['photo_video'];
+    photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -97,7 +97,7 @@ class Data {
     data['bordure'] = this.bordure;
     data['couleur'] = this.couleur;
     data['plantation'] = this.plantation;
-    data['photo_video'] = this.photoVideo;
+    data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

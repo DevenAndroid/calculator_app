@@ -103,7 +103,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                       validator: MultiValidator([
                         RequiredValidator(errorText: 'Please enter your Superficie'),
                       ]).call,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
                       hint: '1000 Pieds carré(s)',
                     ),
@@ -137,7 +137,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 validator: MultiValidator([
                                   RequiredValidator(errorText: 'Please enter your Périmètre'),
                                 ]).call,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.number,
                                 // textInputAction: TextInputAction.next,
                                 hint: '10 Pieds',
                               ),
@@ -482,9 +482,9 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
                             .then((value) {
                           dddd.value = value;
-                          log(dddd.value.toString());
-                          log("oooo${value.toString()}");
-                          Get.to(PaveuniListScreen());
+                          if (_formKey.currentState!.validate()) {
+                            Get.to(PaveuniListScreen());
+                          }
                         });
                       },
                       title: 'Sarve',

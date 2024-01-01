@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/plates_bandeslist_repo.dart';
+import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,17 +45,24 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'plates bandes Details',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          ),
+          leading: GestureDetector(
+              onTap: (){
+                Get.to( const SelectPoolInfoScreen());
+              },
+              child: Icon(Icons.arrow_back)),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
                 height: 50,
               ),
-              const Center(
-                  child: Text(
-                    'plates bandes Details',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                  )),
               platesbandesListModel.value.data != null ?
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
@@ -73,11 +82,8 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                           const SizedBox(
                             width: 10,
                           ),
-                          Image.asset(
-                            'assets/images/baby.jpeg',
-                            height: 100,
-                            width: 70,
-                          ),
+                          CachedNetworkImage(imageUrl: platesbandesListModel.value.data![index].photoVideo
+                            ,width: 100,height: 100,),
                           const SizedBox(
                             width: 10,
                           ),
@@ -184,9 +190,9 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const MuretListScreen());
+                        Get.to(const SelectPoolInfoScreen());
                       },
-                      title: 'Edit',
+                      title: 'Final Save',
                     ),
                     const SizedBox(
                       height: 20,

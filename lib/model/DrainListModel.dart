@@ -28,14 +28,14 @@ class DrainListModel {
 }
 
 class Data {
-  int? id;
-  int? clientId;
-  int? salesmanId;
-  String? typeDeDrain;
-  int? longeur;
-  String? photoVideo;
-  String? createdAt;
-  String? updatedAt;
+  dynamic id;
+  dynamic clientId;
+  dynamic salesmanId;
+  dynamic typeDeDrain;
+  dynamic longeur;
+  dynamic photoVideo;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Data(
       {this.id,
@@ -53,7 +53,7 @@ class Data {
     salesmanId = json['salesman_id'];
     typeDeDrain = json['type_de_drain'];
     longeur = json['longeur'];
-    photoVideo = json['photo_video'];
+    photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -65,7 +65,7 @@ class Data {
     data['salesman_id'] = this.salesmanId;
     data['type_de_drain'] = this.typeDeDrain;
     data['longeur'] = this.longeur;
-    data['photo_video'] = this.photoVideo;
+    data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

@@ -118,7 +118,7 @@ class _DrainScreenState extends State<DrainScreen> {
                       color: Colors.white,
                       // length: 10,
                       validator: RequiredValidator(errorText: 'Please enter your Longeur').call,
-                      // keyboardType: TextInputType.none,
+                       keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
                       hint: '67 Pieds Linéaire',
                     ),
@@ -215,7 +215,10 @@ class _DrainScreenState extends State<DrainScreen> {
                         drainScreenRepo(
                                 context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
                             .then((value) {
-                          Get.to(const DrainListScreen());
+                          if (_formKey.currentState!.validate()) {
+                            Get.to(const DrainListScreen());
+
+                          }
                         });
                       },
                       title: 'Save',

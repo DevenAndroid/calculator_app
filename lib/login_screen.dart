@@ -25,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showOtpField = false;
   String verificationId = "";
   String code = "+353";
+  bool isVisibale = false;
 
   Future<void> alreadyLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -53,19 +54,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.fill,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.7), BlendMode.darken),
-                        image:
-                            const AssetImage('assets/images/background.png'))),
+                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.darken),
+                        image: const AssetImage('assets/images/background.png'))),
                 child: Padding(
                   padding: MediaQuery.of(context).size.width > 800
-                      ? EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width / 3)
+                      ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
                       : MediaQuery.of(context).size.width > 600
-                          ? EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width / 7)
-                          : const EdgeInsets.only(
-                              left: 10, right: 10, top: 20, bottom: 20),
+                          ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 7)
+                          : const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -139,12 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.white,
                                   // length: 10,
                                   validator: MultiValidator([
-                                    RequiredValidator(
-                                        errorText:
-                                            'Please enter your email'.tr),
-                                    EmailValidator(
-                                        errorText:
-                                            'Enter a valid email address'.tr),
+                                    RequiredValidator(errorText: 'Please enter your email'.tr),
+                                    EmailValidator(errorText: 'Enter a valid email address'.tr),
                                   ]).call,
                                   keyboardType: TextInputType.emailAddress,
                                   // textInputAction: TextInputAction.next,
@@ -171,11 +163,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 RegisterTextFieldWidget(
                                   controller: passwordController,
                                   color: Colors.white,
-                                  // length: 10,
-                                  validator: RequiredValidator(
-                                          errorText:
-                                              'Please enter your Password'.tr)
-                                      .call,
+                                  obscureText: !isVisibale,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      isVisibale
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        isVisibale = !isVisibale;
+                                      });
+                                    },
+                                  ),
+                                   length: 10,
+                                  validator: RequiredValidator(errorText: 'Please enter your Password'.tr).call,
                                   // keyboardType: TextInputType.none,
                                   // textInputAction: TextInputAction.next,
                                   hint: '**********',
@@ -194,15 +197,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 CommonButtonBlue(
                                   onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                      login(emailController.text,
-                                              passwordController.text, context)
-                                          .then((value) async {
+                                      login(emailController.text, passwordController.text, context).then((value) async {
                                         if (value.status == true) {
-                                          SharedPreferences pref =
-                                              await SharedPreferences
-                                                  .getInstance();
-                                          pref.setString(
-                                              'auth', jsonEncode(value));
+                                          SharedPreferences pref = await SharedPreferences.getInstance();
+                                          pref.setString('auth', jsonEncode(value));
                                           showToast(value.message);
                                           Get.to(const InfoClientScreen());
                                         } else {

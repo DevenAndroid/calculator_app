@@ -104,7 +104,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                             RequiredValidator(
                                 errorText: 'Please enter your Superficie'),
                           ]).call,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '50 Pieds carré(s)',
                         ),
@@ -133,7 +133,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                           validator: RequiredValidator(
                                   errorText: 'Please enter your Profondeur')
                               .call,
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '6 Pouces',
                         ),
@@ -162,7 +162,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                           validator:
                               RequiredValidator(errorText: 'Enter Périmètre')
                                   .call,
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '0 Pieds',
                         ),
@@ -296,7 +296,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                           errorText:
                                               'Please enter your Combien de pouces'),
                                     ]).call,
-                                    keyboardType: TextInputType.emailAddress,
+                                    keyboardType: TextInputType.number,
                                     // textInputAction: TextInputAction.next,
                                     hint: '1',
                                   ),

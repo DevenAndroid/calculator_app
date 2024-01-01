@@ -7,7 +7,7 @@ import 'apptheme.dart';
 
 
 class RegisterTextFieldWidget extends StatelessWidget {
-  final IconData? suffixIcon;
+  final IconButton? suffixIcon;
   final IconData? prefixIcon;
   final Widget? suffix;
   final Widget? prefix;
@@ -102,7 +102,7 @@ class RegisterTextFieldWidget extends StatelessWidget {
           border: OutlineInputBorder(
               borderSide: BorderSide(color: const Color(0xFF384953).withOpacity(.24), width: 3.0),
               borderRadius: BorderRadius.circular(6.0)),
-          suffixIcon: suffix,
+          suffixIcon: suffixIcon,
           prefixIcon: prefix),
     );
   }

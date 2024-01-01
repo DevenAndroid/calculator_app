@@ -266,7 +266,9 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                                 SharedPreferences pref = await SharedPreferences.getInstance();
                                 pref.setString("client_id", value.data.toString());
                                 showToast(value.message);
-                                Get.to(()=>const TourbeListScreen());
+                                if (_formKey.currentState!.validate()) {
+                                  Get.to(()=>const SelectPoolInfoScreen());
+                                }
 
                               }else{
                                 showToast(value.message);

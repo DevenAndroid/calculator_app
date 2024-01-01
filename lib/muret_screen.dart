@@ -102,7 +102,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                 RequiredValidator(
                                     errorText: 'Please enter your Superficie'),
                               ]).call,
-                              keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
                               hint: '300 Pieds carré(s)',
                             ),
@@ -131,7 +131,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               validator: RequiredValidator(
                                   errorText: 'Please enter your Hauteur')
                                   .call,
-                              // keyboardType: TextInputType.none,
+                               keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
                               hint: '1 Pouces',
                             ),
@@ -160,7 +160,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               validator: RequiredValidator(
                                   errorText: 'Enter Pieds Linéaire')
                                   .call,
-                              // keyboardType: TextInputType.none,
+                               keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
                               hint: '20 Pieds',
                             ),
@@ -470,7 +470,10 @@ class _MuretScreenState extends State<MuretScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                     .then((value) {
-                                  Get.to(const MuretListScreen());
+                                  if (_formKey.currentState!.validate()) {
+                                    Get.to(const MuretListScreen());
+
+                                  }
                                 });
                               },
                               title: 'Save',

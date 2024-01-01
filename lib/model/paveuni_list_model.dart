@@ -1,7 +1,7 @@
 class PaveuniListModel {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<Data>? data=[];
 
   PaveuniListModel({this.status, this.message, this.data});
 
@@ -76,7 +76,7 @@ class Data {
     couleurDePave = json['couleur_de_pave'];
     polymerSandColor = json['polymer_sand_color'];
     photo = json['photo'];
-    photoVideo = json['photo_video'];
+    photoVideo = json['photo_video_url'];
     infrastructure = json['infrastructure'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -96,7 +96,7 @@ class Data {
     data['couleur_de_pave'] = this.couleurDePave;
     data['polymer_sand_color'] = this.polymerSandColor;
     data['photo'] = this.photo;
-    data['photo_video'] = this.photoVideo;
+    data['photo_video_url'] = this.photoVideo;
     data['infrastructure'] = this.infrastructure;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;

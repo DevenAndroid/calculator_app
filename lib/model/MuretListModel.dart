@@ -74,7 +74,7 @@ class Data {
     couronnement = json['couronnement'];
     couleurDuCouronnement = json['couleur_du_couronnement'];
     infrastructure = json['infrastructure'];
-    photoVideo = json['photo_video'];
+    photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -93,7 +93,7 @@ class Data {
     data['couronnement'] = this.couronnement;
     data['couleur_du_couronnement'] = this.couleurDuCouronnement;
     data['infrastructure'] = this.infrastructure;
-    data['photo_video'] = this.photoVideo;
+    data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

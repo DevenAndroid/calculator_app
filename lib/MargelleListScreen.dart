@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calculator_app/margelle_screen.dart';
 import 'package:calculator_app/repo/margelleListRepo.dart';
+import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,17 +43,24 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Margelle Details',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          ),
+          leading: GestureDetector(
+              onTap: (){
+                Get.to( const SelectPoolInfoScreen());
+              },
+              child: Icon(Icons.arrow_back)),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
                 height: 50,
               ),
-              const Center(
-                  child: Text(
-                'Margelle Details',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              )),
               margelleListModel.value.data != null
                   ? ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -70,6 +78,8 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                             children: [
                               CachedNetworkImage(
                                 imageUrl: margelleListModel.value.data![index].photoVideo.toString(),
+                                height: 100,
+                                width: 100,
                                 errorWidget: (_, __, ___) => const SizedBox(),
                                 placeholder: (_, __) => const SizedBox(),
                                 fit: BoxFit.cover,
@@ -125,8 +135,10 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CommonButtonBlue(
-                      onPressed: () async {},
-                      title: 'Edit',
+                      onPressed: () async {
+                        Get.to(const SelectPoolInfoScreen());
+                      },
+                      title: 'Final Save',
                     ),
                     const SizedBox(
                       height: 20,

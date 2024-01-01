@@ -101,7 +101,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                 RequiredValidator(
                                     errorText: 'Please enter your Superficie'),
                               ]).call,
-                              keyboardType: TextInputType.emailAddress,
+                              keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
                               hint: '1000 Pieds carré(s)',
                             ),
@@ -130,7 +130,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               validator: RequiredValidator(
                                   errorText: 'Please enter your Profondeur')
                                   .call,
-                              // keyboardType: TextInputType.none,
+                               keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
                               hint: '2 Pouce(s)',
                             ),
@@ -321,7 +321,10 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value
                                 ).then((value) {
-                                  Get.to(()=>TourbeListScreen());
+                                  if (_formKey.currentState!.validate()) {
+                                    Get.to(()=>TourbeListScreen());
+                                  }
+
                                 });
                               },
                               title: 'Save',

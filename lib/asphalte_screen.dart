@@ -101,7 +101,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                             RequiredValidator(
                                 errorText: 'Please enter your Superficie'),
                           ]).call,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '400 Pieds carré(s)',
                         ),
@@ -222,7 +222,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                 errorText:
                                     'Please enter your Pouces asphalte'.tr),
                           ]).call,
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '2',
                         ),
@@ -468,7 +468,10 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                 fieldName1: 'photo_video',
                                 file1: categoryFile.value
                             ).then((value) {
-                              Get.to(const AsphalteListScreen());
+                              if (_formKey.currentState!.validate()) {
+                                Get.to(const AsphalteListScreen());
+
+                              }
                             });
                           },
                           title: 'Save',

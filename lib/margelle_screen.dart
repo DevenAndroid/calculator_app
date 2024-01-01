@@ -94,7 +94,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       validator: MultiValidator([
                         RequiredValidator(errorText: 'Please enter your Quantité de margelle'),
                       ]).call,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
                       hint: '100 Pieds carré(s)',
                     ),
@@ -121,7 +121,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       color: Colors.white,
                       // length: 10,
                       validator: RequiredValidator(errorText: 'Please enter your Mesure').call,
-                      // keyboardType: TextInputType.none,
+                       keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
                       hint: '67 Pieds Linéaire',
                     ),
@@ -251,7 +251,10 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             fieldName1: 'photo_video',
                             file1: categoryFile.value)
                             .then((value) {
-                          Get.to(const MargelleListScreen());
+                          if (_formKey.currentState!.validate()) {
+                            Get.to(const MargelleListScreen());
+
+                          }
                         });
                       },
                       title: 'Save',
@@ -264,7 +267,9 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
+
                           Get.to(const DownloadthequoteScreen());
+
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
