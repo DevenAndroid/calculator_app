@@ -38,9 +38,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
       detailsListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 
@@ -55,10 +53,10 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           leading: GestureDetector(
-            onTap: (){
-              Get.to( const SelectPoolInfoScreen());
-            },
-              child: Icon(Icons.arrow_back)),
+              onTap: () {
+                Get.to(const SelectPoolInfoScreen());
+              },
+              child: const Icon(Icons.arrow_back)),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -66,103 +64,121 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
               const SizedBox(
                 height: 50,
               ),
-
-              detailsListModel.value.data != null ?
-              ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: detailsListModel.value.data!.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      height: 90,
-                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(2),
-                          border: Border.all(color: Colors.grey)),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          CachedNetworkImage(imageUrl: detailsListModel.value.data![index].photoVideo
-                          ,width: 100,height: 100,),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              detailsListModel.value.data != null
+                  ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: detailsListModel.value.data!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: 90,
+                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(2),
+                              border: Border.all(color: Colors.grey)),
+                          child: Row(
                             children: [
-                              Text(
-                                'Superficie:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const SizedBox(
+                                width: 10,
                               ),
-                              Text(
-                                'Profondeur:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              CachedNetworkImage(
+                                imageUrl: detailsListModel.value.data![index].photoVideo.toString(),
+                                width: 100,
+                                height: 100,
                               ),
-                              Text(
-                                'Positionnement:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const SizedBox(
+                                width: 10,
                               ),
-                              Text(
-                                'Detourber:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Superficie:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Profondeur:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Positionnement:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Detourber:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Type de dechet:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Type de dechet:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const Spacer(),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    detailsListModel.value.data![index].superficie.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    detailsListModel.value.data![index].profondeur.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    detailsListModel.value.data![index].positionnement.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    detailsListModel.value.data![index].detourber.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    detailsListModel.value.data![index].typeDeDechet.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(TourbeScreen(
+                                        data: detailsListModel.value.data![index],
+                                      ));
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const Icon(
+                                    Icons.delete,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
                               ),
                             ],
                           ),
-                          const Spacer(),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                detailsListModel.value.data![index].superficie.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                detailsListModel.value.data![index].profondeur.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                detailsListModel.value.data![index].positionnement.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                detailsListModel.value.data![index].detourber.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                detailsListModel.value.data![index].typeDeDechet.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(Icons.edit,color: Colors.black,),
-                              SizedBox(height: 10,),
-                              Icon(Icons.delete,color: Colors.black,),
-
-                            ],
-                          ),
-                          const SizedBox(width: 10,),
-                        ],
-                      ),
-                    );
-                  }) :
-                  const CircularProgressIndicator(),
+                        );
+                      })
+                  : const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -201,7 +217,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff019444)),
+                          style:
+                              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
                         ),
                       ),
                     ),
