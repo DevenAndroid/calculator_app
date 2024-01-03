@@ -17,9 +17,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'asphalte_screen.dart';
 import 'model/common_modal.dart';
 import 'model/login_mode.dart';
+import 'model/paveuni_list_model.dart';
 
 class PaveUniScreen extends StatefulWidget {
-  PaveUniScreen({super.key});
+  PaveUniData? paveUniData;
+  PaveUniScreen({super.key,this.paveUniData});
 
   @override
   State<PaveUniScreen> createState() => _PaveUniScreenState();
@@ -45,6 +47,25 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   TextEditingController infrastructureController = TextEditingController();
   TextEditingController type_of_wasteController = TextEditingController();
   TextEditingController type_to_pavageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.paveUniData != null) {
+      perimeterController.text = widget.paveUniData!.perimeter.toString();
+      type_de_bordureController.text = widget.paveUniData!.typeDeBordure;
+      positionnementController.text = widget.paveUniData!.positionnement;
+      superficieController.text = widget.paveUniData!.superficie.toString();
+      couleur_de_paveController.text = widget.paveUniData!.couleurDePave;
+      polymer_sand_colorController.text = widget.paveUniData!.polymerSandColor;
+      photoController.text = widget.paveUniData!.photo;
+      infrastructureController.text = widget.paveUniData!.infrastructure;
+      type_of_wasteController.text = widget.paveUniData!.typeOfWaste;
+      type_to_pavageController.text = widget.paveUniData!.typeToPavage;
+      // categoryFile.value = File(widget.data!.photoVideo);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -391,63 +412,76 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                       dashPattern: const [6],
                       strokeWidth: 1,
                       child: InkWell(
-                        onTap: () {
-                          showActionSheet(context);
-                        },
-                        child: categoryFile.value.path != ""
-                            ? Obx(() {
-                                return Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white,
-                                      ),
-                                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                      width: double.maxFinite,
-                                      height: 180,
-                                      alignment: Alignment.center,
-                                      child: Image.file(categoryFile.value,
-                                          errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
-                                              errorBuilder: (_, __, ___) => const SizedBox())),
-                                    ),
-                                  ],
-                                );
-                              })
-                            : Container(
-                                padding: const EdgeInsets.only(top: 8),
-                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                width: double.maxFinite,
-                                height: 150,
-                                alignment: Alignment.center,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/upload.png',
-                                      height: 60,
-                                      width: 50,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Text(
-                                      'upload Swimming Image And Videos',
-                                      style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                      style: const TextStyle(fontSize: 16, color: Colors.black54),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(
-                                      height: 11,
-                                    ),
-                                  ],
+                          onTap: () {
+                            showActionSheet(context);
+                          },
+                          child: categoryFile.value.path == ""
+                              ? widget.paveUniData != null && widget.paveUniData!.photoVideo != null
+                              ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            width: double.maxFinite,
+                            height: 180,
+                            alignment: Alignment.center,
+                            child: Image.network(widget.paveUniData!.photoVideo,
+                                errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
+                                    errorBuilder: (_, __, ___) => const SizedBox())),
+                          )
+                              : Container(
+                            padding: const EdgeInsets.only(top: 8),
+                            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                            width: double.maxFinite,
+                            height: 150,
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/upload.png',
+                                  height: 60,
+                                  width: 50,
                                 ),
-                              ),
-                      ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  'upload Swimming Image And Videos',
+                                  style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
+                                  style: const TextStyle(fontSize: 16, color: Colors.black54),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(
+                                  height: 11,
+                                ),
+                              ],
+                            ),
+                          )
+                              : Obx(() {
+                            return Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                  ),
+                                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  width: double.maxFinite,
+                                  height: 180,
+                                  alignment: Alignment.center,
+                                  child: Image.file(
+                                    categoryFile.value,
+                                  ),
+                                ),
+                              ],
+                            );
+                          })),
                     ),
                   ],
                 ),
@@ -460,11 +494,13 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CommonButtonBlue(
+                    widget.paveUniData != null
+                   ?  CommonButtonBlue(
                       onPressed: () async {
                         SharedPreferences pref = await SharedPreferences.getInstance();
                         var id = pref.getString("client_id");
                         Map<String, String> mapData = {
+                          'id' : widget.paveUniData!.id.toString(),
                           "perimeter": perimeterController.text,
                           "type_de_bordure": type_de_bordureController.text,
                           "positionnement": positionnementController.text,
@@ -487,38 +523,67 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           }
                         });
                       },
+                      title: 'Update',
+                    ) :
+                    CommonButtonBlue(
+                      onPressed: () async {
+                        SharedPreferences pref = await SharedPreferences.getInstance();
+                        var id = pref.getString("client_id");
+                        Map<String, String> mapData = {
+                          "perimeter": perimeterController.text,
+                          "type_de_bordure": type_de_bordureController.text,
+                          "positionnement": positionnementController.text,
+                          "client": id.toString(),
+                          "superficie": superficieController.text,
+                          "couleur_de_pave": couleur_de_paveController.text,
+                          "polymer_sand_color": polymer_sand_colorController.text,
+                          "photo": photoController.text,
+                          "infrastructure": infrastructureController.text,
+                          "type_to_pavage": type_to_pavageController.text,
+                          "type_of_waste": type_of_wasteController.text,
+                        };
+                        print(mapData.toString());
+                        pavauniScreenRepo(
+                            context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
+                            .then((value) {
+                          dddd.value = value;
+                          if (_formKey.currentState!.validate()) {
+                            Get.to(PaveuniListScreen());
+                          }
+                        });
+                      },
                       title: 'Sarve',
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    SizedBox(
-                      height: 50,
-                      width: Get.width,
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          surfaceTintColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            side: const BorderSide(
-                              color: Color(0xff019444),
-                            ),
-                          ),
-                          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                        ),
-                        icon: const Icon(
-                          Icons.add_circle_outline,
-                          color: Color(0xff019444),
-                        ),
-                        label: Text(
-                          "Add New".tr.toUpperCase(),
-                          style:
-                              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 50,
+                    //   width: Get.width,
+                    //   child: ElevatedButton.icon(
+                    //     onPressed: () {},
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor: Colors.white,
+                    //       surfaceTintColor: Colors.white,
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(5),
+                    //         side: const BorderSide(
+                    //           color: Color(0xff019444),
+                    //         ),
+                    //       ),
+                    //       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    //     ),
+                    //     icon: const Icon(
+                    //       Icons.add_circle_outline,
+                    //       color: Color(0xff019444),
+                    //     ),
+                    //     label: Text(
+                    //       "Add New".tr.toUpperCase(),
+                    //       style:
+                    //           GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),

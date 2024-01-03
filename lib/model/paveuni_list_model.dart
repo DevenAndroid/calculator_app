@@ -1,7 +1,7 @@
 class PaveuniListModel {
   bool? status;
   String? message;
-  List<Data>? data=[];
+  List<PaveUniData>? data=[];
 
   PaveuniListModel({this.status, this.message, this.data});
 
@@ -9,9 +9,9 @@ class PaveuniListModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <PaveUniData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new PaveUniData.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class PaveuniListModel {
   }
 }
 
-class Data {
+class PaveUniData {
   dynamic id;
   dynamic clientId;
   dynamic salesmanId;
@@ -45,7 +45,7 @@ class Data {
   dynamic createdAt;
   dynamic updatedAt;
 
-  Data(
+  PaveUniData(
       {this.id,
         this.clientId,
         this.salesmanId,
@@ -63,7 +63,7 @@ class Data {
         this.createdAt,
         this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  PaveUniData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     clientId = json['client_id'];
     salesmanId = json['salesman_id'];

@@ -18,7 +18,8 @@ import 'drain_screen.dart';
 import 'margelle_screen.dart';
 
 class DrainScreen extends StatefulWidget {
-  const DrainScreen({super.key});
+  DrainData? drainData;
+  DrainScreen({super.key,this.drainData});
 
   @override
   State<DrainScreen> createState() => _DrainScreenState();
@@ -33,6 +34,18 @@ class _DrainScreenState extends State<DrainScreen> {
   String? categoryValue;
   TextEditingController type_de_drainController = TextEditingController();
   TextEditingController longeurController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.drainData != null) {
+      type_de_drainController.text = widget.drainData!.typeDeDrain;
+      longeurController.text = widget.drainData!.longeur.toString();
+
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -133,63 +146,76 @@ class _DrainScreenState extends State<DrainScreen> {
                       dashPattern: const [6],
                       strokeWidth: 1,
                       child: InkWell(
-                        onTap: () {
-                          showActionSheet(context);
-                        },
-                        child: categoryFile.value.path != ""
-                            ? Obx(() {
-                                return Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white,
-                                      ),
-                                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                      width: double.maxFinite,
-                                      height: 180,
-                                      alignment: Alignment.center,
-                                      child: Image.file(categoryFile.value,
-                                          errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
-                                              errorBuilder: (_, __, ___) => const SizedBox())),
-                                    ),
-                                  ],
-                                );
-                              })
-                            : Container(
-                                padding: const EdgeInsets.only(top: 8),
-                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                width: double.maxFinite,
-                                height: 150,
-                                alignment: Alignment.center,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/upload.png',
-                                      height: 60,
-                                      width: 50,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    const Text(
-                                      'upload Swimming Image And Videos',
-                                      style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                      style: const TextStyle(fontSize: 16, color: Colors.black54),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    const SizedBox(
-                                      height: 11,
-                                    ),
-                                  ],
+                          onTap: () {
+                            showActionSheet(context);
+                          },
+                          child: categoryFile.value.path == ""
+                              ? widget.drainData != null && widget.drainData!.photoVideo != null
+                              ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            width: double.maxFinite,
+                            height: 180,
+                            alignment: Alignment.center,
+                            child: Image.network(widget.drainData!.photoVideo,
+                                errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
+                                    errorBuilder: (_, __, ___) => const SizedBox())),
+                          )
+                              : Container(
+                            padding: const EdgeInsets.only(top: 8),
+                            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                            width: double.maxFinite,
+                            height: 150,
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/upload.png',
+                                  height: 60,
+                                  width: 50,
                                 ),
-                              ),
-                      ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  'upload Swimming Image And Videos',
+                                  style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
+                                  style: const TextStyle(fontSize: 16, color: Colors.black54),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(
+                                  height: 11,
+                                ),
+                              ],
+                            ),
+                          )
+                              : Obx(() {
+                            return Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                  ),
+                                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  width: double.maxFinite,
+                                  height: 180,
+                                  alignment: Alignment.center,
+                                  child: Image.file(
+                                    categoryFile.value,
+                                  ),
+                                ),
+                              ],
+                            );
+                          })),
                     ),
                   ],
                 ),
@@ -202,12 +228,14 @@ class _DrainScreenState extends State<DrainScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    widget.drainData != null ?
                     CommonButtonBlue(
                       onPressed: () async {
                         SharedPreferences pref = await SharedPreferences.getInstance();
                         var id = pref.getString("client_id");
                         Map<String, String> mapData = {
                           "client_id": id.toString(),
+                          'id' : widget.drainData!.id.toString(),
                           "type_de_drain": type_de_drainController.text,
                           "longeur": longeurController.text,
                         };
@@ -221,40 +249,61 @@ class _DrainScreenState extends State<DrainScreen> {
                           }
                         });
                       },
+                      title: 'update',
+                    ) :
+                    CommonButtonBlue(
+                      onPressed: () async {
+                        SharedPreferences pref = await SharedPreferences.getInstance();
+                        var id = pref.getString("client_id");
+                        Map<String, String> mapData = {
+                          "client_id": id.toString(),
+                          "type_de_drain": type_de_drainController.text,
+                          "longeur": longeurController.text,
+                        };
+                        print(mapData.toString());
+                        drainScreenRepo(
+                            context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
+                            .then((value) {
+                          if (_formKey.currentState!.validate()) {
+                            Get.to(const DrainListScreen());
+
+                          }
+                        });
+                      },
                       title: 'Save',
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    SizedBox(
-                      height: 50,
-                      width: Get.width,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          Get.to(const MargelleScreen());
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          surfaceTintColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            side: const BorderSide(
-                              color: Color(0xff019444),
-                            ),
-                          ),
-                          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                        ),
-                        icon: const Icon(
-                          Icons.add_circle_outline,
-                          color: Color(0xff019444),
-                        ),
-                        label: Text(
-                          "Add New".tr.toUpperCase(),
-                          style:
-                              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 50,
+                    //   width: Get.width,
+                    //   child: ElevatedButton.icon(
+                    //     onPressed: () {
+                    //       Get.to( MargelleScreen());
+                    //     },
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor: Colors.white,
+                    //       surfaceTintColor: Colors.white,
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(5),
+                    //         side: const BorderSide(
+                    //           color: Color(0xff019444),
+                    //         ),
+                    //       ),
+                    //       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    //     ),
+                    //     icon: const Icon(
+                    //       Icons.add_circle_outline,
+                    //       color: Color(0xff019444),
+                    //     ),
+                    //     label: Text(
+                    //       "Add New".tr.toUpperCase(),
+                    //       style:
+                    //           GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),

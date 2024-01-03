@@ -1,7 +1,7 @@
 class plates_bandes_model {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<PlatesBandesData>? data;
 
   plates_bandes_model({this.status, this.message, this.data});
 
@@ -9,9 +9,9 @@ class plates_bandes_model {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <PlatesBandesData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new PlatesBandesData.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class plates_bandes_model {
   }
 }
 
-class Data {
+class PlatesBandesData {
   dynamic id;
   dynamic salesmanId;
   dynamic clientId;
@@ -45,7 +45,7 @@ class Data {
   dynamic createdAt;
   dynamic updatedAt;
 
-  Data(
+  PlatesBandesData(
       {this.id,
         this.salesmanId,
         this.clientId,
@@ -63,7 +63,7 @@ class Data {
         this.createdAt,
         this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  PlatesBandesData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     salesmanId = json['salesman_id'];
     clientId = json['client_id'];

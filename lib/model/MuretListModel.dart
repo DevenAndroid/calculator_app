@@ -1,7 +1,7 @@
 class MuretListModel {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<MuretData>? data;
 
   MuretListModel({this.status, this.message, this.data});
 
@@ -9,9 +9,9 @@ class MuretListModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <MuretData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new MuretData.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class MuretListModel {
   }
 }
 
-class Data {
+class MuretData {
   dynamic id;
   dynamic clientId;
   dynamic salesmanId;
@@ -44,7 +44,7 @@ class Data {
   dynamic createdAt;
   dynamic updatedAt;
 
-  Data(
+  MuretData(
       {this.id,
         this.clientId,
         this.salesmanId,
@@ -61,7 +61,7 @@ class Data {
         this.createdAt,
         this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  MuretData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     clientId = json['client_id'];
     salesmanId = json['salesman_id'];

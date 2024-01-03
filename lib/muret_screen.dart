@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:calculator_app/model/MuretListModel.dart';
 import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/muret_repo.dart';
@@ -18,7 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'drain_screen.dart';
 
 class MuretScreen extends StatefulWidget {
-  const MuretScreen({super.key});
+  MuretData? muretData;
+   MuretScreen({super.key,this.muretData});
 
   @override
   State<MuretScreen> createState() => _MuretScreenState();
@@ -41,6 +43,24 @@ class _MuretScreenState extends State<MuretScreen> {
   TextEditingController couronnementController = TextEditingController();
   TextEditingController couleur_du_couronnementController = TextEditingController();
   TextEditingController infrastructureController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.muretData != null) {
+      superficieController.text = widget.muretData!.superficie.toString();
+      hauteurController.text = widget.muretData!.hauteur.toString();
+      linear_feetController.text = widget.muretData!.linearFeet.toString();
+      positionnementController.text = widget.muretData!.positionnement;
+      type_of_wasteController.text = widget.muretData!.typeOfWaste;
+      paver_colorController.text = widget.muretData!.paverColor;
+      couronnementController.text = widget.muretData!.couronnement;
+      couleur_du_couronnementController.text = widget.muretData!.couleurDuCouronnement;
+      infrastructureController.text = widget.muretData!.infrastructure;
+      // categoryFile.value = File(widget.data!.photoVideo);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -355,85 +375,81 @@ class _MuretScreenState extends State<MuretScreen> {
                             DottedBorder(
                               borderType: BorderType.RRect,
                               radius: const Radius.circular(2),
-                              padding: const EdgeInsets.only(
-                                  left: 40, right: 40, bottom: 10),
-                              color: showValidationImg == false
-                                  ? const Color(0xFF019444)
-                                  : Colors.red,
+                              padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
+                              color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
                               dashPattern: const [6],
                               strokeWidth: 1,
                               child: InkWell(
-                                onTap: () {
-                                  showActionSheet(context);
-                                },
-                                child: categoryFile.value.path != ""
-                                    ? Obx(() {
-                                  return Stack(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          color: Colors.white,
+                                  onTap: () {
+                                    showActionSheet(context);
+                                  },
+                                  child: categoryFile.value.path == ""
+                                      ? widget.muretData != null && widget.muretData!.photoVideo != null
+                                      ? Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                    width: double.maxFinite,
+                                    height: 180,
+                                    alignment: Alignment.center,
+                                    child: Image.network(widget.muretData!.photoVideo,
+                                        errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
+                                            errorBuilder: (_, __, ___) => const SizedBox())),
+                                  )
+                                      : Container(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                    width: double.maxFinite,
+                                    height: 150,
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/upload.png',
+                                          height: 60,
+                                          width: 50,
                                         ),
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
-                                        width: double.maxFinite,
-                                        height: 180,
-                                        alignment: Alignment.center,
-                                        child: Image.file(categoryFile.value,
-                                            errorBuilder: (_, __, ___) =>
-                                                Image.network(
-                                                    categoryFile.value.path,
-                                                    errorBuilder: (_, __,
-                                                        ___) =>
-                                                    const SizedBox())),
-                                      ),
-                                    ],
-                                  );
-                                })
-                                    : Container(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 8),
-                                  width: double.maxFinite,
-                                  height: 150,
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/upload.png',
-                                        height: 60,
-                                        width: 50,
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      const Text(
-                                        'upload Swimming Image And Videos',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      Text(
-                                        'Accepted file types: JPEG, Doc, PDF, PNG'
-                                            .tr,
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black54),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const SizedBox(
-                                        height: 11,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Text(
+                                          'upload Swimming Image And Videos',
+                                          style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
+                                          style: const TextStyle(fontSize: 16, color: Colors.black54),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(
+                                          height: 11,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                      : Obx(() {
+                                    return Stack(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Colors.white,
+                                          ),
+                                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                          width: double.maxFinite,
+                                          height: 180,
+                                          alignment: Alignment.center,
+                                          child: Image.file(
+                                            categoryFile.value,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  })),
                             ),
                           ],
                         ),
@@ -446,6 +462,40 @@ class _MuretScreenState extends State<MuretScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            widget.muretData != null ?
+                            CommonButtonBlue(
+                              onPressed: () async {
+                                SharedPreferences pref =
+                                await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                Map<String, String> mapData = {
+                                  "client_id": id.toString(),
+                                  'id' : widget.muretData!.id.toString(),
+                                  "superficie": superficieController.text,
+                                  "hauteur": hauteurController.text,
+                                  "linear_feet": linear_feetController.text,
+                                  "positionnement": positionnementController.text,
+                                  "type_of_waste": type_of_wasteController.text,
+                                  "paver_color": paver_colorController.text,
+                                  "couronnement": couronnementController.text,
+                                  "couleur_du_couronnement": couleur_du_couronnementController.text,
+                                  "infrastructure": infrastructureController.text,
+                                };
+                                print(mapData.toString());
+                                muretScreenRepo(
+                                    context: context,
+                                    mapData: mapData,
+                                    fieldName1: 'photo_video',
+                                    file1: categoryFile.value)
+                                    .then((value) {
+                                  if (_formKey.currentState!.validate()) {
+                                    Get.to(const MuretListScreen());
+
+                                  }
+                                });
+                              },
+                              title: 'Update',
+                            ) :
                             CommonButtonBlue(
                               onPressed: () async {
                                 SharedPreferences pref =
@@ -481,38 +531,38 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                            SizedBox(
-                              height: 50,
-                              width: Get.width,
-                              child: ElevatedButton.icon(
-                                onPressed: () {
-                                  Get.to(const DrainScreen());
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  surfaceTintColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    side: const BorderSide(
-                                      color: Color(0xff019444),
-                                    ),
-                                  ),
-                                  textStyle: const TextStyle(
-                                      fontSize: 18, fontWeight: FontWeight.w500),
-                                ),
-                                icon: const Icon(
-                                  Icons.add_circle_outline,
-                                  color: Color(0xff019444),
-                                ),
-                                label: Text(
-                                  "Add New".tr.toUpperCase(),
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xff019444)),
-                                ),
-                              ),
-                            ),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: Get.width,
+                            //   child: ElevatedButton.icon(
+                            //     onPressed: () {
+                            //       Get.to( DrainScreen());
+                            //     },
+                            //     style: ElevatedButton.styleFrom(
+                            //       backgroundColor: Colors.white,
+                            //       surfaceTintColor: Colors.white,
+                            //       shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(5),
+                            //         side: const BorderSide(
+                            //           color: Color(0xff019444),
+                            //         ),
+                            //       ),
+                            //       textStyle: const TextStyle(
+                            //           fontSize: 18, fontWeight: FontWeight.w500),
+                            //     ),
+                            //     icon: const Icon(
+                            //       Icons.add_circle_outline,
+                            //       color: Color(0xff019444),
+                            //     ),
+                            //     label: Text(
+                            //       "Add New".tr.toUpperCase(),
+                            //       style: GoogleFonts.poppins(
+                            //           fontSize: 15,
+                            //           fontWeight: FontWeight.w600,
+                            //           color: const Color(0xff019444)),
+                            //     ),
+                            //   ),
+                            // ),
                             const SizedBox(
                               height: 20,
                             ),

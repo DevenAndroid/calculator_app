@@ -1,7 +1,7 @@
 class DrainListModel {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<DrainData>? data;
 
   DrainListModel({this.status, this.message, this.data});
 
@@ -9,9 +9,9 @@ class DrainListModel {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <DrainData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new DrainData.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class DrainListModel {
   }
 }
 
-class Data {
+class DrainData {
   dynamic id;
   dynamic clientId;
   dynamic salesmanId;
@@ -37,7 +37,7 @@ class Data {
   dynamic createdAt;
   dynamic updatedAt;
 
-  Data(
+  DrainData(
       {this.id,
       this.clientId,
       this.salesmanId,
@@ -47,7 +47,7 @@ class Data {
       this.createdAt,
       this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DrainData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     clientId = json['client_id'];
     salesmanId = json['salesman_id'];

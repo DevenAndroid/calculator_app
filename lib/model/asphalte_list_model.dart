@@ -1,7 +1,7 @@
 class Asphalte_list_model {
   bool? status;
   String? message;
-  List<Data>? data;
+  List<AsphalteData>? data;
 
   Asphalte_list_model({this.status, this.message, this.data});
 
@@ -9,9 +9,9 @@ class Asphalte_list_model {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <AsphalteData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new AsphalteData.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class Asphalte_list_model {
   }
 }
 
-class Data {
+class AsphalteData {
   dynamic id;
   dynamic salesmanId;
   dynamic clientId;
@@ -44,7 +44,7 @@ class Data {
   dynamic createdAt;
   dynamic updatedAt;
 
-  Data(
+  AsphalteData(
       {this.id,
         this.salesmanId,
         this.clientId,
@@ -61,7 +61,7 @@ class Data {
         this.createdAt,
         this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  AsphalteData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     salesmanId = json['salesman_id'];
     clientId = json['client_id'];
@@ -74,7 +74,7 @@ class Data {
     typeOfPlainPavers = json['type_of_plain_pavers'];
     paverColor = json['paver_color'];
     polymerSandColor = json['polymer_sand_color'];
-    photoVideo = json['photo_video'];
+    photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -93,7 +93,7 @@ class Data {
     data['type_of_plain_pavers'] = this.typeOfPlainPavers;
     data['paver_color'] = this.paverColor;
     data['polymer_sand_color'] = this.polymerSandColor;
-    data['photo_video'] = this.photoVideo;
+    data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

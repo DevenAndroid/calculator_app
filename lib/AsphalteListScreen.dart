@@ -1,5 +1,10 @@
 import 'dart:developer';
-
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:calculator_app/widget/apiUrl.dart';
+import 'package:calculator_app/widget/helper.dart';
+import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calculator_app/PlatesBandesListScreen.dart';
 import 'package:calculator_app/asphalte_screen.dart';
@@ -18,6 +23,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/asphalte_list_model.dart';
+import 'model/login_mode.dart';
 import 'model/paveuni_list_model.dart';
 import 'model/tourbe_list_model.dart';
 
@@ -35,6 +41,30 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
   initState() {
     super.initState();
     asphalteListRepoFunction();
+  }
+
+  Future<PaveuniListModel> removeAddress({required id, required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['id'] = id;
+    OverlayEntry loader = Helper.overlayLoader(context);
+    Overlay.of(context)!.insert(loader);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    LoginModel? user = LoginModel.fromJson(jsonDecode(pref.getString('auth')!));
+
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
+    };
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourAsphalte), headers: headers, body: jsonEncode(map));
+    log(response.body.toString());
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      Helper.hideLoader(loader);
+      return PaveuniListModel.fromJson(json.decode(response.body));
+    } else {
+      Helper.hideLoader(loader);
+      throw Exception(response.body);
+    }
   }
 
   asphalteListRepoFunction() async {
@@ -60,8 +90,8 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           leading: GestureDetector(
-              onTap: (){
-                Get.to( const SelectPoolInfoScreen());
+              onTap: () {
+                Get.to(const SelectPoolInfoScreen());
               },
               child: Icon(Icons.arrow_back)),
         ),
@@ -71,120 +101,158 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
               const SizedBox(
                 height: 50,
               ),
-              asphalteListModel.value.data != null ?
-              ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: asphalteListModel.value.data!.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-
-                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(2),
-                          border: Border.all(color: Colors.grey)),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          CachedNetworkImage(imageUrl: asphalteListModel.value.data![index].photoVideo
-                            ,width: 100,height: 100,),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              asphalteListModel.value.data != null
+                  ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: asphalteListModel.value.data!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(2),
+                              border: Border.all(color: Colors.grey)),
+                          child: Row(
                             children: [
-                              Text(
-                                'superficie:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const SizedBox(
+                                width: 10,
                               ),
-                              Text(
-                                'nouvelle_infra:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              CachedNetworkImage(
+                                imageUrl: asphalteListModel.value.data![index].photoVideo.toString(),
+                                width: 100,
+                                height: 100,
                               ),
-                              Text(
-                                'positionnement:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const SizedBox(
+                                width: 10,
                               ),
-                              Text(
-                                'type_of_waste:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'superficie:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'nouvelle_infra:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'positionnement:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'type_of_waste:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'pouces_asphalte',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'contour_en_pave',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'type_of_plain_pavers',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'paver_color',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'polymer_sand_color',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'pouces_asphalte',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'contour_en_pave',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'type_of_plain_pavers',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'paver_color',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'polymer_sand_color',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const Spacer(),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    asphalteListModel.value.data![index].superficie.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].nouvelleInfra.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].positionnement.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].typeOfWaste.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].poucesAsphalte.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].contourEnPave.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].typeOfPlainPavers.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].paverColor.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    asphalteListModel.value.data![index].polymerSandColor.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(AsphalteScreen(
+                                        asphalteData: asphalteListModel.value.data![index],
+                                      ));
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      removeAddress(context: context, id: asphalteListModel.value.data![index].id)
+                                          .then((value) => {asphalteListRepoFunction()});
+                                    },
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
                               ),
                             ],
                           ),
-                          const Spacer(),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                asphalteListModel.value.data![index].superficie.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].nouvelleInfra.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].positionnement.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].typeOfWaste.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].poucesAsphalte.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].contourEnPave.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].typeOfPlainPavers.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].paverColor.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                asphalteListModel.value.data![index].polymerSandColor.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                    );
-                  }) :
-              const CircularProgressIndicator(),
+                        );
+                      })
+                  : const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -204,7 +272,7 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(const AsphalteScreen());
+                          Get.to(AsphalteScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -240,4 +308,3 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
     });
   }
 }
-

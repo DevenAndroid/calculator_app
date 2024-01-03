@@ -1,16 +1,21 @@
+import 'dart:convert';
 import 'dart:developer';
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calculator_app/paveuni_list_screen.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/tourbeScreen.dart';
+import 'package:calculator_app/widget/apiUrl.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
+import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'model/login_mode.dart';
 import 'model/tourbe_list_model.dart';
 
 class TourbeListScreen extends StatefulWidget {
@@ -27,6 +32,30 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
   initState() {
     super.initState();
     detailsListRepoFunction();
+  }
+
+  Future<DetailsListModel> removeAddress({required id, required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['id'] = id;
+    OverlayEntry loader = Helper.overlayLoader(context);
+    Overlay.of(context)!.insert(loader);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    LoginModel? user = LoginModel.fromJson(jsonDecode(pref.getString('auth')!));
+
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
+    };
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourbodata), headers: headers, body: jsonEncode(map));
+    log(response.body.toString());
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      Helper.hideLoader(loader);
+      return DetailsListModel.fromJson(json.decode(response.body));
+    } else {
+      Helper.hideLoader(loader);
+      throw Exception(response.body);
+    }
   }
 
   detailsListRepoFunction() async {
@@ -154,7 +183,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       Get.to(TourbeScreen(
-                                        data: detailsListModel.value.data![index],
+                                        tourbeData: detailsListModel.value.data![index],
                                       ));
                                     },
                                     child: const Icon(
@@ -165,9 +194,15 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  const Icon(
-                                    Icons.delete,
-                                    color: Colors.black,
+                                  GestureDetector(
+                                    onTap: () {
+                                      removeAddress(context: context, id: detailsListModel.value.data![index].id)
+                                          .then((value) => {detailsListRepoFunction()});
+                                    },
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ],
                               ),

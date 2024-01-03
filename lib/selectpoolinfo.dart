@@ -15,11 +15,13 @@ import 'package:calculator_app/repo/plates_bandeslist_repo.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
+import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'downloadthequote_screen.dart';
 import 'model/DrainListModel.dart';
 import 'model/MuretListModel.dart';
 import 'model/PlatesBandesListModel.dart';
@@ -221,10 +223,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                      title: const Text(
-                    "Asphalte",
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
+                    title: const Text(
+                      "Asphalte",
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    ),
                     trailing: asphalteListModel.value.data != null && asphalteListModel.value.data!.isNotEmpty
                         ? const Text('checked', style: TextStyle(color: Colors.black))
                         : const SizedBox(),
@@ -239,11 +241,11 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
-                  child:  ListTile(
-                      title: Text(
-                    "Plates Bandes",
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
+                  child: ListTile(
+                    title: Text(
+                      "Plates Bandes",
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    ),
                     trailing: platesbandesListModel.value.data != null && platesbandesListModel.value.data!.isNotEmpty
                         ? const Text('checked', style: TextStyle(color: Colors.black))
                         : const SizedBox(),
@@ -259,10 +261,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                      title: Text(
-                    "Muret",
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
+                    title: Text(
+                      "Muret",
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    ),
                     trailing: muretListModel.value.data != null && muretListModel.value.data!.isNotEmpty
                         ? const Text('checked', style: TextStyle(color: Colors.black))
                         : const SizedBox(),
@@ -278,10 +280,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                      title: Text(
-                    "Drain",
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
+                    title: Text(
+                      "Drain",
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    ),
                     trailing: drainListModel.value.data != null && drainListModel.value.data!.isNotEmpty
                         ? const Text('checked', style: TextStyle(color: Colors.black))
                         : const SizedBox(),
@@ -297,10 +299,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                      title: Text(
-                    "Margelle",
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  ),
+                    title: Text(
+                      "Margelle",
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    ),
                     trailing: margelleListModel.value.data != null && margelleListModel.value.data!.isNotEmpty
                         ? const Text('checked', style: TextStyle(color: Colors.black))
                         : const SizedBox(),
@@ -343,7 +345,21 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CommonButtonBlue(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        if(
+                        detailsListModel.value.data != null && detailsListModel.value.data!.isNotEmpty
+                        && paveuniListModel.value.data != null && paveuniListModel.value.data!.isNotEmpty
+                        && asphalteListModel.value.data != null && asphalteListModel.value.data!.isNotEmpty
+                        && platesbandesListModel.value.data != null && platesbandesListModel.value.data!.isNotEmpty
+                        && muretListModel.value.data != null && muretListModel.value.data!.isNotEmpty
+                        && drainListModel.value.data != null && drainListModel.value.data!.isNotEmpty
+                        && margelleListModel.value.data != null && margelleListModel.value.data!.isNotEmpty
+                        ){
+                          Get.to(const DownloadthequoteScreen());
+                        }else{
+                          showToast('Please fill all the forms');
+                        }
+                      },
                       title: 'Submit',
                     ),
                     const SizedBox(

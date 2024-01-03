@@ -9,8 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'model/login_mode.dart';
 import 'model/margelleListModel.dart';
-
+import 'dart:developer';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:calculator_app/widget/apiUrl.dart';
+import 'package:calculator_app/widget/helper.dart';
+import 'package:http/http.dart' as http;
 class MargelleListScreen extends StatefulWidget {
   const MargelleListScreen({super.key});
 
@@ -25,6 +32,29 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
   initState() {
     super.initState();
     margelleListRepoFunction();
+  }
+  Future<MargelleListModel> removeAddress({required id, required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['id'] = id;
+    OverlayEntry loader = Helper.overlayLoader(context);
+    Overlay.of(context)!.insert(loader);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    LoginModel? user = LoginModel.fromJson(jsonDecode(pref.getString('auth')!));
+
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
+    };
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourmargelle), headers: headers, body: jsonEncode(map));
+    log(response.body.toString());
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      Helper.hideLoader(loader);
+      return MargelleListModel.fromJson(json.decode(response.body));
+    } else {
+      Helper.hideLoader(loader);
+      throw Exception(response.body);
+    }
   }
 
   margelleListRepoFunction() async {
@@ -78,10 +108,8 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                             children: [
                               CachedNetworkImage(
                                 imageUrl: margelleListModel.value.data![index].photoVideo.toString(),
-                                height: 100,
                                 width: 100,
-                                errorWidget: (_, __, ___) => const SizedBox(),
-                                placeholder: (_, __) => const SizedBox(),
+                                height: 100,
                               ),
                               const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -123,6 +151,39 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                               const SizedBox(
                                 width: 10,
                               ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(MargelleScreen(
+                                        margelleData: margelleListModel.value.data![index],
+                                      ));
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap:(){
+                                      removeAddress(context: context, id: margelleListModel.value.data![index].id)
+                                          .then((value) => {margelleListRepoFunction()});
+                                    },
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
                             ],
                           ),
                         );
@@ -147,7 +208,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(const MargelleScreen());
+                          Get.to( MargelleScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

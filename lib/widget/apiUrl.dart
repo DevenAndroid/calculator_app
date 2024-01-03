@@ -18,6 +18,13 @@ class ApiUrl {
   static const String margelleScreenUrl = "${baseUrl}save-margelle-data";
   static const String drainScreenUrl = "${baseUrl}save-drain-data";
   static const String detailsListScreenUrl = "${baseUrl}get-service-details";
+  static const String deletetourbodata = "${baseUrl}tourbe-delete";
+  static const String deletetourpaveUri = "${baseUrl}Paveunie-delete";
+  static const String deletetourAsphalte = "${baseUrl}asphalte-delete";
+  static const String deletetourplatesbandes = "${baseUrl}platesbandes-delete";
+  static const String deletetourmuret = "${baseUrl}muret-delete";
+  static const String deletetourdrain = "${baseUrl}drain-delete";
+  static const String deletetourmargelle = "${baseUrl}margelle-delete";
 
 }
 

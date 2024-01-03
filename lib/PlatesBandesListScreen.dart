@@ -4,13 +4,19 @@ import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/plates_bandeslist_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
+import 'package:calculator_app/widget/apiUrl.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
+import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'model/PlatesBandesListModel.dart';
+import 'model/login_mode.dart';
 
 
 class PlatesBandesListScreen extends StatefulWidget {
@@ -27,6 +33,29 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
   initState() {
     super.initState();
     platesbandesListRepoFunction();
+  }
+  Future<plates_bandes_model> removeAddress({required id, required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['id'] = id;
+    OverlayEntry loader = Helper.overlayLoader(context);
+    Overlay.of(context)!.insert(loader);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    LoginModel? user = LoginModel.fromJson(jsonDecode(pref.getString('auth')!));
+
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
+    };
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourplatesbandes), headers: headers, body: jsonEncode(map));
+    log(response.body.toString());
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      Helper.hideLoader(loader);
+      return plates_bandes_model.fromJson(json.decode(response.body));
+    } else {
+      Helper.hideLoader(loader);
+      throw Exception(response.body);
+    }
   }
 
   platesbandesListRepoFunction() async {
@@ -178,6 +207,39 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                           const SizedBox(
                             width: 10,
                           ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(PlatesBandesScreen(
+                                    platesBandesData: platesbandesListModel.value.data![index],
+                                  ));
+                                },
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              GestureDetector(
+                                onTap:(){
+                                  removeAddress(context: context, id: platesbandesListModel.value.data![index].id)
+                                      .then((value) => {platesbandesListRepoFunction()});
+                    },
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
                         ],
                       ),
                     );
@@ -202,7 +264,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(const PlatesBandesScreen());
+                          Get.to(PlatesBandesScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

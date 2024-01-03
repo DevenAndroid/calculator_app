@@ -1,5 +1,12 @@
 import 'dart:developer';
-
+import 'dart:developer';
+import 'dart:developer';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:calculator_app/widget/apiUrl.dart';
+import 'package:calculator_app/widget/helper.dart';
+import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calculator_app/asphalte_screen.dart';
 import 'package:calculator_app/drain_screen.dart';
@@ -23,6 +30,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'AsphalteListScreen.dart';
 import 'MargelleListScreen.dart';
 import 'model/MuretListModel.dart';
+import 'model/login_mode.dart';
 import 'model/paveuni_list_model.dart';
 import 'model/tourbe_list_model.dart';
 
@@ -40,6 +48,29 @@ class _DrainListScreenState extends State<DrainListScreen> {
   initState() {
     super.initState();
     drainListRepoFunction();
+  }
+  Future<DrainListModel> removeAddress({required id, required BuildContext context}) async {
+    var map = <String, dynamic>{};
+    map['id'] = id;
+    OverlayEntry loader = Helper.overlayLoader(context);
+    Overlay.of(context).insert(loader);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    LoginModel? user = LoginModel.fromJson(jsonDecode(pref.getString('auth')!));
+
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
+    };
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourdrain), headers: headers, body: jsonEncode(map));
+    log(response.body.toString());
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      Helper.hideLoader(loader);
+      return DrainListModel.fromJson(json.decode(response.body));
+    } else {
+      Helper.hideLoader(loader);
+      throw Exception(response.body);
+    }
   }
 
   drainListRepoFunction() async {
@@ -125,6 +156,39 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                   Text(
                                     drainListModel.value.data![index].longeur.toString(),
                                     style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(DrainScreen(
+                                        drainData: drainListModel.value.data![index],
+                                      ));
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap:(){
+                                      removeAddress(context: context, id: drainListModel.value.data![index].id)
+                                          .then((value) => {drainListRepoFunction()});
+                                    },
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ],
                               ),
