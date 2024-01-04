@@ -11,13 +11,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/login_mode.dart';
 import 'model/margelleListModel.dart';
-import 'dart:developer';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 import 'package:calculator_app/widget/apiUrl.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:http/http.dart' as http;
+
 class MargelleListScreen extends StatefulWidget {
   const MargelleListScreen({super.key});
 
@@ -33,6 +31,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
     super.initState();
     margelleListRepoFunction();
   }
+
   Future<MargelleListModel> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
@@ -80,10 +79,10 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           leading: GestureDetector(
-              onTap: (){
-                Get.to( const SelectPoolInfoScreen());
+              onTap: () {
+                Get.to(const SelectPoolInfoScreen());
               },
-              child: Icon(Icons.arrow_back)),
+              child: const Icon(Icons.arrow_back)),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -106,10 +105,61 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                               border: Border.all(color: Colors.grey)),
                           child: Row(
                             children: [
-                              CachedNetworkImage(
-                                imageUrl: margelleListModel.value.data![index].photoVideo.toString(),
-                                width: 100,
-                                height: 100,
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: margelleListModel.value.data![index].photoVideo.toString(),
+                                      width: 80,
+                                      height: 70,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(MargelleScreen(
+                                            margelleData: margelleListModel.value.data![index],
+                                          ));
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          removeAddress(context: context, id: margelleListModel.value.data![index].id)
+                                              .then((value) => {margelleListRepoFunction()});
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
                               const Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -170,7 +220,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                     height: 20,
                                   ),
                                   GestureDetector(
-                                    onTap:(){
+                                    onTap: () {
                                       removeAddress(context: context, id: margelleListModel.value.data![index].id)
                                           .then((value) => {margelleListRepoFunction()});
                                     },
@@ -208,7 +258,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to( MargelleScreen());
+                          Get.to(MargelleScreen());
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -227,7 +277,8 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff019444)),
+                          style:
+                              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
                         ),
                       ),
                     ),

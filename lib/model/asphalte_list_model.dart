@@ -74,7 +74,8 @@ class AsphalteData {
     typeOfPlainPavers = json['type_of_plain_pavers'];
     paverColor = json['paver_color'];
     polymerSandColor = json['polymer_sand_color'];
-    photoVideo = json['photo_video_url'];
+    photoVideo = json['photo_video_url'
+        ''];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }

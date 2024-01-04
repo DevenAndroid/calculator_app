@@ -4,13 +4,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:calculator_app/asphalte_screen.dart';
 import 'package:calculator_app/paveuni_screen.dart';
-import 'package:calculator_app/repo/pavaUniRepo.dart';
 import 'package:calculator_app/repo/paveuni_list_repo.dart';
-import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
-import 'package:calculator_app/tourbeScreen.dart';
 import 'package:calculator_app/widget/apiUrl.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -19,10 +15,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'AsphalteListScreen.dart';
 import 'model/login_mode.dart';
 import 'model/paveuni_list_model.dart';
-import 'model/tourbe_list_model.dart';
 
 class PaveuniListScreen extends StatefulWidget {
   const PaveuniListScreen({super.key});
@@ -90,7 +84,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
               onTap: () {
                 Get.to(const SelectPoolInfoScreen());
               },
-              child: Icon(Icons.arrow_back)),
+              child: const Icon(Icons.arrow_back)),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -116,10 +110,61 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              CachedNetworkImage(
-                                imageUrl: paveuniListModel.value.data![index].photoVideo.toString(),
-                                width: 100,
-                                height: 100,
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: paveuniListModel.value.data![index].photoVideo.toString(),
+                                      width: 80,
+                                      height: 70,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(PaveUniScreen(
+                                            paveUniData: paveuniListModel.value.data![index],
+                                          ));
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          removeAddress(context: context, id: paveuniListModel.value.data![index].id)
+                                              .then((value) => {paveuniListRepoFunction()});
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
                               const SizedBox(
                                 width: 10,
@@ -220,39 +265,6 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(PaveUniScreen(
-                                        paveUniData: paveuniListModel.value.data![index],
-                                      ));
-                                    },
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      removeAddress(context: context, id: paveuniListModel.value.data![index].id)
-                                          .then((value) => {paveuniListRepoFunction()});
-                                    },
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
                             ],
                           ),
                         );
@@ -296,7 +308,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff019444)),
+                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
                         ),
                       ),
                     ),

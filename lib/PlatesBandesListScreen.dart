@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/plates_bandeslist_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
@@ -12,12 +11,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'model/PlatesBandesListModel.dart';
 import 'model/login_mode.dart';
-
 
 class PlatesBandesListScreen extends StatefulWidget {
   const PlatesBandesListScreen({super.key});
@@ -34,6 +31,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
     super.initState();
     platesbandesListRepoFunction();
   }
+
   Future<plates_bandes_model> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
@@ -47,7 +45,8 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
     };
-    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourplatesbandes), headers: headers, body: jsonEncode(map));
+    http.Response response =
+        await http.post(Uri.parse(ApiUrl.deletetourplatesbandes), headers: headers, body: jsonEncode(map));
     log(response.body.toString());
     if (response.statusCode == 200 || response.statusCode == 400) {
       Helper.hideLoader(loader);
@@ -81,10 +80,10 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
           leading: GestureDetector(
-              onTap: (){
-                Get.to( const SelectPoolInfoScreen());
+              onTap: () {
+                Get.to(const SelectPoolInfoScreen());
               },
-              child: Icon(Icons.arrow_back)),
+              child: const Icon(Icons.arrow_back)),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -92,159 +91,187 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
               const SizedBox(
                 height: 50,
               ),
-              platesbandesListModel.value.data != null ?
-              ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: platesbandesListModel.value.data!.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-
-                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(2),
-                          border: Border.all(color: Colors.grey)),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          CachedNetworkImage(imageUrl: platesbandesListModel.value.data![index].photoVideo
-                            ,width: 100,height: 100,),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              platesbandesListModel.value.data != null
+                  ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: platesbandesListModel.value.data!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(2),
+                              border: Border.all(color: Colors.grey)),
+                          child: Row(
                             children: [
-                              Text(
-                                'superficie:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                              const SizedBox(
+                                width: 10,
                               ),
-                              Text(
-                                'profondeur:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'perimeter:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'positionnement:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'finition',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'couleur_finition',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'combien_de_pouces',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'bordure',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'couleur',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'plantation',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                platesbandesListModel.value.data![index].superficie.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].profondeur.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].perimeter.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].positionnement.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].finition.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].couleurFinition.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].combienDePouces.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].bordure.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                platesbandesListModel.value.data![index].couleur.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ), Text(
-                                platesbandesListModel.value.data![index].plantation.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(PlatesBandesScreen(
-                                    platesBandesData: platesbandesListModel.value.data![index],
-                                  ));
-                                },
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Colors.black,
-                                ),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: platesbandesListModel.value.data![index].photoVideo.toString(),
+                                      width: 80,
+                                      height: 70,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(PlatesBandesScreen(
+                                            platesBandesData: platesbandesListModel.value.data![index],
+                                          ));
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          removeAddress(context: context, id: platesbandesListModel.value.data![index].id)
+                                              .then((value) => {platesbandesListRepoFunction()});
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
                               const SizedBox(
-                                height: 20,
+                                width: 10,
                               ),
-                              GestureDetector(
-                                onTap:(){
-                                  removeAddress(context: context, id: platesbandesListModel.value.data![index].id)
-                                      .then((value) => {platesbandesListRepoFunction()});
-                    },
-                                child: const Icon(
-                                  Icons.delete,
-                                  color: Colors.black,
-                                ),
+                              const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'superficie:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'profondeur:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'perimeter:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'positionnement:',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'finition',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'couleur_finition',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'combien_de_pouces',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'bordure',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'couleur',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    'plantation',
+                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    platesbandesListModel.value.data![index].superficie.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].profondeur.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].perimeter.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].positionnement.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].finition.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].couleurFinition.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].combienDePouces.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].bordure.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].couleur.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                  Text(
+                                    platesbandesListModel.value.data![index].plantation.toString(),
+                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const SizedBox(
+                                width: 10,
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                    );
-                  }) :
-              const CircularProgressIndicator(),
+                        );
+                      })
+                  : const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -283,7 +310,8 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff019444)),
+                          style:
+                              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
                         ),
                       ),
                     ),
@@ -300,4 +328,3 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
     });
   }
 }
-

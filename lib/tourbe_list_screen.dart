@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:calculator_app/paveuni_list_screen.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/tourbeScreen.dart';
@@ -38,7 +37,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
     var map = <String, dynamic>{};
     map['id'] = id;
     OverlayEntry loader = Helper.overlayLoader(context);
-    Overlay.of(context)!.insert(loader);
+    Overlay.of(context).insert(loader);
     SharedPreferences pref = await SharedPreferences.getInstance();
     LoginModel? user = LoginModel.fromJson(jsonDecode(pref.getString('auth')!));
 
@@ -65,7 +64,6 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
 
     detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
       detailsListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -100,7 +98,6 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
-                          height: 90,
                           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                           width: Get.width,
                           decoration: BoxDecoration(
@@ -112,10 +109,62 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              CachedNetworkImage(
-                                imageUrl: detailsListModel.value.data![index].photoVideo.toString(),
-                                width: 100,
-                                height: 100,
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10,right: 10,top: 20,bottom: 10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: detailsListModel.value.data![index].photoVideo.toString(),
+                                      width: 80,
+                                      height: 70,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(TourbeScreen(
+                                            tourbeData: detailsListModel.value.data![index],
+                                          ));
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                            width : 40,
+                                          decoration: BoxDecoration(color : const Color(0xff019444),borderRadius: BorderRadius.circular(5)),
+                                 
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          removeAddress(context: context, id: detailsListModel.value.data![index].id)
+                                              .then((value) => {detailsListRepoFunction()});
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width : 40,
+                                          decoration: BoxDecoration(color : const Color(0xff019444),borderRadius: BorderRadius.circular(5)),
+
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
                               ),
                               const SizedBox(
                                 width: 10,
@@ -176,39 +225,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                               const SizedBox(
                                 width: 10,
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(TourbeScreen(
-                                        tourbeData: detailsListModel.value.data![index],
-                                      ));
-                                    },
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      removeAddress(context: context, id: detailsListModel.value.data![index].id)
-                                          .then((value) => {detailsListRepoFunction()});
-                                    },
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+
                             ],
                           ),
                         );
