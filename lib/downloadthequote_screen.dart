@@ -92,32 +92,27 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                       Row(
                         children: [
                           Checkbox(
-                            value: tourbe_Prix_du_marche_value,
-                            side: const BorderSide(color: Color(0xff019444)),
-                            onChanged: (value) async {
-                              this.tourbe_Prix_du_marche_value = value!;
-                              print(value);
-                              SharedPreferences pref = await SharedPreferences.getInstance();
-                              var id = pref.getString("client_id");
-                              downloadquote_Repo(clientID: id.toString(),
-                                  service_name: "tourbe",
-                                  final_price: "1",
-                                  price_type: "Prix du marche",
-                                  context: context).then((value) async {
-                                if (value.status == true) {
-                                  showToast(value.message);
-                                } else {
-                                  showToast(value.message);
-                                }
-                                setState(() {
-
+                              value: tourbe_Prix_du_marche_value,
+                              side: const BorderSide(color: Color(0xff019444)),
+                              onChanged: (value) async {
+                                this.tourbe_Prix_du_marche_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "tourbe",
+                                        final_price: "1",
+                                        price_type: "Prix marche",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
                                 });
-                              });
-
-                            }
-
-
-                          ),
+                              }),
                           const Text(
                             'Prix du marche:',
                             style: TextStyle(
@@ -151,8 +146,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: tourbe_Prix_gazon_tropical_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.tourbe_Prix_gazon_tropical_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "tourbe",
+                                        final_price: "1",
+                                        price_type: "Prix gazon tropical",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -189,8 +200,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: tourbe_Prix_meuileur_offre_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.tourbe_Prix_meuileur_offre_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "tourbe",
+                                        final_price: "1",
+                                        price_type: "Prix (meuileur offre):",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -227,8 +254,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: tourbe_Prix_conclu_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.tourbe_Prix_conclu_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "tourbe",
+                                        final_price: "1",
+                                        price_type: "Prix conclu:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -282,8 +325,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: pave_Prix_du_marche_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.pave_Prix_du_marche_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Pave Uni",
+                                        final_price: "1",
+                                        price_type: "Prix du marche:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -320,8 +379,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: pave_Prix_gazon_tropical_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.pave_Prix_gazon_tropical_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Pave Uni",
+                                        final_price: "1",
+                                        price_type: "Prix gazon tropical:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -358,8 +433,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: pave_Prix_meuileur_offre_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.pave_Prix_meuileur_offre_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Pave Uni",
+                                        final_price: "1",
+                                        price_type: "Prix (meuileur offre):",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -396,8 +487,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: pave_Prix_conclu_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.pave_Prix_conclu_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Pave Uni",
+                                        final_price: "1",
+                                        price_type: "Prix conclu:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -451,8 +558,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: platesBands_Prix_du_marche_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.platesBands_Prix_du_marche_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Plates Bandes",
+                                        final_price: "1",
+                                        price_type: "Prix du marche:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -489,8 +612,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: platesBands_gazon_tropical_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.platesBands_gazon_tropical_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Plates Bandes",
+                                        final_price: "1",
+                                        price_type: "Prix gazon tropical:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -527,8 +666,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: platesBands_meuileur_offre_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.platesBands_meuileur_offre_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Plates Bandes",
+                                        final_price: "1",
+                                        price_type: "Prix (meuileur offre):",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -565,8 +720,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: platesBands_conclu_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.platesBands_conclu_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Plates Bandes",
+                                        final_price: "1",
+                                        price_type: "Prix conclu:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -620,8 +791,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: muret_Prix_du_marche_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.muret_Prix_du_marche_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "muret",
+                                        final_price: "1",
+                                        price_type: "Prix du marche:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -658,8 +845,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: muret_gazon_tropical_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.muret_gazon_tropical_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "muret",
+                                        final_price: "1",
+                                        price_type: "Prix gazon tropical:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -696,8 +899,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: muret_meuileur_offre_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.muret_meuileur_offre_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "muret",
+                                        final_price: "1",
+                                        price_type: "Prix (meuileur offre):",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -734,177 +953,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: muret_conclu_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.muret_conclu_value = value!;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Prix conclu:',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text(
-                            'Plus Taxes',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      const Divider(
-                        thickness: 1,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 12),
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Prix du total - Drain',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: muret_Prix_du_marche_value,
-                            side: const BorderSide(color: Color(0xff019444)),
-                            onChanged: (value) {
-                              setState(() {
-                                this.muret_Prix_du_marche_value = value!;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Prix du marche:',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text(
-                            'Plus Taxes',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: muret_gazon_tropical_value,
-                            side: const BorderSide(color: Color(0xff019444)),
-                            onChanged: (value) {
-                              setState(() {
-                                this.muret_gazon_tropical_value = value!;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Prix gazon tropical:',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text(
-                            'Plus Taxes',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: muret_meuileur_offre_value,
-                            side: const BorderSide(color: Color(0xff019444)),
-                            onChanged: (value) {
-                              setState(() {
-                                this.muret_meuileur_offre_value = value!;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Prix (meuileur offre):',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                            ),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          const Text(
-                            'Plus Taxes',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: muret_conclu_value,
-                            side: const BorderSide(color: Color(0xff019444)),
-                            onChanged: (value) {
-                              setState(() {
-                                this.muret_conclu_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "muret",
+                                        final_price: "1",
+                                        price_type: "Prix conclu:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -958,8 +1024,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: margelle_Prix_du_marche_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.margelle_Prix_du_marche_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "margelle",
+                                        final_price: "1",
+                                        price_type: "Prix du marche:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -996,8 +1078,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: margelle_gazon_tropical_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.margelle_gazon_tropical_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "margelle",
+                                        final_price: "1",
+                                        price_type: "Prix gazon tropical:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1034,8 +1132,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: margelle_meuileur_offre_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.margelle_meuileur_offre_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "margelle",
+                                        final_price: "1",
+                                        price_type: "Prix (meuileur offre):",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1072,8 +1186,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: margelle_conclu_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.margelle_conclu_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "margelle",
+                                        final_price: "1",
+                                        price_type: "Prix conclu:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1127,8 +1257,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: Asphalte_Prix_du_marche_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.Asphalte_Prix_du_marche_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Asphalte",
+                                        final_price: "1",
+                                        price_type: "Prix du marche:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1165,8 +1311,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: Asphalte_gazon_tropical_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.Asphalte_gazon_tropical_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Asphalte",
+                                        final_price: "1",
+                                        price_type: "Prix gazon tropical:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1203,8 +1365,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: Asphalte_meuileur_offre_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.Asphalte_meuileur_offre_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Asphalte",
+                                        final_price: "1",
+                                        price_type: "Prix (meuileur offre):",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1241,8 +1419,24 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             value: Asphalte_conclu_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
+                              setState(() async {
                                 this.Asphalte_conclu_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Asphalte",
+                                        final_price: "1",
+                                        price_type: "Prix conclu:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1293,11 +1487,27 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                       Row(
                         children: [
                           Checkbox(
-                            value: Drain_Prix_du_marche_value,
+                            value: muret_Prix_du_marche_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
-                                this.Drain_Prix_du_marche_value = value!;
+                              setState(() async {
+                                this.muret_Prix_du_marche_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Drain",
+                                        final_price: "1",
+                                        price_type: "Prix du marche:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1331,11 +1541,27 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                       Row(
                         children: [
                           Checkbox(
-                            value: Drain_gazon_tropical_value,
+                            value: muret_gazon_tropical_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
-                                this.Drain_gazon_tropical_value = value!;
+                              setState(() async {
+                                this.muret_gazon_tropical_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Drain",
+                                        final_price: "1",
+                                        price_type: "Prix gazon tropical:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1369,11 +1595,27 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                       Row(
                         children: [
                           Checkbox(
-                            value: Drain_meuileur_offre_value,
+                            value: muret_meuileur_offre_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
-                                this.Drain_meuileur_offre_value = value!;
+                              setState(() async {
+                                this.muret_meuileur_offre_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Drain",
+                                        final_price: "1",
+                                        price_type: "Prix (meuileur offre):",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1407,11 +1649,27 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                       Row(
                         children: [
                           Checkbox(
-                            value: Drain_conclu_value,
+                            value: muret_conclu_value,
                             side: const BorderSide(color: Color(0xff019444)),
                             onChanged: (value) {
-                              setState(() {
-                                this.Drain_conclu_value = value!;
+                              setState(() async {
+                                this.muret_conclu_value = value!;
+                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                var id = pref.getString("client_id");
+                                downloadquote_Repo(
+                                        clientID: id.toString(),
+                                        service_name: "Drain",
+                                        final_price: "1",
+                                        price_type: "Prix conclu:",
+                                        context: context)
+                                    .then((value) async {
+                                  if (value.status == true) {
+                                    showToast(value.message);
+                                  } else {
+                                    showToast(value.message);
+                                  }
+                                  setState(() {});
+                                });
                               });
                             },
                           ),
@@ -1450,9 +1708,7 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                         height: 15,
                       ),
                       CommonButtonBlue(
-                        onPressed: () async {
-
-                        },
+                        onPressed: () async {},
                         title: 'Download',
                       ),
                     ],
