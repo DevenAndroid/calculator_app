@@ -112,7 +112,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10,right: 10,top: 20,bottom: 10),
+                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
                                     child: CachedNetworkImage(
                                       imageUrl: detailsListModel.value.data![index].photoVideo.toString(),
                                       width: 80,
@@ -130,9 +130,9 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                         },
                                         child: Container(
                                           height: 30,
-                                            width : 40,
-                                          decoration: BoxDecoration(color : const Color(0xff019444),borderRadius: BorderRadius.circular(5)),
-                                 
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
@@ -149,16 +149,15 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                         },
                                         child: Container(
                                           height: 30,
-                                          width : 40,
-                                          decoration: BoxDecoration(color : const Color(0xff019444),borderRadius: BorderRadius.circular(5)),
-
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
                                           ),
                                         ),
                                       ),
-
                                     ],
                                   ),
                                   const SizedBox(
@@ -225,7 +224,6 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                               const SizedBox(
                                 width: 10,
                               ),
-
                             ],
                           ),
                         );

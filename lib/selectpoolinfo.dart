@@ -16,7 +16,6 @@ import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,7 +65,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
       detailsListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -79,7 +77,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     PaveuniListRepo(clientId: id, serviceType: "pave_uni").then((value) {
       paveuniListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -92,7 +89,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     asphalteListRepo(clientId: id, serviceType: "asphalte").then((value) {
       asphalteListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -105,7 +101,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     platesbandesListRepo(clientId: id, serviceType: "plates_bandes").then((value) {
       platesbandesListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -118,7 +113,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     muretListRepo(clientId: id, serviceType: "muret").then((value) {
       muretListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -131,7 +125,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     drainListRepo(clientId: id, serviceType: "drain").then((value) {
       drainListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -144,7 +137,6 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     margelleListRepo(clientId: id, serviceType: "margelle").then((value) {
       margelleListModel.value = value;
-      print("ppppppppppppp");
       log(value.toString());
       setState(() {});
     });
@@ -183,7 +175,11 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 child: Container(
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), color: Colors.white, boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 2,
+                    )
+                  ]),
                   child: ListTile(
                     title: const Text(
                       "Tourbe",
@@ -202,7 +198,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 child: Container(
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
                     title: const Text(
                       "Pave Uni",
@@ -221,7 +220,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 child: Container(
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
                     title: const Text(
                       "Asphalte",
@@ -240,9 +242,12 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 child: Container(
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                    title: Text(
+                    title: const Text(
                       "Plates Bandes",
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
@@ -259,9 +264,12 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 child: Container(
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                    title: Text(
+                    title: const Text(
                       "Muret",
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
@@ -278,9 +286,12 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 child: Container(
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                    title: Text(
+                    title: const Text(
                       "Drain",
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
@@ -297,9 +308,12 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 child: Container(
                   width: Get.width,
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [BoxShadow(blurRadius: 2)]),
                   child: ListTile(
-                    title: Text(
+                    title: const Text(
                       "Margelle",
                       style: TextStyle(color: Colors.black, fontSize: 20),
                     ),
@@ -312,7 +326,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               Container(
                 width: Get.width,
                 margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(11),
+                    color: Colors.white,
+                    boxShadow: const [BoxShadow(blurRadius: 2)]),
                 child: const ListTile(
                     title: Text(
                   "Cloture",
@@ -322,7 +339,10 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               Container(
                 width: Get.width,
                 margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(11),
+                    color: Colors.white,
+                    boxShadow: const [BoxShadow(blurRadius: 2)]),
                 child: const ListTile(
                     title: Text(
                   "Piscine",
@@ -332,12 +352,18 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               Container(
                 width: Get.width,
                 margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(blurRadius: 2)]),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(11),
+                    color: Colors.white,
+                    boxShadow: const [BoxShadow(blurRadius: 2)]),
                 child: const ListTile(
                     title: Text(
                   "Autre",
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 )),
+              ),
+              const SizedBox(
+                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -346,17 +372,22 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        if(
-                        detailsListModel.value.data != null && detailsListModel.value.data!.isNotEmpty
-                        && paveuniListModel.value.data != null && paveuniListModel.value.data!.isNotEmpty
-                        && asphalteListModel.value.data != null && asphalteListModel.value.data!.isNotEmpty
-                        && platesbandesListModel.value.data != null && platesbandesListModel.value.data!.isNotEmpty
-                        && muretListModel.value.data != null && muretListModel.value.data!.isNotEmpty
-                        && drainListModel.value.data != null && drainListModel.value.data!.isNotEmpty
-                        && margelleListModel.value.data != null && margelleListModel.value.data!.isNotEmpty
-                        ){
+                        if (detailsListModel.value.data != null &&
+                            detailsListModel.value.data!.isNotEmpty &&
+                            paveuniListModel.value.data != null &&
+                            paveuniListModel.value.data!.isNotEmpty &&
+                            asphalteListModel.value.data != null &&
+                            asphalteListModel.value.data!.isNotEmpty &&
+                            platesbandesListModel.value.data != null &&
+                            platesbandesListModel.value.data!.isNotEmpty &&
+                            muretListModel.value.data != null &&
+                            muretListModel.value.data!.isNotEmpty &&
+                            drainListModel.value.data != null &&
+                            drainListModel.value.data!.isNotEmpty &&
+                            margelleListModel.value.data != null &&
+                            margelleListModel.value.data!.isNotEmpty) {
                           Get.to(const DownloadthequoteScreen());
-                        }else{
+                        } else {
                           showToast('Please fill all the forms');
                         }
                       },

@@ -25,6 +25,7 @@ class ApiUrl {
   static const String deletetourmuret = "${baseUrl}muret-delete";
   static const String deletetourdrain = "${baseUrl}drain-delete";
   static const String deletetourmargelle = "${baseUrl}margelle-delete";
+  static const String downloadquotes = "${baseUrl}quatation-price";
 
 }
 
