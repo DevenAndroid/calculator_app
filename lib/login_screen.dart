@@ -56,7 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         colorFilter: ColorFilter.mode(
                             Colors.black.withOpacity(0.7), BlendMode.darken),
                         image:
-                            const AssetImage('assets/images/background.png'))),
+                            const AssetImage('assets/images/background.png'))
+                ),
                 child: Padding(
                   padding: MediaQuery.of(context).size.width > 800
                       ? EdgeInsets.symmetric(
