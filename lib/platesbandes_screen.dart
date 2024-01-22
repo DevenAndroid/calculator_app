@@ -1,20 +1,25 @@
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:calculator_app/model/PlatesBandesListModel.dart';
 import 'package:calculator_app/repo/platesBandesScreenRepo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'PlatesBandesListScreen.dart';
 import 'muret_screen.dart';
 
 class PlatesBandesScreen extends StatefulWidget {
-  const PlatesBandesScreen({super.key});
+  PlatesBandesData? platesBandesData;
+  PlatesBandesScreen({super.key,this.platesBandesData});
 
   @override
   State<PlatesBandesScreen> createState() => _PlatesBandesScreenState();
@@ -37,6 +42,24 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   TextEditingController bordurepaveController = TextEditingController();
   TextEditingController couleurpolyController = TextEditingController();
   TextEditingController plantationpController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.platesBandesData != null) {
+      superficieController.text = widget.platesBandesData!.superficie.toString();
+      profondeurController.text = widget.platesBandesData!.profondeur.toString();
+      perimeterController.text = widget.platesBandesData!.perimeter.toString();
+      positionnementController.text = widget.platesBandesData!.positionnement;
+      finitionconController.text = widget.platesBandesData!.finition;
+      couleur_finitiController.text = widget.platesBandesData!.couleurFinition;
+      combien_de_pouController.text = widget.platesBandesData!.combienDePouces.toString();
+      bordurepaveController.text = widget.platesBandesData!.bordure;
+      couleurpolyController.text = widget.platesBandesData!.couleur;
+      plantationpController.text = widget.platesBandesData!.plantation;
+      // categoryFile.value = File(widget.data!.photoVideo);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -101,7 +124,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                             RequiredValidator(
                                 errorText: 'Please enter your Superficie'),
                           ]).call,
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '50 Pieds carré(s)',
                         ),
@@ -130,7 +153,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                           validator: RequiredValidator(
                                   errorText: 'Please enter your Profondeur')
                               .call,
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '6 Pouces',
                         ),
@@ -159,7 +182,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                           validator:
                               RequiredValidator(errorText: 'Enter Périmètre')
                                   .call,
-                          // keyboardType: TextInputType.none,
+                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           hint: '0 Pieds',
                         ),
@@ -293,7 +316,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                           errorText:
                                               'Please enter your Combien de pouces'),
                                     ]).call,
-                                    keyboardType: TextInputType.emailAddress,
+                                    keyboardType: TextInputType.number,
                                     // textInputAction: TextInputAction.next,
                                     hint: '1',
                                   ),
@@ -398,85 +421,81 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
-                          padding: const EdgeInsets.only(
-                              left: 40, right: 40, bottom: 10),
-                          color: showValidationImg == false
-                              ? const Color(0xFF019444)
-                              : Colors.red,
+                          padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
+                          color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
                           dashPattern: const [6],
                           strokeWidth: 1,
                           child: InkWell(
-                            onTap: () {
-                              showActionSheet(context);
-                            },
-                            child: categoryFile.value.path != ""
-                                ? Obx(() {
-                                    return Stack(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Colors.white,
-                                          ),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                          width: double.maxFinite,
-                                          height: 180,
-                                          alignment: Alignment.center,
-                                          child: Image.file(categoryFile.value,
-                                              errorBuilder: (_, __, ___) =>
-                                                  Image.network(
-                                                      categoryFile.value.path,
-                                                      errorBuilder: (_, __,
-                                                              ___) =>
-                                                          const SizedBox())),
-                                        ),
-                                      ],
-                                    );
-                                  })
-                                : Container(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
-                                    width: double.maxFinite,
-                                    height: 150,
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/upload.png',
-                                          height: 60,
-                                          width: 50,
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        const Text(
-                                          'upload Swimming Image And Videos',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Text(
-                                          'Accepted file types: JPEG, Doc, PDF, PNG'
-                                              .tr,
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black54),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(
-                                          height: 11,
-                                        ),
-                                      ],
+                              onTap: () {
+                                showActionSheet(context);
+                              },
+                              child: categoryFile.value.path == ""
+                                  ? widget.platesBandesData != null && widget.platesBandesData!.photoVideo != null
+                                  ? Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                width: double.maxFinite,
+                                height: 180,
+                                alignment: Alignment.center,
+                                child: Image.network(widget.platesBandesData!.photoVideo,
+                                    errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
+                                        errorBuilder: (_, __, ___) => const SizedBox())),
+                              )
+                                  : Container(
+                                padding: const EdgeInsets.only(top: 8),
+                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                width: double.maxFinite,
+                                height: 150,
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/upload.png',
+                                      height: 60,
+                                      width: 50,
                                     ),
-                                  ),
-                          ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    const Text(
+                                      'upload Swimming Image And Videos',
+                                      style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
+                                      style: const TextStyle(fontSize: 16, color: Colors.black54),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(
+                                      height: 11,
+                                    ),
+                                  ],
+                                ),
+                              )
+                                  : Obx(() {
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                      width: double.maxFinite,
+                                      height: 180,
+                                      alignment: Alignment.center,
+                                      child: Image.file(
+                                        categoryFile.value,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              })),
                         ),
                       ],
                     ),
@@ -489,33 +508,78 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        widget.platesBandesData != null ?
                         CommonButtonBlue(
                           onPressed: () async {
                             SharedPreferences pref =
                                 await SharedPreferences.getInstance();
                             var id = pref.getString("client_id");
+                            log("wwwwwww${id.toString()}");
                             Map<String, String> mapData = {
-                              "client": id.toString(),
+                              "client_id": id.toString(),
+                              'id' : widget.platesBandesData!.id.toString(),
                               "superficie": superficieController.text,
                               "profondeur": profondeurController.text,
                               "perimeter": perimeterController.text,
                               "positionnement": positionnementController.text,
                               "finition": finitionconController.text,
                               "couleur_finition": couleur_finitiController.text,
-                              "combien_de_pouces":
-                                  combien_de_pouController.text,
+                              "combien_de_pouces": combien_de_pouController.text,
                               "bordure": bordurepaveController.text,
                               "couleur": couleurpolyController.text,
                               "plantation": plantationpController.text,
                             };
-                            print(mapData.toString());
+                            if (kDebugMode) {
+                              print(mapData.toString());
+                            }
                             platesBandesScreenRepo(
                                     context: context,
                                     mapData: mapData,
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                 .then((value) {
-                              Get.to(const MuretScreen());
+                                  log(value.toJson().toString());
+                                  if(value.status ==  true){
+                                    Get.to(const PlatesBandesListScreen());
+                                  }
+
+                            });
+                          },
+                          title: 'Update',
+                        ) :
+                        CommonButtonBlue(
+                          onPressed: () async {
+                            SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                            var id = pref.getString("client_id");
+                            log("wwwwwww${id.toString()}");
+                            Map<String, String> mapData = {
+                              "client_id": id.toString(),
+                              "superficie": superficieController.text,
+                              "profondeur": profondeurController.text,
+                              "perimeter": perimeterController.text,
+                              "positionnement": positionnementController.text,
+                              "finition": finitionconController.text,
+                              "couleur_finition": couleur_finitiController.text,
+                              "combien_de_pouces": combien_de_pouController.text,
+                              "bordure": bordurepaveController.text,
+                              "couleur": couleurpolyController.text,
+                              "plantation": plantationpController.text,
+                            };
+                            if (kDebugMode) {
+                              print(mapData.toString());
+                            }
+                            platesBandesScreenRepo(
+                                context: context,
+                                mapData: mapData,
+                                fieldName1: 'photo_video',
+                                file1: categoryFile.value)
+                                .then((value) {
+                              log(value.toJson().toString());
+                              if(value.status ==  true){
+                                Get.to(const PlatesBandesListScreen());
+                              }
+
                             });
                           },
                           title: 'Save',
@@ -523,38 +587,38 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        SizedBox(
-                          height: 50,
-                          width: Get.width,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Get.to(const MuretScreen());
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              surfaceTintColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                side: const BorderSide(
-                                  color: Color(0xff019444),
-                                ),
-                              ),
-                              textStyle: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-                            icon: const Icon(
-                              Icons.add_circle_outline,
-                              color: Color(0xff019444),
-                            ),
-                            label: Text(
-                              "Add New".tr.toUpperCase(),
-                              style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xff019444)),
-                            ),
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: 50,
+                        //   width: Get.width,
+                        //   child: ElevatedButton.icon(
+                        //     onPressed: () {
+                        //       Get.to( MuretScreen());
+                        //     },
+                        //     style: ElevatedButton.styleFrom(
+                        //       backgroundColor: Colors.white,
+                        //       surfaceTintColor: Colors.white,
+                        //       shape: RoundedRectangleBorder(
+                        //         borderRadius: BorderRadius.circular(5),
+                        //         side: const BorderSide(
+                        //           color: Color(0xff019444),
+                        //         ),
+                        //       ),
+                        //       textStyle: const TextStyle(
+                        //           fontSize: 18, fontWeight: FontWeight.w500),
+                        //     ),
+                        //     icon: const Icon(
+                        //       Icons.add_circle_outline,
+                        //       color: Color(0xff019444),
+                        //     ),
+                        //     label: Text(
+                        //       "Add New".tr.toUpperCase(),
+                        //       style: GoogleFonts.poppins(
+                        //           fontSize: 15,
+                        //           fontWeight: FontWeight.w600,
+                        //           color: const Color(0xff019444)),
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 20,
                         ),

@@ -11,12 +11,21 @@ class ApiUrl {
   static const String loginUrl = "${baseUrl}login";
   static const String saveclientUrl = "${baseUrl}save-client-info";
   static const String tourbeScreenUrl = "${baseUrl}save-tourbe-data";
+  static const String paveUriScreenUrl = "${baseUrl}save-pavuni-data";
   static const String asphalteScreenUrl = "${baseUrl}save-asphalte-data";
   static const String platesBandesScreenUrl = "${baseUrl}save-platesbandes-data";
   static const String muretScreenUrl = "${baseUrl}save-muret-data";
   static const String margelleScreenUrl = "${baseUrl}save-margelle-data";
   static const String drainScreenUrl = "${baseUrl}save-drain-data";
   static const String detailsListScreenUrl = "${baseUrl}get-service-details";
+  static const String deletetourbodata = "${baseUrl}tourbe-delete";
+  static const String deletetourpaveUri = "${baseUrl}Paveunie-delete";
+  static const String deletetourAsphalte = "${baseUrl}asphalte-delete";
+  static const String deletetourplatesbandes = "${baseUrl}platesbandes-delete";
+  static const String deletetourmuret = "${baseUrl}muret-delete";
+  static const String deletetourdrain = "${baseUrl}drain-delete";
+  static const String deletetourmargelle = "${baseUrl}margelle-delete";
+  static const String downloadquotes = "${baseUrl}quatation-price";
 
 }
 
