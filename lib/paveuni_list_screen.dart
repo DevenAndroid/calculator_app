@@ -99,7 +99,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                           width: Get.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -113,7 +113,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(left: 5, right: 10, top: 20, bottom: 10),
                                     child: CachedNetworkImage(
                                       imageUrl: paveuniListModel.value.data![index].photoVideo.toString(),
                                       width: 80,

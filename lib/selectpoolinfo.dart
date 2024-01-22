@@ -177,8 +177,13 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), color: Colors.white, boxShadow: const [
                     BoxShadow(
-                      blurRadius: 2,
-                    )
+                      color: Colors.black26,
+                      offset: Offset(
+                        0.2,
+                        0.2,
+                      ),
+                      blurRadius: 1,
+                    ),
                   ]),
                   child: ListTile(
                     title: const Text(
@@ -201,7 +206,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(11),
                       color: Colors.white,
-                      boxShadow: const [BoxShadow(blurRadius: 2)]),
+                      boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                   child: ListTile(
                     title: const Text(
                       "Pave Uni",
@@ -223,7 +235,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(11),
                       color: Colors.white,
-                      boxShadow: const [BoxShadow(blurRadius: 2)]),
+                      boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                   child: ListTile(
                     title: const Text(
                       "Asphalte",
@@ -245,7 +264,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(11),
                       color: Colors.white,
-                      boxShadow: const [BoxShadow(blurRadius: 2)]),
+                      boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                   child: ListTile(
                     title: const Text(
                       "Plates Bandes",
@@ -267,7 +293,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(11),
                       color: Colors.white,
-                      boxShadow: const [BoxShadow(blurRadius: 2)]),
+                      boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                   child: ListTile(
                     title: const Text(
                       "Muret",
@@ -289,7 +322,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(11),
                       color: Colors.white,
-                      boxShadow: const [BoxShadow(blurRadius: 2)]),
+                      boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                   child: ListTile(
                     title: const Text(
                       "Drain",
@@ -311,7 +351,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(11),
                       color: Colors.white,
-                      boxShadow: const [BoxShadow(blurRadius: 2)]),
+                      boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                   child: ListTile(
                     title: const Text(
                       "Margelle",
@@ -329,7 +376,16 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11),
                     color: Colors.white,
-                    boxShadow: const [BoxShadow(blurRadius: 2)]),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(
+                          0.2,
+                          0.2,
+                        ),
+                        blurRadius: 1,
+                      ),
+                    ]),
                 child: const ListTile(
                     title: Text(
                   "Cloture",
@@ -342,7 +398,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11),
                     color: Colors.white,
-                    boxShadow: const [BoxShadow(blurRadius: 2)]),
+                    boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                 child: const ListTile(
                     title: Text(
                   "Piscine",
@@ -355,7 +418,14 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11),
                     color: Colors.white,
-                    boxShadow: const [BoxShadow(blurRadius: 2)]),
+                    boxShadow: const [ BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(
+                                          0.2,
+                                          0.2,
+                                        ),
+                                        blurRadius: 1,
+                                      ),]),
                 child: const ListTile(
                     title: Text(
                   "Autre",

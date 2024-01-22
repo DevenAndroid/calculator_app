@@ -34,7 +34,10 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
-
+  PositionItem? PositionnementselectedValue;
+  PositionItem? TypededechetselectedValue;
+  PositionItem? CouleurdesableselectedValue;
+  PositionItem? InfrastructureeselectedValue;
   Rx<CommonModal> dddd = CommonModal().obs;
 
   TextEditingController perimeterController = TextEditingController();
@@ -47,7 +50,28 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   TextEditingController infrastructureController = TextEditingController();
   TextEditingController type_of_wasteController = TextEditingController();
   TextEditingController type_to_pavageController = TextEditingController();
+  List<PositionItem> yourModelList = [
+    PositionItem(id: 1, name: 'devant'),
+    PositionItem(id: 2, name: 'derrière'),
+    PositionItem(id: 3, name: 'cote gauche vue de face'),
+    PositionItem(id: 4, name: 'cote droite vue de face'),
+  ];
 
+  List<PositionItem> TypededechetList = [
+    PositionItem(id: 1, name: 'Aucun'),
+    PositionItem(id: 2, name: 'Terre / VG'),
+    PositionItem(id: 2, name: 'Roche / t'),
+    PositionItem(id: 2, name: 'Beton / t'),
+    PositionItem(id: 2, name: 'mix / t'),
+  ];
+  List<PositionItem> CouleurdesableList = [
+    PositionItem(id: 1, name: 'Gris'),
+    PositionItem(id: 2, name: 'Beige'),
+  ];
+  List<PositionItem> InfrastructureList = [
+    PositionItem(id: 1, name: 'Nouvelle'),
+    PositionItem(id: 2, name: 'Existante'),
+  ];
   @override
   void initState() {
     super.initState();
@@ -220,14 +244,43 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: positionnementController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: RequiredValidator(errorText: 'Please enter your Positionnement').call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'devant',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: PositionnementselectedValue ?? yourModelList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    PositionnementselectedValue = newValue;
+                                  });
+                                },
+                                items: yourModelList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -247,14 +300,43 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: type_of_wasteController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: RequiredValidator(errorText: 'Enter Type de déchets').call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'roche/t',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: TypededechetselectedValue ?? TypededechetList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    TypededechetselectedValue = newValue;
+                                  });
+                                },
+                                items: TypededechetList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -332,16 +414,43 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: polymer_sand_colorController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter your Couleur de sable polymère'.tr),
-                      ]).call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'Gris',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: CouleurdesableselectedValue ?? CouleurdesableList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    CouleurdesableselectedValue = newValue;
+                                  });
+                                },
+                                items: CouleurdesableList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -390,16 +499,43 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: infrastructureController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter your Nouvelle'.tr),
-                      ]).call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'Nouvelle',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: InfrastructureeselectedValue ?? InfrastructureList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    InfrastructureeselectedValue = newValue;
+                                  });
+                                },
+                                items: InfrastructureList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -454,12 +590,12 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 ),
                                 Text(
                                   'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                  style: const TextStyle(fontSize: 16, color: Colors.black54),
+                                  style: const TextStyle(fontSize: 12, color: Colors.black54),
                                   textAlign: TextAlign.center,
                                 ),
-                                const SizedBox(
-                                  height: 11,
-                                ),
+                                // const SizedBox(
+                                //   height: 11,
+                                // ),
                               ],
                             ),
                           )
@@ -503,15 +639,15 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           'id' : widget.paveUniData!.id.toString(),
                           "perimeter": perimeterController.text,
                           "type_de_bordure": type_de_bordureController.text,
-                          "positionnement": positionnementController.text,
+                          "positionnement": PositionnementselectedValue!.name,
                           "client": id.toString(),
                           "superficie": superficieController.text,
                           "couleur_de_pave": couleur_de_paveController.text,
-                          "polymer_sand_color": polymer_sand_colorController.text,
+                          "polymer_sand_color": CouleurdesableselectedValue!.name,
                           "photo": photoController.text,
-                          "infrastructure": infrastructureController.text,
+                          "infrastructure": InfrastructureeselectedValue!.name,
                           "type_to_pavage": type_to_pavageController.text,
-                          "type_of_waste": type_of_wasteController.text,
+                          "type_of_waste": TypededechetselectedValue!.name,
                         };
                         print(mapData.toString());
                         pavauniScreenRepo(
@@ -532,15 +668,23 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                         Map<String, String> mapData = {
                           "perimeter": perimeterController.text,
                           "type_de_bordure": type_de_bordureController.text,
-                          "positionnement": positionnementController.text,
+                          "positionnement": PositionnementselectedValue != null
+                              ? PositionnementselectedValue!.name
+                              : "",
                           "client": id.toString(),
                           "superficie": superficieController.text,
                           "couleur_de_pave": couleur_de_paveController.text,
-                          "polymer_sand_color": polymer_sand_colorController.text,
+                          "polymer_sand_color": CouleurdesableselectedValue != null
+                              ? CouleurdesableselectedValue!.name
+                              : "",
                           "photo": photoController.text,
-                          "infrastructure": infrastructureController.text,
+                          "infrastructure": InfrastructureeselectedValue != null
+                        ? InfrastructureeselectedValue!.name
+                            : "",
                           "type_to_pavage": type_to_pavageController.text,
-                          "type_of_waste": type_of_wasteController.text,
+                          "type_of_waste": TypededechetselectedValue != null
+                              ? TypededechetselectedValue!.name
+                              : "",
                         };
                         print(mapData.toString());
                         pavauniScreenRepo(
@@ -641,4 +785,10 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
       ),
     );
   }
+}
+class PositionItem {
+  final int id;
+  final String name;
+
+  PositionItem({required this.id, required this.name});
 }

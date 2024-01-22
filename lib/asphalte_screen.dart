@@ -42,6 +42,42 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   TextEditingController paver_colorController = TextEditingController();
   TextEditingController polymer_sand_colorController = TextEditingController();
 
+  PositionItem? NouvelleInfraselectedValue;
+  PositionItem? PositionnementselectedValue;
+  PositionItem? TypededechetselectedValue;
+  PositionItem? ContourenPaveselectedValue;
+  PositionItem? CouleurdesableselectedValue;
+
+  List<PositionItem> NouvelleInfraList = [
+    PositionItem(id: 1, name: 'Oui'),
+    PositionItem(id: 2, name: 'Non'),
+  ];
+
+
+  List<PositionItem> yourModelList = [
+    PositionItem(id: 1, name: 'devant'),
+    PositionItem(id: 2, name: 'derrière'),
+    PositionItem(id: 3, name: 'cote gauche vue de face'),
+    PositionItem(id: 4, name: 'cote droite vue de face'),
+  ];
+
+  List<PositionItem> TypededechetList = [
+    PositionItem(id: 1, name: 'Aucun'),
+    PositionItem(id: 2, name: 'Terre / VG'),
+    PositionItem(id: 2, name: 'Roche / t'),
+    PositionItem(id: 2, name: 'Beton / t'),
+    PositionItem(id: 2, name: 'mix / t'),
+  ];
+
+  List<PositionItem> ContourenPaveList = [
+    PositionItem(id: 1, name: 'Oui'),
+    PositionItem(id: 2, name: 'Non'),
+  ];
+  List<PositionItem> CouleurdesablePaveList = [
+    PositionItem(id: 1, name: 'Gris'),
+    PositionItem(id: 2, name: 'Beige'),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -139,14 +175,43 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: nouvelleInfraController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: RequiredValidator(errorText: 'Please enter your Nouvelle Infra').call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'Non',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: NouvelleInfraselectedValue ?? NouvelleInfraList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    NouvelleInfraselectedValue = newValue;
+                                  });
+                                },
+                                items: NouvelleInfraList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -166,14 +231,43 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: positionnementController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: RequiredValidator(errorText: 'Enter Positionnement').call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'devant',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: PositionnementselectedValue ?? yourModelList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    PositionnementselectedValue = newValue;
+                                  });
+                                },
+                                items: yourModelList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -193,16 +287,43 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: type_of_wasteController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter your Type de déchets'.tr),
-                      ]).call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'asphalte/t',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: TypededechetselectedValue ?? TypededechetList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    TypededechetselectedValue = newValue;
+                                  });
+                                },
+                                items: TypededechetList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -251,16 +372,43 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: contourenPaveController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter your Contour en Pave'.tr),
-                      ]).call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'Non',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: ContourenPaveselectedValue ?? ContourenPaveList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    ContourenPaveselectedValue = newValue;
+                                  });
+                                },
+                                items: ContourenPaveList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -338,16 +486,43 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: polymer_sand_colorController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter your Couleur de sable polymère'.tr),
-                      ]).call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'gris',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: CouleurdesableselectedValue ?? CouleurdesablePaveList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    CouleurdesableselectedValue = newValue;
+                                  });
+                                },
+                                items: CouleurdesablePaveList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -451,14 +626,14 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                 "client": id.toString(),
                                 'id': widget.asphalteData!.id.toString(),
                                 "superficie": superficieController.text,
-                                "nouvelle_infra": nouvelleInfraController.text,
-                                "positionnement": positionnementController.text,
-                                "type_of_waste": type_of_wasteController.text,
+                                "nouvelle_infra": NouvelleInfraselectedValue!.name,
+                                "positionnement": PositionnementselectedValue!.name,
+                                "type_of_waste": TypededechetselectedValue!.name,
                                 "pouces_asphalte": poucesasphalteController.text,
-                                "contour_en_pave": contourenPaveController.text,
+                                "contour_en_pave": ContourenPaveselectedValue!.name,
                                 "type_of_plain_pavers": type_of_plain_paversController.text,
                                 "paver_color": paver_colorController.text,
-                                "polymer_sand_color": polymer_sand_colorController.text,
+                                "polymer_sand_color": CouleurdesableselectedValue!.name,
                               };
                               print(mapData.toString());
                               asphalteScreenRepo(
@@ -483,14 +658,24 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                               Map<String, String> mapData = {
                                 "client": id.toString(),
                                 "superficie": superficieController.text,
-                                "nouvelle_infra": nouvelleInfraController.text,
-                                "positionnement": positionnementController.text,
-                                "type_of_waste": type_of_wasteController.text,
+                                "nouvelle_infra": NouvelleInfraselectedValue != null
+                              ? NouvelleInfraselectedValue!.name
+                                  : "",
+                                "positionnement": PositionnementselectedValue != null
+                                    ? PositionnementselectedValue!.name
+                                    : "",
+                                "type_of_waste": TypededechetselectedValue != null
+                                    ? TypededechetselectedValue!.name
+                                    : "",
                                 "pouces_asphalte": poucesasphalteController.text,
-                                "contour_en_pave": contourenPaveController.text,
+                                "contour_en_pave": ContourenPaveselectedValue != null
+                                    ? ContourenPaveselectedValue!.name
+                                    : "",
                                 "type_of_plain_pavers": type_of_plain_paversController.text,
                                 "paver_color": paver_colorController.text,
-                                "polymer_sand_color": polymer_sand_colorController.text,
+                                "polymer_sand_color": CouleurdesableselectedValue != null
+                                    ? CouleurdesableselectedValue!.name
+                                    : "",
                               };
                               print(mapData.toString());
                               asphalteScreenRepo(
@@ -596,4 +781,10 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
       ),
     );
   }
+}
+class PositionItem {
+  final int id;
+  final String name;
+
+  PositionItem({required this.id, required this.name});
 }
