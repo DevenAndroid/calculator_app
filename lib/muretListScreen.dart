@@ -32,6 +32,24 @@ class _MuretListScreenState extends State<MuretListScreen> {
     super.initState();
     muretListRepoFunction();
   }
+  Widget buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label + ':',
+          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+  }
   Future<MuretListModel> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
@@ -59,12 +77,10 @@ class _MuretListScreenState extends State<MuretListScreen> {
   muretListRepoFunction() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var id = pref.getString("client_id");
-    log("999999${id.toString()}");
 
     muretListRepo(clientId: id, serviceType: "muret").then((value) {
       muretListModel.value = value;
-      print("ppppppppppppp");
-      log(value.toString());
+      setState(() {});
     });
   }
 
@@ -106,15 +122,20 @@ class _MuretListScreenState extends State<MuretListScreen> {
                           border: Border.all(color: Colors.grey)),
                       child: Row(
                         children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
+                          // Left Column with Image and Icons
                           Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                padding: const EdgeInsets.only(
+                                    left: 10,
+                                    right: 10,
+                                    top: 20,
+                                    bottom: 10),
                                 child: CachedNetworkImage(
-                                  imageUrl: muretListModel.value.data![index].photoVideo.toString(),
+                                  imageUrl: muretListModel
+                                      .value.data![index].photoVideo
+                                      .toString(),
                                   width: 80,
                                   height: 70,
                                   fit: BoxFit.fill,
@@ -125,33 +146,40 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                   GestureDetector(
                                     onTap: () {
                                       Get.to(MuretScreen(
-                                        muretData: muretListModel.value.data![index],
+                                        muretData: muretListModel
+                                            .value.data![index],
                                       ));
                                     },
                                     child: Container(
                                       height: 30,
                                       width: 40,
                                       decoration: BoxDecoration(
-                                          color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          color: const Color(0xff019444),
+                                          borderRadius:
+                                          BorderRadius.circular(5)),
                                       child: const Icon(
                                         Icons.edit,
                                         color: Colors.white,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
+                                  const SizedBox(width: 5),
                                   GestureDetector(
                                     onTap: () {
-                                      removeAddress(context: context, id: muretListModel.value.data![index].id)
-                                          .then((value) => {muretListRepoFunction()});
+                                      removeAddress(
+                                        context: context,
+                                        id: muretListModel
+                                            .value.data![index].id,
+                                      ).then((value) =>
+                                      {muretListRepoFunction()});
                                     },
                                     child: Container(
                                       height: 30,
                                       width: 40,
                                       decoration: BoxDecoration(
-                                          color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                          color: const Color(0xff019444),
+                                          borderRadius:
+                                          BorderRadius.circular(5)),
                                       child: const Icon(
                                         Icons.delete,
                                         color: Colors.white,
@@ -160,99 +188,64 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              const SizedBox(height: 10),
                             ],
                           ),
-                          const SizedBox(
-                            width: 10,
+                          const SizedBox(width: 10),
+                          // Right Column with Details
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                buildDetailRow(
+                                    'Superficie:',
+                                    muretListModel
+                                        .value.data![index].superficie
+                                        .toString()),
+                                buildDetailRow(
+                                    'hauteur:',
+                                    muretListModel
+                                        .value.data![index].hauteur
+                                        .toString()),
+                                buildDetailRow(
+                                    'linear_feet:',
+                                    muretListModel
+                                        .value.data![index].linearFeet
+                                        .toString()),
+                                buildDetailRow(
+                                    'positionnement:',
+                                    muretListModel
+                                        .value.data![index].positionnement
+                                        .toString()),
+                                buildDetailRow(
+                                    'type_of_waste',
+                                    muretListModel
+                                        .value.data![index].typeOfWaste
+                                        .toString()),
+                                buildDetailRow(
+                                    'paver_color',
+                                    muretListModel
+                                        .value.data![index].paverColor
+                                        .toString()),
+                                buildDetailRow(
+                                    'couronnement',
+                                    muretListModel
+                                        .value.data![index].couronnement
+                                        .toString()),
+                                buildDetailRow(
+                                    'couleur_du_couronnement',
+                                    muretListModel
+                                        .value.data![index].couleurDuCouronnement
+                                        .toString()),
+                                buildDetailRow(
+                                    'infrastructure',
+                                    muretListModel
+                                        .value.data![index].infrastructure
+                                        .toString()),
+                              ],
+                            ),
                           ),
-                          const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Superficie:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'hauteur:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'linear_feet:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'positionnement:',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                'type_of_waste',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'paver_color',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'couronnement',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'couleur_du_couronnement',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),Text(
-                                'infrastructure',
-                                style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                muretListModel.value.data![index].superficie.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                muretListModel.value.data![index].hauteur.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                muretListModel.value.data![index].positionnement.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                muretListModel.value.data![index].typeOfWaste.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                muretListModel.value.data![index].paverColor.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                muretListModel.value.data![index].couronnement.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                muretListModel.value.data![index].couleurDuCouronnement.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-                              Text(
-                                muretListModel.value.data![index].infrastructure.toString(),
-                                style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                              ),
-
-
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
+                          const SizedBox(width: 10),
                         ],
                       ),
                     );

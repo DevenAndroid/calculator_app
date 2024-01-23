@@ -31,7 +31,24 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
     super.initState();
     margelleListRepoFunction();
   }
-
+  Widget buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label + ':',
+          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+  }
   Future<MargelleListModel> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
@@ -59,12 +76,11 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
   margelleListRepoFunction() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var id = pref.getString("client_id");
-    log("999999${id.toString()}");
 
     margelleListRepo(clientId: id, serviceType: "margelle").then((value) {
       margelleListModel.value = value;
-      print("ppppppppppppp");
-      log(value.toString());
+      setState(() {});
+
     });
   }
 
@@ -105,12 +121,20 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                               border: Border.all(color: Colors.grey)),
                           child: Row(
                             children: [
+                              const SizedBox(width: 10),
+                              // Left Column with Image and Icons
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: margelleListModel.value.data![index].photoVideo.toString(),
+                                      imageUrl: margelleListModel
+                                          .value.data![index].photoVideo
+                                          .toString(),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -121,33 +145,40 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(MargelleScreen(
-                                            margelleData: margelleListModel.value.data![index],
+                                            margelleData: margelleListModel
+                                                .value.data![index],
                                           ));
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      const SizedBox(width: 5),
                                       GestureDetector(
                                         onTap: () {
-                                          removeAddress(context: context, id: margelleListModel.value.data![index].id)
-                                              .then((value) => {margelleListRepoFunction()});
+                                          removeAddress(
+                                            context: context,
+                                            id: margelleListModel
+                                                .value.data![index].id,
+                                          ).then((value) =>
+                                          {margelleListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -156,84 +187,34 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
-                              const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'coping_quantity:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'mesure:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'note:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
+                              const SizedBox(width: 10),
+                              // Right Column with Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    buildDetailRow(
+                                        'coping_quantity:',
+                                        margelleListModel
+                                            .value.data![index].copingQuantity
+                                            .toString()),
+                                    buildDetailRow(
+                                        'mesure:',
+                                        margelleListModel
+                                            .value.data![index].mesure
+                                            .toString()),
+                                    buildDetailRow(
+                                        'note:',
+                                        margelleListModel
+                                            .value.data![index].note
+                                            .toString()),
+                                  ],
+                                ),
                               ),
-                              const Spacer(),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    margelleListModel.value.data![index].copingQuantity.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    margelleListModel.value.data![index].mesure.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    margelleListModel.value.data![index].note.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(MargelleScreen(
-                                        margelleData: margelleListModel.value.data![index],
-                                      ));
-                                    },
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      removeAddress(context: context, id: margelleListModel.value.data![index].id)
-                                          .then((value) => {margelleListRepoFunction()});
-                                    },
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
                             ],
                           ),
                         );

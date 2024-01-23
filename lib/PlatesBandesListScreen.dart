@@ -31,7 +31,24 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
     super.initState();
     platesbandesListRepoFunction();
   }
-
+  Widget buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label + ':',
+          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+  }
   Future<plates_bandes_model> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
@@ -106,15 +123,20 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                               border: Border.all(color: Colors.grey)),
                           child: Row(
                             children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
+                              // Left Column with Image and Icons
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: platesbandesListModel.value.data![index].photoVideo.toString(),
+                                      imageUrl: platesbandesListModel
+                                          .value.data![index].photoVideo
+                                          .toString(),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -125,33 +147,40 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(PlatesBandesScreen(
-                                            platesBandesData: platesbandesListModel.value.data![index],
+                                            platesBandesData: platesbandesListModel
+                                                .value.data![index],
                                           ));
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      const SizedBox(width: 5),
                                       GestureDetector(
                                         onTap: () {
-                                          removeAddress(context: context, id: platesbandesListModel.value.data![index].id)
-                                              .then((value) => {platesbandesListRepoFunction()});
+                                          removeAddress(
+                                            context: context,
+                                            id: platesbandesListModel
+                                                .value.data![index].id,
+                                          ).then((value) =>
+                                          {platesbandesListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -160,113 +189,69 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
-                              const SizedBox(
-                                width: 10,
+                              const SizedBox(width: 10),
+                              // Right Column with Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    buildDetailRow(
+                                        'superficie:',
+                                        platesbandesListModel
+                                            .value.data![index].superficie
+                                            .toString()),
+                                    buildDetailRow(
+                                        'profondeur:',
+                                        platesbandesListModel
+                                            .value.data![index].profondeur
+                                            .toString()),
+                                    buildDetailRow(
+                                        'perimeter:',
+                                        platesbandesListModel
+                                            .value.data![index].perimeter
+                                            .toString()),
+                                    buildDetailRow(
+                                        'positionnement:',
+                                        platesbandesListModel
+                                            .value.data![index].positionnement
+                                            .toString()),
+                                    buildDetailRow(
+                                        'finition',
+                                        platesbandesListModel
+                                            .value.data![index].finition
+                                            .toString()),
+                                    buildDetailRow(
+                                        'couleur_finition',
+                                        platesbandesListModel
+                                            .value.data![index].couleurFinition
+                                            .toString()),
+                                    buildDetailRow(
+                                        'combien_de_pouces',
+                                        platesbandesListModel
+                                            .value.data![index].combienDePouces
+                                            .toString()),
+                                    buildDetailRow(
+                                        'bordure',
+                                        platesbandesListModel
+                                            .value.data![index].bordure
+                                            .toString()),
+                                    buildDetailRow(
+                                        'couleur',
+                                        platesbandesListModel
+                                            .value.data![index].couleur
+                                            .toString()),
+                                    buildDetailRow(
+                                        'plantation',
+                                        platesbandesListModel
+                                            .value.data![index].plantation
+                                            .toString()),
+                                  ],
+                                ),
                               ),
-                              const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'superficie:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'profondeur:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'perimeter:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'positionnement:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'finition',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'couleur_finition',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'combien_de_pouces',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'bordure',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'couleur',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'plantation',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    platesbandesListModel.value.data![index].superficie.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].profondeur.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].perimeter.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].positionnement.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].finition.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].couleurFinition.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].combienDePouces.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].bordure.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].couleur.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    platesbandesListModel.value.data![index].plantation.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
                             ],
                           ),
                         );

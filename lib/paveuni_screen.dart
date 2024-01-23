@@ -78,13 +78,26 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
     if (widget.paveUniData != null) {
       perimeterController.text = widget.paveUniData!.perimeter.toString();
       type_de_bordureController.text = widget.paveUniData!.typeDeBordure;
+      PositionnementselectedValue = yourModelList.firstWhere(
+            (item) => item.name == widget.paveUniData!.positionnement,
+        orElse: () => yourModelList.first,
+      );
       positionnementController.text = widget.paveUniData!.positionnement;
       superficieController.text = widget.paveUniData!.superficie.toString();
       couleur_de_paveController.text = widget.paveUniData!.couleurDePave;
-      polymer_sand_colorController.text = widget.paveUniData!.polymerSandColor;
+      CouleurdesableselectedValue = CouleurdesableList.firstWhere(
+            (item) => item.name == widget.paveUniData!.polymerSandColor,
+        orElse: () => CouleurdesableList.first,
+      );
       photoController.text = widget.paveUniData!.photo;
-      infrastructureController.text = widget.paveUniData!.infrastructure;
-      type_of_wasteController.text = widget.paveUniData!.typeOfWaste;
+      InfrastructureeselectedValue = InfrastructureList.firstWhere(
+            (item) => item.name == widget.paveUniData!.infrastructure,
+        orElse: () => InfrastructureList.first,
+      );
+      TypededechetselectedValue = TypededechetList.firstWhere(
+            (item) => item.name == widget.paveUniData!.typeOfWaste,
+        orElse: () => TypededechetList.first,
+      );
       type_to_pavageController.text = widget.paveUniData!.typeToPavage;
       // categoryFile.value = File(widget.data!.photoVideo);
     }

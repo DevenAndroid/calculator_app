@@ -221,12 +221,12 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                 ),
                                 Text(
                                   'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                  style: const TextStyle(fontSize: 16, color: Colors.black54),
+                                  style: const TextStyle(fontSize: 12, color: Colors.black54),
                                   textAlign: TextAlign.center,
                                 ),
-                                const SizedBox(
-                                  height: 11,
-                                ),
+                                // const SizedBox(
+                                //   height: 11,
+                                // ),
                               ],
                             ),
                           )

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
@@ -33,7 +35,27 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
     detailsListRepoFunction();
   }
 
-  Future<DetailsListModel> removeAddress({required id, required BuildContext context}) async {
+  Widget buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label + ':',
+          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<DetailsListModel> removeAddress(
+      {required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
     OverlayEntry loader = Helper.overlayLoader(context);
@@ -46,7 +68,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
     };
-    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourbodata), headers: headers, body: jsonEncode(map));
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourbodata),
+        headers: headers, body: jsonEncode(map));
     log(response.body.toString());
     if (response.statusCode == 200 || response.statusCode == 400) {
       Helper.hideLoader(loader);
@@ -60,11 +83,9 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
   detailsListRepoFunction() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var id = pref.getString("client_id");
-    log("999999${id.toString()}");
 
     detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
       detailsListModel.value = value;
-      log(value.toString());
       setState(() {});
     });
   }
@@ -98,7 +119,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
                           width: Get.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -106,13 +128,13 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                               border: Border.all(color: Colors.grey)),
                           child: Row(
                             children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
+                              // Left Column with Image and Icons
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10, top: 20, bottom: 10),
                                     child: CachedNetworkImage(
                                       imageUrl: detailsListModel.value.data![index].photoVideo.toString(),
                                       width: 80,
@@ -132,26 +154,28 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius: BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      const SizedBox(width: 5),
                                       GestureDetector(
                                         onTap: () {
-                                          removeAddress(context: context, id: detailsListModel.value.data![index].id)
-                                              .then((value) => {detailsListRepoFunction()});
+                                          removeAddress(
+                                            context: context,
+                                            id: detailsListModel.value.data![index].id,
+                                          ).then((value) => {detailsListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius: BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -160,72 +184,30 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
-                              const SizedBox(
-                                width: 10,
+                              const SizedBox(width: 10),
+                              // Right Column with Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Each detail in a separate Row
+                                    buildDetailRow('Superficie', detailsListModel.value.data![index].superficie.toString()),
+                                    buildDetailRow('Profondeur', detailsListModel.value.data![index].profondeur.toString()),
+                                    buildDetailRow('Positionnement', detailsListModel.value.data![index].positionnement.toString()),
+                                    buildDetailRow('Detourber', detailsListModel.value.data![index].detourber.toString()),
+                                    buildDetailRow('Type de dechet', detailsListModel.value.data![index].typeDeDechet.toString()),
+                                  ],
+                                ),
                               ),
-                              const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Superficie:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Profondeur:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Positionnement:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Detourber:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Type de dechet:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    detailsListModel.value.data![index].superficie.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    detailsListModel.value.data![index].profondeur.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    detailsListModel.value.data![index].positionnement.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    detailsListModel.value.data![index].detourber.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    detailsListModel.value.data![index].typeDeDechet.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
                             ],
                           ),
+
+
+
                         );
                       })
                   : const CircularProgressIndicator(),
@@ -259,7 +241,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                               color: Color(0xff019444),
                             ),
                           ),
-                          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          textStyle: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         icon: const Icon(
                           Icons.add_circle_outline,
@@ -267,8 +250,10 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style:
-                              GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff019444)),
                         ),
                       ),
                     ),

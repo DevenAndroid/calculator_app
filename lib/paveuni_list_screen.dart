@@ -34,7 +34,27 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
     paveuniListRepoFunction();
   }
 
-  Future<PaveuniListModel> removeAddress({required id, required BuildContext context}) async {
+  Widget buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label + ':',
+          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<PaveuniListModel> removeAddress(
+      {required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
     OverlayEntry loader = Helper.overlayLoader(context);
@@ -47,7 +67,10 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
     };
-    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourpaveUri), headers: headers, body: jsonEncode(map));
+    http.Response response = await http.post(
+        Uri.parse(ApiUrl.deletetourpaveUri),
+        headers: headers,
+        body: jsonEncode(map));
     log(response.body.toString());
     if (response.statusCode == 200 || response.statusCode == 400) {
       Helper.hideLoader(loader);
@@ -99,7 +122,8 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 5),
                           width: Get.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -107,15 +131,20 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                               border: Border.all(color: Colors.grey)),
                           child: Row(
                             children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
+                              // Left Column with Image and Icons
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 5, right: 10, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: paveuniListModel.value.data![index].photoVideo.toString(),
+                                      imageUrl: paveuniListModel
+                                          .value.data![index].photoVideo
+                                          .toString(),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -126,33 +155,40 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(PaveUniScreen(
-                                            paveUniData: paveuniListModel.value.data![index],
+                                            paveUniData: paveuniListModel
+                                                .value.data![index],
                                           ));
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      const SizedBox(width: 5),
                                       GestureDetector(
                                         onTap: () {
-                                          removeAddress(context: context, id: paveuniListModel.value.data![index].id)
-                                              .then((value) => {paveuniListRepoFunction()});
+                                          removeAddress(
+                                            context: context,
+                                            id: paveuniListModel
+                                                .value.data![index].id,
+                                          ).then((value) =>
+                                              {paveuniListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -161,110 +197,69 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
-                              const SizedBox(
-                                width: 10,
+                              const SizedBox(width: 10),
+                              // Right Column with Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    buildDetailRow(
+                                        'Superficie:',
+                                        paveuniListModel
+                                            .value.data![index].superficie
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Périmètre:',
+                                        paveuniListModel
+                                            .value.data![index].perimeter
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Type de Bordure:',
+                                        paveuniListModel
+                                            .value.data![index].typeDeBordure
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Positionnement:',
+                                        paveuniListModel
+                                            .value.data![index].positionnement
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Type de déchets',
+                                        paveuniListModel
+                                            .value.data![index].typeOfWaste
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Type to Pavage (FABRIQUANT)',
+                                        paveuniListModel
+                                            .value.data![index].typeToPavage
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Couleur de Pave',
+                                        paveuniListModel
+                                            .value.data![index].couleurDePave
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Couleur de sable polymère',
+                                        paveuniListModel
+                                            .value.data![index].polymerSandColor
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Photo(s)',
+                                        paveuniListModel
+                                            .value.data![index].photo
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Infrastructure',
+                                        paveuniListModel
+                                            .value.data![index].infrastructure
+                                            .toString()),
+                                  ],
+                                ),
                               ),
-                              const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Superficie:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Périmètre:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Type de Bordure:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Positionnement:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Type de déchets',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Type to Pavage (FABRIQUANT)',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Couleur de Pave',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Couleur de sable polymère',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Photo(s)',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'Infrastructure',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    paveuniListModel.value.data![index].superficie.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].perimeter.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].typeDeBordure.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].positionnement.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].typeOfWaste.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].typeToPavage.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].couleurDePave.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].polymerSandColor.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].photo.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    paveuniListModel.value.data![index].infrastructure.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
                             ],
                           ),
                         );
@@ -300,7 +295,8 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                               color: Color(0xff019444),
                             ),
                           ),
-                          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          textStyle: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         icon: const Icon(
                           Icons.add_circle_outline,
@@ -308,7 +304,10 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff019444)),
                         ),
                       ),
                     ),
