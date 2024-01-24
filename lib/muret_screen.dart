@@ -609,13 +609,12 @@ class _MuretScreenState extends State<MuretScreen> {
                                 var id = pref.getString("client_id");
                                 Map<String, String> mapData = {
                                   "client_id": id.toString(),
-                                  'id' : widget.muretData!.id.toString(),
                                   "superficie": superficieController.text,
                                   "hauteur": hauteurController.text,
                                   "linear_feet": linear_feetController.text,
                                   "positionnement": PositionnementselectedValue!.name,
                                   "type_of_waste": TypededechetselectedValue!.name,
-                                  "Type de Muret": TypedeMuretselectedValue!.name,
+                                  "type_de_muret": TypedeMuretselectedValue!.name,
                                   "paver_color": paver_colorController.text,
                                   "couronnement": couronnementController.text,
                                   "couleur_du_couronnement": couleur_du_couronnementController.text,
@@ -652,7 +651,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                   "type_of_waste": TypededechetselectedValue != null
                                       ? TypededechetselectedValue!.name
                                       : "",
-                                  "Type de Muret":TypedeMuretselectedValue != null
+                                  "type_de_muret":TypedeMuretselectedValue != null
                                       ? TypedeMuretselectedValue!.name
                                       : "",
                                   "paver_color": paver_colorController.text,
