@@ -31,6 +31,24 @@ class _DrainListScreenState extends State<DrainListScreen> {
     super.initState();
     drainListRepoFunction();
   }
+  Widget buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label + ':',
+          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+  }
 
   Future<DrainListModel> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
@@ -105,15 +123,20 @@ class _DrainListScreenState extends State<DrainListScreen> {
                               border: Border.all(color: Colors.grey)),
                           child: Row(
                             children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
+                              // Left Column with Image and Icons
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: drainListModel.value.data![index].photoVideo.toString(),
+                                      imageUrl: drainListModel
+                                          .value.data![index].photoVideo
+                                          .toString(),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -124,33 +147,40 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(DrainScreen(
-                                            drainData: drainListModel.value.data![index],
+                                            drainData: drainListModel
+                                                .value.data![index],
                                           ));
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      const SizedBox(width: 5),
                                       GestureDetector(
                                         onTap: () {
-                                          removeAddress(context: context, id: drainListModel.value.data![index].id)
-                                              .then((value) => {drainListRepoFunction()});
+                                          removeAddress(
+                                            context: context,
+                                            id: drainListModel
+                                                .value.data![index].id,
+                                          ).then((value) =>
+                                          {drainListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -159,49 +189,29 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
-                              const SizedBox(
-                                width: 10,
+                              const SizedBox(width: 10),
+                              // Right Column with Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    buildDetailRow(
+                                        'type_de_drain:',
+                                        drainListModel
+                                            .value.data![index].typeDeDrain
+                                            .toString()),
+                                    buildDetailRow(
+                                        'longeur:',
+                                        drainListModel
+                                            .value.data![index].longeur
+                                            .toString()),
+                                  ],
+                                ),
                               ),
-                              const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'type_de_drain:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'longeur:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    drainListModel.value.data![index].typeDeDrain.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    drainListModel.value.data![index].longeur.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
                             ],
                           ),
                         );

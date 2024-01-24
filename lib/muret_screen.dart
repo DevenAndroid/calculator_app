@@ -44,6 +44,29 @@ class _MuretScreenState extends State<MuretScreen> {
   TextEditingController couleur_du_couronnementController = TextEditingController();
   TextEditingController infrastructureController = TextEditingController();
 
+  PositionItem? PositionnementselectedValue;
+  PositionItem? TypedeMuretselectedValue;
+  PositionItem? TypededechetselectedValue;
+
+  List<PositionItem> yourModelList = [
+    PositionItem(id: 1, name: 'devant'),
+    PositionItem(id: 2, name: 'derrière'),
+    PositionItem(id: 3, name: 'cote gauche vue de face'),
+    PositionItem(id: 4, name: 'cote droite vue de face'),
+  ];
+  List<PositionItem> TypedeMuretList = [
+    PositionItem(id: 1, name: 'Citadin 90'),
+    PositionItem(id: 2, name: 'M-100'),
+  ];
+
+  List<PositionItem> TypededechetList = [
+    PositionItem(id: 1, name: 'Aucun'),
+    PositionItem(id: 2, name: 'Terre / VG'),
+    PositionItem(id: 3, name: 'Roche / t'),
+    PositionItem(id: 4, name: 'Beton / t'),
+    PositionItem(id: 5, name: 'mix / t'),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -51,7 +74,18 @@ class _MuretScreenState extends State<MuretScreen> {
       superficieController.text = widget.muretData!.superficie.toString();
       hauteurController.text = widget.muretData!.hauteur.toString();
       linear_feetController.text = widget.muretData!.linearFeet.toString();
-      positionnementController.text = widget.muretData!.positionnement;
+      PositionnementselectedValue = yourModelList.firstWhere(
+            (item) => item.name == widget.muretData!.positionnement,
+        orElse: () => yourModelList.first,
+      );
+      TypededechetselectedValue = TypededechetList.firstWhere(
+            (item) => item.name == widget.muretData!.typeOfWaste,
+        orElse: () => TypededechetList.first,
+      );
+      TypedeMuretselectedValue = TypedeMuretList.firstWhere(
+            (item) => item.name == widget.muretData!.typeOfMuret,
+        orElse: () => TypedeMuretList.first,
+      );
       type_of_wasteController.text = widget.muretData!.typeOfWaste;
       paver_colorController.text = widget.muretData!.paverColor;
       couronnementController.text = widget.muretData!.couronnement;
@@ -202,19 +236,43 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            RegisterTextFieldWidget(
-                              controller: positionnementController,
-                              color: Colors.white,
-                              // length: 10,
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText:
-                                    'Please enter your Positionnement'
-                                        .tr),
-                              ]).call,
-                              // keyboardType: TextInputType.none,
-                              // textInputAction: TextInputAction.next,
-                              hint: 'devant',
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: PositionnementselectedValue ?? yourModelList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            PositionnementselectedValue = newValue;
+                                          });
+                                        },
+                                        items: yourModelList.map((PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -234,18 +292,99 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            RegisterTextFieldWidget(
-                              controller: type_of_wasteController,
-                              color: Colors.white,
-                              // length: 10,
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText:
-                                    'Please enter your Type de déchets'.tr),
-                              ]).call,
-                              // keyboardType: TextInputType.none,
-                              // textInputAction: TextInputAction.next,
-                              hint: 'terre/vg',
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: TypededechetselectedValue ?? TypededechetList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            TypededechetselectedValue = newValue;
+                                          });
+                                        },
+                                        items: TypededechetList.map((PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Type de Muret',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  // fontFamily: 'poppins',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: TypedeMuretselectedValue ?? TypedeMuretList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            TypedeMuretselectedValue = newValue;
+                                          });
+                                        },
+                                        items: TypedeMuretList.map((PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -422,12 +561,12 @@ class _MuretScreenState extends State<MuretScreen> {
                                         ),
                                         Text(
                                           'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                          style: const TextStyle(fontSize: 16, color: Colors.black54),
+                                          style: const TextStyle(fontSize: 12, color: Colors.black54),
                                           textAlign: TextAlign.center,
                                         ),
-                                        const SizedBox(
-                                          height: 11,
-                                        ),
+                                        // const SizedBox(
+                                        //   height: 11,
+                                        // ),
                                       ],
                                     ),
                                   )
@@ -474,8 +613,9 @@ class _MuretScreenState extends State<MuretScreen> {
                                   "superficie": superficieController.text,
                                   "hauteur": hauteurController.text,
                                   "linear_feet": linear_feetController.text,
-                                  "positionnement": positionnementController.text,
-                                  "type_of_waste": type_of_wasteController.text,
+                                  "positionnement": PositionnementselectedValue!.name,
+                                  "type_of_waste": TypededechetselectedValue!.name,
+                                  "Type de Muret": TypedeMuretselectedValue!.name,
                                   "paver_color": paver_colorController.text,
                                   "couronnement": couronnementController.text,
                                   "couleur_du_couronnement": couleur_du_couronnementController.text,
@@ -506,8 +646,15 @@ class _MuretScreenState extends State<MuretScreen> {
                                   "superficie": superficieController.text,
                                   "hauteur": hauteurController.text,
                                   "linear_feet": linear_feetController.text,
-                                  "positionnement": positionnementController.text,
-                                  "type_of_waste": type_of_wasteController.text,
+                                  "positionnement": PositionnementselectedValue != null
+                                      ? PositionnementselectedValue!.name
+                                      : "",
+                                  "type_of_waste": TypededechetselectedValue != null
+                                      ? TypededechetselectedValue!.name
+                                      : "",
+                                  "Type de Muret":TypedeMuretselectedValue != null
+                                      ? TypedeMuretselectedValue!.name
+                                      : "",
                                   "paver_color": paver_colorController.text,
                                   "couronnement": couronnementController.text,
                                   "couleur_du_couronnement": couleur_du_couronnementController.text,
@@ -625,4 +772,10 @@ class _MuretScreenState extends State<MuretScreen> {
       ),
     );
   }
+}
+class PositionItem {
+  final int id;
+  final String name;
+
+  PositionItem({required this.id, required this.name});
 }

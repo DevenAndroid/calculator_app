@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -58,9 +57,9 @@ class _TourbeScreenState extends State<TourbeScreen> {
   List<PositionItem> TypededechetList = [
     PositionItem(id: 1, name: 'Aucun'),
     PositionItem(id: 2, name: 'Terre / VG'),
-    PositionItem(id: 2, name: 'Roche / t'),
-    PositionItem(id: 2, name: 'Beton / t'),
-    PositionItem(id: 2, name: 'mix / t'),
+    PositionItem(id: 3, name: 'Roche / t'),
+    PositionItem(id: 4, name: 'Beton / t'),
+    PositionItem(id: 5, name: 'mix / t'),
   ];
   @override
   void initState() {
@@ -68,9 +67,18 @@ class _TourbeScreenState extends State<TourbeScreen> {
     if (widget.tourbeData != null) {
       superficieController.text = widget.tourbeData!.superficie.toString();
       profondeurController.text = widget.tourbeData!.profondeur.toString();
-      positionnementController.text = widget.tourbeData!.positionnement;
-      detourberController.text = widget.tourbeData!.detourber;
-      type_de_dechetController.text = widget.tourbeData!.typeDeDechet;
+      PositionnementselectedValue = yourModelList.firstWhere(
+            (item) => item.name == widget.tourbeData!.positionnement,
+        orElse: () => yourModelList.first,
+      );
+      DetourberselectedValue = DetourberList.firstWhere(
+            (item) => item.name == widget.tourbeData!.detourber,
+        orElse: () => DetourberList.first,
+      );
+      TypededechetselectedValue = TypededechetList.firstWhere(
+            (item) => item.name == widget.tourbeData!.typeDeDechet,
+        orElse: () => TypededechetList.first,
+      );
       // categoryFile.value = File(widget.data!.photoVideo);
     }
   }
@@ -533,32 +541,6 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        // SizedBox(
-                        //   height: 50,
-                        //   width: Get.width,
-                        //   child: ElevatedButton.icon(
-                        //     onPressed: () {},
-                        //     style: ElevatedButton.styleFrom(
-                        //       backgroundColor: Colors.white,
-                        //       surfaceTintColor: Colors.white,
-                        //       shape: RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(5),
-                        //         side: const BorderSide(
-                        //           color: Color(0xff019444),
-                        //         ),
-                        //       ),
-                        //       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                        //     ),
-                        //     icon: const Icon(
-                        //       Icons.add_circle_outline,
-                        //       color: Color(0xff019444),
-                        //     ),
-                        //     label: Text(
-                        //       "Add New".tr.toUpperCase(),
-                        //       style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: Color(0xff019444)),
-                        //     ),
-                        //   ),
-                        // ),
                         const SizedBox(
                           height: 20,
                         ),

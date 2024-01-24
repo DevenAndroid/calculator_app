@@ -36,6 +36,7 @@ class MuretData {
   dynamic linearFeet;
   dynamic positionnement;
   dynamic typeOfWaste;
+  dynamic typeOfMuret;
   dynamic paverColor;
   dynamic couronnement;
   dynamic couleurDuCouronnement;
@@ -53,6 +54,7 @@ class MuretData {
         this.linearFeet,
         this.positionnement,
         this.typeOfWaste,
+        this.typeOfMuret,
         this.paverColor,
         this.couronnement,
         this.couleurDuCouronnement,
@@ -70,6 +72,7 @@ class MuretData {
     linearFeet = json['linear_feet'];
     positionnement = json['positionnement'];
     typeOfWaste = json['type_of_waste'];
+    typeOfMuret = json['typeOfMuret'];
     paverColor = json['paver_color'];
     couronnement = json['couronnement'];
     couleurDuCouronnement = json['couleur_du_couronnement'];
@@ -87,6 +90,7 @@ class MuretData {
     data['superficie'] = this.superficie;
     data['hauteur'] = this.hauteur;
     data['linear_feet'] = this.linearFeet;
+    data['typeOfMuret'] = this.typeOfMuret;
     data['positionnement'] = this.positionnement;
     data['type_of_waste'] = this.typeOfWaste;
     data['paver_color'] = this.paverColor;

@@ -32,7 +32,24 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
     super.initState();
     asphalteListRepoFunction();
   }
-
+  Widget buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label + ':',
+          style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+          ),
+        ),
+      ],
+    );
+  }
   Future<PaveuniListModel> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
@@ -104,17 +121,22 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(2),
                               border: Border.all(color: Colors.grey)),
-                          child: Row(
+                          child:  Row(
                             children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
+                              // Left Column with Image and Icons
                               Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: asphalteListModel.value.data![index].photoVideo.toString(),
+                                      imageUrl: asphalteListModel
+                                          .value.data![index].photoVideo
+                                          .toString(),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -125,33 +147,40 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(AsphalteScreen(
-                                            asphalteData: asphalteListModel.value.data![index],
+                                            asphalteData: asphalteListModel
+                                                .value.data![index],
                                           ));
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
+                                      const SizedBox(width: 5),
                                       GestureDetector(
                                         onTap: () {
-                                          removeAddress(context: context, id: asphalteListModel.value.data![index].id)
-                                              .then((value) => {asphalteListRepoFunction()});
+                                          removeAddress(
+                                            context: context,
+                                            id: asphalteListModel
+                                                .value.data![index].id,
+                                          ).then((value) =>
+                                          {asphalteListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
-                                              color: const Color(0xff019444), borderRadius: BorderRadius.circular(5)),
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                              BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -160,105 +189,64 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
-                              const SizedBox(
-                                width: 10,
+                              const SizedBox(width: 10),
+                              // Right Column with Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    buildDetailRow(
+                                        'superficie:',
+                                        asphalteListModel
+                                            .value.data![index].superficie
+                                            .toString()),
+                                    buildDetailRow(
+                                        'nouvelle_infra:',
+                                        asphalteListModel
+                                            .value.data![index].nouvelleInfra
+                                            .toString()),
+                                    buildDetailRow(
+                                        'positionnement:',
+                                        asphalteListModel
+                                            .value.data![index].positionnement
+                                            .toString()),
+                                    buildDetailRow(
+                                        'type_of_waste:',
+                                        asphalteListModel
+                                            .value.data![index].typeOfWaste
+                                            .toString()),
+                                    buildDetailRow(
+                                        'pouces_asphalte',
+                                        asphalteListModel
+                                            .value.data![index].poucesAsphalte
+                                            .toString()),
+                                    buildDetailRow(
+                                        'contour_en_pave',
+                                        asphalteListModel
+                                            .value.data![index].contourEnPave
+                                            .toString()),
+                                    buildDetailRow(
+                                        'type_of_plain_pavers',
+                                        asphalteListModel
+                                            .value.data![index].typeOfPlainPavers
+                                            .toString()),
+                                    buildDetailRow(
+                                        'paver_color',
+                                        asphalteListModel
+                                            .value.data![index].paverColor
+                                            .toString()),
+                                    buildDetailRow(
+                                        'polymer_sand_color',
+                                        asphalteListModel
+                                            .value.data![index].polymerSandColor
+                                            .toString()),
+                                  ],
+                                ),
                               ),
-                              const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'superficie:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'nouvelle_infra:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'positionnement:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'type_of_waste:',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'pouces_asphalte',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'contour_en_pave',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'type_of_plain_pavers',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'paver_color',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    'polymer_sand_color',
-                                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    asphalteListModel.value.data![index].superficie.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].nouvelleInfra.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].positionnement.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].typeOfWaste.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].poucesAsphalte.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].contourEnPave.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].typeOfPlainPavers.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].paverColor.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                  Text(
-                                    asphalteListModel.value.data![index].polymerSandColor.toString(),
-                                    style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
                             ],
                           ),
                         );
