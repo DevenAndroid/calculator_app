@@ -39,9 +39,12 @@ Future<MuretScreenModel> muretScreenRepo({
     }
 
     log(request.fields.toString());
+
     log(request.files.map((e) => e.filename).toList().toString());
+
     final response = await request.send();
     if (response.statusCode == 200 || response.statusCode == 400) {
+
       return MuretScreenModel.fromJson(
           jsonDecode(await response.stream.bytesToString()));
 

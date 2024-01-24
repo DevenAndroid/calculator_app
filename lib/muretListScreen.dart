@@ -100,20 +100,20 @@ class _MuretListScreenState extends State<MuretListScreen> {
               },
               child: const Icon(Icons.arrow_back)),
         ),
-        body: SingleChildScrollView(
+        body:
+        SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(
                 height: 50,
               ),
-              muretListModel.value.data != null ?
-              ListView.builder(
+              muretListModel.value.data != null
+                  ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: muretListModel.value.data!.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return Container(
-
                       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       width: Get.width,
                       decoration: BoxDecoration(
@@ -249,8 +249,8 @@ class _MuretListScreenState extends State<MuretListScreen> {
                         ],
                       ),
                     );
-                  }) :
-              const CircularProgressIndicator(),
+                  })
+                  : const CircularProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -289,7 +289,8 @@ class _MuretListScreenState extends State<MuretListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
+                          style:
+                          GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
                         ),
                       ),
                     ),
