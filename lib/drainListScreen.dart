@@ -137,6 +137,8 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                       imageUrl: drainListModel
                                           .value.data![index].photoVideo
                                           .toString(),
+                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
+
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,

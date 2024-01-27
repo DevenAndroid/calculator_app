@@ -137,6 +137,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                         left: 10, right: 10, top: 20, bottom: 10),
                                     child: CachedNetworkImage(
                                       imageUrl: detailsListModel.value.data![index].photoVideo.toString(),
+                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,

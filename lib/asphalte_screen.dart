@@ -115,6 +115,23 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Asphalte',
+          style: GoogleFonts.poppins(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+            // fontFamily: 'poppins',
+          ),
+        ),
+        leading: GestureDetector(
+            onTap: (){
+              Get.back();
+            },
+            child: Icon(Icons.arrow_back)),
+      ),
+
       body: SingleChildScrollView(
           child: Padding(
         padding: MediaQuery.of(context).size.width > 800
@@ -132,21 +149,6 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: size.height * 0.10,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Asphalte',
-                      style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        // fontFamily: 'poppins',
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
@@ -711,7 +713,6 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           fieldName1: 'photo_video',
                                           file1: categoryFile.value)
                                       .then((value) {
-                                    if (value.status == true) {
                                       if (_formKey.currentState!.validate()) {
                                         Get.to(const AsphalteListScreen());
                                       }else if(categoryFile.value.path == ""){
@@ -724,8 +725,6 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                       }else{
                                         showToast('Fill All Fields');
                                       }
-
-                                    }
                                   });
                                 },
                                 title: 'update',
@@ -771,7 +770,6 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           fieldName1: 'photo_video',
                                           file1: categoryFile.value)
                                       .then((value) {
-                                    if (value.status == true) {
                                       if (_formKey.currentState!.validate()) {
                                         Get.to(const AsphalteListScreen());
                                       }else if(categoryFile.value.path == ""){
@@ -784,7 +782,6 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                       }else{
                                         showToast('Fill All Fields');
                                       }
-                                    }
                                   });
                                 },
                                 title: 'Save',

@@ -114,6 +114,22 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Pave Uni',
+          style: GoogleFonts.poppins(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+            // fontFamily: 'poppins',
+          ),
+        ),
+        leading: GestureDetector(
+            onTap: (){
+              Get.back();
+            },
+            child: Icon(Icons.arrow_back)),
+      ),
       body: SingleChildScrollView(
           child: Padding(
         padding: MediaQuery.of(context).size.width > 800
@@ -126,21 +142,6 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
           child: Container(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
-                height: size.height * 0.10,
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Pave Uni',
-                  style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    // fontFamily: 'poppins',
-                  ),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
