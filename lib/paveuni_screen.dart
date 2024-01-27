@@ -700,15 +700,17 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
                             .then((value) {
                           dddd.value = value;
-                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+                          if (_formKey.currentState!.validate()) {
                             Get.to(PaveuniListScreen());
-                          }else{
+                          }else if(categoryFile.value.path == ""){
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Please select an image.'),
                                 backgroundColor: Colors.red,
                               ),
                             );
+                          }else{
+                            showToast('Fill All Fields');
                           }
                         });
                       },
@@ -746,15 +748,17 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                             context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
                             .then((value) {
                           dddd.value = value;
-                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+                          if (_formKey.currentState!.validate() ) {
                             Get.to(PaveuniListScreen());
-                          }else{
+                          }else if(categoryFile.value.path == ""){
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Please select an image.'),
                                 backgroundColor: Colors.red,
                               ),
                             );
+                          }else{
+                            showToast('Fill All Fields');
                           }
                         });
                       },

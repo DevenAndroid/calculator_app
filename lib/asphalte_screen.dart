@@ -712,15 +712,17 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (value.status == true) {
-                                      if (_formKey.currentState!.validate()&& categoryFile.value.path != "") {
+                                      if (_formKey.currentState!.validate()) {
                                         Get.to(const AsphalteListScreen());
-                                      }else{
+                                      }else if(categoryFile.value.path == ""){
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
                                             content: Text('Please select an image.'),
                                             backgroundColor: Colors.red,
                                           ),
                                         );
+                                      }else{
+                                        showToast('Fill All Fields');
                                       }
 
                                     }
@@ -770,17 +772,18 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (value.status == true) {
-                                      if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+                                      if (_formKey.currentState!.validate()) {
                                         Get.to(const AsphalteListScreen());
-                                      }else
-                                        {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: Text('Please select an image.'),
-                                              backgroundColor: Colors.red,
-                                            ),
-                                          );
-                                        }
+                                      }else if(categoryFile.value.path == ""){
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Please select an image.'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      }else{
+                                        showToast('Fill All Fields');
+                                      }
                                     }
                                   });
                                 },

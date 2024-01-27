@@ -683,15 +683,17 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                     file1: categoryFile.value)
                                 .then((value) {
                                   log(value.toJson().toString());
-                                  if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+                                  if (_formKey.currentState!.validate()) {
                                     Get.to(const PlatesBandesListScreen());
-                                  }else{
+                                  }else if(categoryFile.value.path == ""){
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('Please select an image.'),
                                         backgroundColor: Colors.red,
                                       ),
                                     );
+                                  }else{
+                                    showToast('Fill All Fields');
                                   }
 
                             });
@@ -735,17 +737,18 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                 file1: categoryFile.value)
                                 .then((value) {
                               log(value.toJson().toString());
-                              if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+                              if (_formKey.currentState!.validate()) {
                                 Get.to(const PlatesBandesListScreen());
-                              }else{
+                              }else if(categoryFile.value.path == ""){
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Please select an image.'),
                                     backgroundColor: Colors.red,
                                   ),
                                 );
+                              }else{
+                                showToast('Fill All Fields');
                               }
-
                             });
                           },
                           title: 'Save',
