@@ -280,9 +280,16 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             fieldName1: 'photo_video',
                             file1: categoryFile.value)
                             .then((value) {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                             Get.to(const MargelleListScreen());
 
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please select an image.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
                           }
                         });
                       },
@@ -305,9 +312,16 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             fieldName1: 'photo_video',
                             file1: categoryFile.value)
                             .then((value) {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                             Get.to(const MargelleListScreen());
 
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please select an image.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
                           }
                         });
                       },

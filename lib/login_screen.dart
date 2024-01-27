@@ -90,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'Logoipsum'.tr,
+                                  'Sunrise'.tr,
                                   style: GoogleFonts.poppins(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
