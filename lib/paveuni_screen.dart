@@ -38,6 +38,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   PositionItem? TypededechetselectedValue;
   PositionItem? CouleurdesableselectedValue;
   PositionItem? InfrastructureeselectedValue;
+  PositionItem? TypedeBordureselectedValue;
   Rx<CommonModal> dddd = CommonModal().obs;
 
   TextEditingController perimeterController = TextEditingController();
@@ -71,6 +72,11 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   List<PositionItem> InfrastructureList = [
     PositionItem(id: 1, name: 'Nouvelle'),
     PositionItem(id: 2, name: 'Existante'),
+  ];
+
+  List<PositionItem> TypedeBordureList = [
+    PositionItem(id: 1, name: 'plastique'),
+    PositionItem(id: 2, name: 'pave'),
   ];
   @override
   void initState() {
@@ -223,16 +229,43 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               const SizedBox(
                                 height: 5,
                               ),
-                              RegisterTextFieldWidget(
-                                controller: type_de_bordureController,
-                                color: Colors.white,
-                                // length: 10,
-                                validator: MultiValidator([
-                                  RequiredValidator(errorText: 'Please enter your Type de Bordure'),
-                                ]).call,
-                                keyboardType: TextInputType.emailAddress,
-                                // textInputAction: TextInputAction.next,
-                                hint: 'Pave',
+                              SizedBox(
+                                height: 55,
+                                width: Get.width,
+                                child: Container(
+                                  padding: const EdgeInsets.only(left: 10, right: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: Colors.grey.shade400),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      DropdownButtonHideUnderline(
+                                        child: DropdownButton<PositionItem>(
+                                          value: TypedeBordureselectedValue ?? TypedeBordureList.first,
+                                          isExpanded: true,
+                                          onChanged: (PositionItem? newValue) {
+                                            setState(() {
+                                              TypedeBordureselectedValue = newValue;
+                                            });
+                                          },
+                                          items: TypedeBordureList.map((PositionItem model) {
+                                            return DropdownMenuItem<PositionItem>(
+                                              value: model,
+                                              child: Text(
+                                                model.name,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -651,7 +684,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                         Map<String, String> mapData = {
                           'id' : widget.paveUniData!.id.toString(),
                           "perimeter": perimeterController.text,
-                          "type_de_bordure": type_de_bordureController.text,
+                          "type_de_bordure": TypedeBordureselectedValue!.name,
                           "positionnement": PositionnementselectedValue!.name,
                           "client": id.toString(),
                           "superficie": superficieController.text,
@@ -667,8 +700,15 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
                             .then((value) {
                           dddd.value = value;
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                             Get.to(PaveuniListScreen());
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please select an image.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
                           }
                         });
                       },
@@ -680,7 +720,9 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                         var id = pref.getString("client_id");
                         Map<String, String> mapData = {
                           "perimeter": perimeterController.text,
-                          "type_de_bordure": type_de_bordureController.text,
+                          "type_de_bordure": TypedeBordureselectedValue != null
+                              ? TypedeBordureselectedValue!.name
+                              : "",
                           "positionnement": PositionnementselectedValue != null
                               ? PositionnementselectedValue!.name
                               : "",
@@ -695,8 +737,8 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                         ? InfrastructureeselectedValue!.name
                             : "",
                           "type_to_pavage": type_to_pavageController.text,
-                          "type_of_waste": TypededechetselectedValue != null
-                              ? TypededechetselectedValue!.name
+                          "type_of_waste": TypedeBordureselectedValue != null
+                              ? TypedeBordureselectedValue!.name
                               : "",
                         };
                         print(mapData.toString());
@@ -704,8 +746,15 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                             context: context, mapData: mapData, fieldName1: 'photo_video', file1: categoryFile.value)
                             .then((value) {
                           dddd.value = value;
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                             Get.to(PaveuniListScreen());
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please select an image.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
                           }
                         });
                       },

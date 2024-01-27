@@ -712,9 +712,17 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (value.status == true) {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (_formKey.currentState!.validate()&& categoryFile.value.path != "") {
                                         Get.to(const AsphalteListScreen());
+                                      }else{
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Please select an image.'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
                                       }
+
                                     }
                                   });
                                 },
@@ -762,9 +770,17 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (value.status == true) {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                                         Get.to(const AsphalteListScreen());
-                                      }
+                                      }else
+                                        {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Please select an image.'),
+                                              backgroundColor: Colors.red,
+                                            ),
+                                          );
+                                        }
                                     }
                                   });
                                 },

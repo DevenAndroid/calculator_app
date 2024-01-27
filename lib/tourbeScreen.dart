@@ -68,15 +68,15 @@ class _TourbeScreenState extends State<TourbeScreen> {
       superficieController.text = widget.tourbeData!.superficie.toString();
       profondeurController.text = widget.tourbeData!.profondeur.toString();
       PositionnementselectedValue = yourModelList.firstWhere(
-            (item) => item.name == widget.tourbeData!.positionnement,
+        (item) => item.name == widget.tourbeData!.positionnement,
         orElse: () => yourModelList.first,
       );
       DetourberselectedValue = DetourberList.firstWhere(
-            (item) => item.name == widget.tourbeData!.detourber,
+        (item) => item.name == widget.tourbeData!.detourber,
         orElse: () => DetourberList.first,
       );
       TypededechetselectedValue = TypededechetList.firstWhere(
-            (item) => item.name == widget.tourbeData!.typeDeDechet,
+        (item) => item.name == widget.tourbeData!.typeDeDechet,
         orElse: () => TypededechetList.first,
       );
       // categoryFile.value = File(widget.data!.photoVideo);
@@ -211,14 +211,16 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: PositionnementselectedValue ?? yourModelList.first,
+                                    value: PositionnementselectedValue ??
+                                        yourModelList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         PositionnementselectedValue = newValue;
                                       });
                                     },
-                                    items: yourModelList.map((PositionItem model) {
+                                    items:
+                                        yourModelList.map((PositionItem model) {
                                       return DropdownMenuItem<PositionItem>(
                                         value: model,
                                         child: Text(
@@ -230,13 +232,13 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                         ),
                                       );
                                     }).toList(),
+
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-
                         const SizedBox(
                           height: 10,
                         ),
@@ -268,14 +270,16 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: DetourberselectedValue ?? DetourberList.first,
+                                    value: DetourberselectedValue ??
+                                        DetourberList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         DetourberselectedValue = newValue;
                                       });
                                     },
-                                    items: DetourberList.map((PositionItem model) {
+                                    items:
+                                        DetourberList.map((PositionItem model) {
                                       return DropdownMenuItem<PositionItem>(
                                         value: model,
                                         child: Text(
@@ -293,7 +297,6 @@ class _TourbeScreenState extends State<TourbeScreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(
                           height: 10,
                         ),
@@ -325,14 +328,16 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: TypededechetselectedValue ?? TypededechetList.first,
+                                    value: TypededechetselectedValue ??
+                                        TypededechetList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         TypededechetselectedValue = newValue;
                                       });
                                     },
-                                    items: TypededechetList.map((PositionItem model) {
+                                    items: TypededechetList.map(
+                                        (PositionItem model) {
                                       return DropdownMenuItem<PositionItem>(
                                         value: model,
                                         child: Text(
@@ -477,10 +482,11 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     'id': widget.tourbeData!.id.toString(),
                                     "superficie": superficieController.text,
                                     "profondeur": profondeurController.text,
-                                    "positionnement": PositionnementselectedValue!.name,
+                                    "positionnement":
+                                        PositionnementselectedValue!.name,
                                     "detourber": DetourberselectedValue!.name,
                                     "type_de_dechet":
-                                    TypededechetselectedValue!.name,
+                                        TypededechetselectedValue!.name,
                                   };
                                   print(mapData.toString());
                                   tourbeScreenRepo(
@@ -491,11 +497,16 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                       .then((value) {
                                     log(value.toString());
 
-                                    if (value.status == true) {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+
                                         Get.to(() => TourbeListScreen());
-                                      }
                                     } else {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Please select an image.'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
                                       log(value.message.toString());
                                     }
                                   });
@@ -511,16 +522,17 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     "client": id.toString(),
                                     "superficie": superficieController.text,
                                     "profondeur": profondeurController.text,
-                                    "positionnement": PositionnementselectedValue != null
-                                        ? PositionnementselectedValue!.name
-                                        : "",
+                                    "positionnement":
+                                        PositionnementselectedValue != null
+                                            ? PositionnementselectedValue!.name
+                                            : "",
                                     "detourber": DetourberselectedValue != null
-                                  ? DetourberselectedValue!.name
-                                      : "",
-                                    "type_de_dechet":
-                                    TypededechetselectedValue != null
-                                        ? TypededechetselectedValue!.name
+                                        ? DetourberselectedValue!.name
                                         : "",
+                                    "type_de_dechet":
+                                        TypededechetselectedValue != null
+                                            ? TypededechetselectedValue!.name
+                                            : "",
                                   };
                                   print(mapData.toString());
                                   tourbeScreenRepo(
@@ -529,11 +541,17 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                           fieldName1: 'photo_video',
                                           file1: categoryFile.value)
                                       .then((value) {
-                                    if (value.status == true) {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+
                                         Get.to(() => TourbeListScreen());
+                                    }else{
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Please select an image.'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
                                       }
-                                    }
                                   });
                                 },
                                 title: 'Save',

@@ -318,8 +318,15 @@ class _DrainScreenState extends State<DrainScreen> {
                                           fieldName1: 'photo_video',
                                           file1: categoryFile.value)
                                       .then((value) {
-                                    if (_formKey.currentState!.validate()) {
+                                    if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                                       Get.to(const DrainListScreen());
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Please select an image.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
                                     }
                                   });
                                 },
@@ -345,8 +352,15 @@ class _DrainScreenState extends State<DrainScreen> {
                                           fieldName1: 'photo_video',
                                           file1: categoryFile.value)
                                       .then((value) {
-                                    if (_formKey.currentState!.validate()) {
+                                    if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                                       Get.to(const DrainListScreen());
+                                    }else{
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Please select an image.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
                                     }
                                   });
                                 },

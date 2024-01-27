@@ -57,7 +57,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   List<PositionItem> FinitionList = [
     PositionItem(id: 1, name: 'finition terre noir'),
     PositionItem(id: 2, name: 'finition paillis'),
-    PositionItem(id: 3, name: 'derrière'),
+    PositionItem(id: 3, name: 'finition roche'),
   ];
 
   List<PositionItem> BorduretList = [
@@ -683,8 +683,15 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                     file1: categoryFile.value)
                                 .then((value) {
                                   log(value.toJson().toString());
-                                  if(value.status ==  true){
+                                  if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                                     Get.to(const PlatesBandesListScreen());
+                                  }else{
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please select an image.'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
                                   }
 
                             });
@@ -728,8 +735,15 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                 file1: categoryFile.value)
                                 .then((value) {
                               log(value.toJson().toString());
-                              if(value.status ==  true){
+                              if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                                 Get.to(const PlatesBandesListScreen());
+                              }else{
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Please select an image.'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
                               }
 
                             });

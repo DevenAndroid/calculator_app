@@ -627,9 +627,16 @@ class _MuretScreenState extends State<MuretScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                     .then((value) {
-                                  if (_formKey.currentState!.validate()) {
+                                  if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                                     Get.to(const MuretListScreen());
 
+                                  }else{
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Please select an image.'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
                                   }
                                 });
                               },
@@ -666,10 +673,18 @@ class _MuretScreenState extends State<MuretScreen> {
                                     fieldName1: 'photo_video',
                                     file1: categoryFile.value)
                                     .then((value) {
-                                  if (_formKey.currentState!.validate()) {
+                                  if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                                     Get.to(const MuretListScreen());
 
-                                  }
+                                  }else
+                                    {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Please select an image.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
                                 });
                               },
                               title: 'Save',
