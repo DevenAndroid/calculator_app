@@ -222,7 +222,8 @@ class _DrainScreenState extends State<DrainScreen> {
                                                       categoryFile.value.path,
                                                       errorBuilder: (_, __,
                                                               ___) =>
-                                                          const SizedBox())),
+                                                          const SizedBox())
+                                          ),
                                         )
                                       : Container(
                                           padding:
