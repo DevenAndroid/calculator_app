@@ -112,7 +112,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       ]).call,
                       keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
-                      hint: '100 Pieds carré(s)',
+                      // hint: '100 Pieds carré(s)',
                     ),
                     const SizedBox(
                       height: 10,
@@ -139,7 +139,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       validator: RequiredValidator(errorText: 'Please enter your Mesure').call,
                        keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
-                      hint: '67 Pieds Linéaire',
+                      // hint: '67 Pieds Linéaire',
                     ),
                     const SizedBox(
                       height: 10,
@@ -166,7 +166,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       validator: RequiredValidator(errorText: 'Please enter your Note').call,
                       // keyboardType: TextInputType.none,
                       // textInputAction: TextInputAction.next,
-                      hint: 'Note...',
+                      // hint: 'Note...',
                       maxLines: 3,
                       minLines: 3,
                     ),

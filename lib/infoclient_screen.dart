@@ -1,7 +1,5 @@
 import 'package:calculator_app/repo/client_info_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
-import 'package:calculator_app/tourbeScreen.dart';
-import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +18,8 @@ class InfoClientScreen extends StatefulWidget {
 
 class _InfoClientScreenState extends State<InfoClientScreen> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nomPreNomController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController villeController = TextEditingController();
   TextEditingController telephoneNumberController = TextEditingController();
@@ -65,7 +64,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Nom - Prenom',
+                        'Prenom',
                         style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontWeight: FontWeight.normal,
@@ -78,19 +77,49 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                       height: 5,
                     ),
                     RegisterTextFieldWidget(
-                      controller: nomPreNomController,
+                      controller: firstnameController,
                       color: Colors.white,
                       // length: 10,
                       validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter your Nom - Prenom'),
+                        RequiredValidator(errorText: 'Please enter your First Name'),
                       ]).call,
                       keyboardType: TextInputType.emailAddress,
                       // textInputAction: TextInputAction.next,
-                      hint: 'Marie Rabaud',
+                      // hint: 'Marie',
                     ),
                     const SizedBox(
                       height: 10,
                     ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'nom de famille',
+                        style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                          // fontFamily: 'poppins',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    RegisterTextFieldWidget(
+                      controller: lastnameController,
+                      color: Colors.white,
+                      // length: 10,
+                      validator: MultiValidator([
+                        RequiredValidator(errorText: 'Please enter your Last Name'),
+                      ]).call,
+                      keyboardType: TextInputType.emailAddress,
+                      // textInputAction: TextInputAction.next,
+                      // hint: 'Rabaud',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -113,7 +142,35 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                       validator: RequiredValidator(errorText: 'Please enter your Address').call,
                       // keyboardType: TextInputType.none,
                       // textInputAction: TextInputAction.next,
-                      hint: '592 Rue Victor Bourgeau',
+                      // hint: '592 Rue Victor Bourgeau',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Code Postal',
+                        style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                          // fontFamily: 'poppins',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    RegisterTextFieldWidget(
+                      controller: codePostalController,
+                      color: Colors.white,
+                      // length: 10,
+                      validator: RequiredValidator(errorText: 'Please enter your Code Postal').call,
+                      keyboardType: TextInputType.text,
+                      // textInputAction: TextInputAction.next,
+                      // hint: 'J3B 0K7',
                     ),
                     const SizedBox(
                       height: 10,
@@ -140,7 +197,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                       validator: RequiredValidator(errorText: 'Please enter your Ville').call,
                       // keyboardType: TextInputType.none,
                       // textInputAction: TextInputAction.next,
-                      hint: 'SAINT JEAN SUR RICHELIEU',
+                      // hint: 'SAINT JEAN SUR RICHELIEU',
                     ),
                     const SizedBox(
                       height: 10,
@@ -167,7 +224,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                       validator: RequiredValidator(errorText: 'Please enter your Telephone Number').call,
                       keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
-                      hint: '987123456',
+                      // hint: '987123456',
                     ),
                     const SizedBox(
                       height: 10,
@@ -197,35 +254,9 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                       ]).call,
                       // keyboardType: TextInputType.none,
                       // textInputAction: TextInputAction.next,
-                      hint: 'marie@123gmail.com',
+                      // hint: 'marie@123gmail.com',
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Code Postal',
-                        style: GoogleFonts.poppins(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15,
-                          // fontFamily: 'poppins',
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    RegisterTextFieldWidget(
-                      controller: codePostalController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: RequiredValidator(errorText: 'Please enter your Code Postal').call,
-                      keyboardType: TextInputType.number,
-                      // textInputAction: TextInputAction.next,
-                      hint: 'J3B 0K7',
-                    ),
+
                   ],
                 ),
               ),
@@ -239,7 +270,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Client_Info_Repo(nomPreNomController.text, telephoneNumberController.text, emailController.text,
+                        Client_Info_Repo(firstnameController.text, lastnameController.text,telephoneNumberController.text, emailController.text,
                                 addressController.text, villeController.text, codePostalController.text, context)
                             .then((value) async {
                           if (value.status == true) {

@@ -178,7 +178,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
-                          hint: '400 Pieds carré(s)',
+                          // hint: '400 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -383,7 +383,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
-                          hint: '2',
+                          // hint: '2',
                         ),
                         const SizedBox(
                           height: 10,
@@ -472,7 +472,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           ]).call,
                           // keyboardType: TextInputType.none,
                           // textInputAction: TextInputAction.next,
-                          hint: 'Bolduc Citadin Pave M80',
+                          // hint: 'Bolduc Citadin Pave M80',
                         ),
                         const SizedBox(
                           height: 10,
@@ -503,7 +503,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                           ]).call,
                           // keyboardType: TextInputType.none,
                           // textInputAction: TextInputAction.next,
-                          hint: 'gris',
+                          // hint: 'gris',
                         ),
                         const SizedBox(
                           height: 10,

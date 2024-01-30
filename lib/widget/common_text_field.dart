@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'addsize.dart';
@@ -117,11 +118,11 @@ class CommonButtonBlue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: AppTheme.primaryColor),
+      height: 60,
+      width: Get.width,
       child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(AddSize.screenWidth, AddSize.size50 * 1.2),
             backgroundColor: Color(0xff019444),
             elevation: 0,
             shape: RoundedRectangleBorder(

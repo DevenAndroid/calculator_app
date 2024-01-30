@@ -150,7 +150,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
-                          hint: '1000 Pieds carré(s)',
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -179,7 +179,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               .call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
-                          hint: '2 Pouce(s)',
+                          // hint: '2 Pouce(s)',
                         ),
                         const SizedBox(
                           height: 10,

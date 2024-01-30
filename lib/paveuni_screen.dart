@@ -170,7 +170,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                       ]).call,
                       keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
-                      hint: '1000 Pieds carré(s)',
+                      // hint: '1000 Pieds carré(s)',
                     ),
                     const SizedBox(
                       height: 10,
@@ -204,7 +204,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 ]).call,
                                 keyboardType: TextInputType.number,
                                 // textInputAction: TextInputAction.next,
-                                hint: '10 Pieds',
+                                // hint: '10 Pieds',
                               ),
                             ],
                           ),
@@ -412,7 +412,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                       ]).call,
                       // keyboardType: TextInputType.none,
                       // textInputAction: TextInputAction.next,
-                      hint: 'Bolduc Citadin Dalle M60',
+                      // hint: 'Bolduc Citadin Dalle M60',
                     ),
                     const SizedBox(
                       height: 10,
@@ -441,7 +441,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                       ]).call,
                       // keyboardType: TextInputType.none,
                       // textInputAction: TextInputAction.next,
-                      hint: 'Gris Marbre',
+                      // hint: 'Gris Marbre',
                     ),
                     const SizedBox(
                       height: 10,
@@ -526,7 +526,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                       ]).call,
                       // keyboardType: TextInputType.none,
                       // textInputAction: TextInputAction.next,
-                      hint: 'future',
+                      // hint: 'future',
                     ),
                     const SizedBox(
                       height: 10,

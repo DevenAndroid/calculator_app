@@ -12,13 +12,14 @@ import '../model/client_info_model.dart';
 import '../widget/apiUrl.dart';
 
 
-Future<Client_Info_Model> Client_Info_Repo(name, phone, email,address,city,postalcode,context) async {
+Future<Client_Info_Model> Client_Info_Repo(firstname, lastname,phone, email,address,city,postalcode,context) async {
   OverlayEntry loader = Helper.overlayLoader(context);
   Overlay.of(context)?.insert(loader);
   SharedPreferences preferences = await SharedPreferences.getInstance();
   LoginModel loginModel = LoginModel.fromJson(jsonDecode(preferences.getString('auth')!));
   var map = <String, dynamic>{};
-  map['name'] = name;
+  map['first_name'] = firstname;
+  map['last_name'] = lastname;
   map['phone'] = phone;
   map['email'] = email;
   map['city'] = city;

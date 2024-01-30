@@ -160,7 +160,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               ]).call,
                               keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
-                              hint: '300 Pieds carré(s)',
+                              // hint: '300 Pieds carré(s)',
                             ),
                             const SizedBox(
                               height: 10,
@@ -189,7 +189,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                   .call,
                                keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
-                              hint: '1 Pouces',
+                              // hint: '1 Pouces',
                             ),
                             const SizedBox(
                               height: 10,
@@ -218,7 +218,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                   .call,
                                keyboardType: TextInputType.number,
                               // textInputAction: TextInputAction.next,
-                              hint: '20 Pieds',
+                              // hint: '20 Pieds',
                             ),
                             const SizedBox(
                               height: 10,
@@ -418,7 +418,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               ]).call,
                               // keyboardType: TextInputType.none,
                               // textInputAction: TextInputAction.next,
-                              hint: 'noir',
+                              // hint: 'noir',
                             ),
                             const SizedBox(
                               height: 10,
@@ -448,7 +448,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               ]).call,
                               // keyboardType: TextInputType.none,
                               // textInputAction: TextInputAction.next,
-                              hint: 'Citadin',
+                              // hint: 'Citadin',
                             ),
                             const SizedBox(
                               height: 10,
@@ -478,7 +478,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               ]).call,
                               // keyboardType: TextInputType.none,
                               // textInputAction: TextInputAction.next,
-                              hint: 'noir',
+                              // hint: 'noir',
                             ),
                             const SizedBox(
                               height: 10,
@@ -508,7 +508,7 @@ class _MuretScreenState extends State<MuretScreen> {
                               ]).call,
                               // keyboardType: TextInputType.none,
                               // textInputAction: TextInputAction.next,
-                              hint: 'Nouvelle',
+                              // hint: 'Nouvelle',
                             ),
                             const SizedBox(
                               height: 10,

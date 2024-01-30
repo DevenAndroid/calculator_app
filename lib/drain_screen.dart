@@ -182,7 +182,7 @@ class _DrainScreenState extends State<DrainScreen> {
                               .call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
-                          hint: '67 Pieds Linéaire',
+                          // hint: '67 Pieds Linéaire',
                         ),
                         const SizedBox(
                           height: 10,
