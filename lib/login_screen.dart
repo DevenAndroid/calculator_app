@@ -10,6 +10,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'existingclientList.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -32,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (isLoggedIn != null && isLoggedIn) {
       Get.to(const LoginScreen());
     } else {
-      Get.to(const InfoClientScreen());
+      Get.to(const ExistingClientList());
     }
   }
 
@@ -54,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     image: DecorationImage(
                         fit: BoxFit.fill,
                         colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.7), BlendMode.darken),
+                            Colors.black.withOpacity(0.9), BlendMode.darken),
                         image:
                             const AssetImage('assets/images/background.png'))),
                 child: Padding(
@@ -204,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           pref.setString(
                                               'auth', jsonEncode(value));
                                           showToast(value.message);
-                                          Get.to(const InfoClientScreen());
+                                          Get.to(const ExistingClientList());
                                         } else {
                                           showToast(value.message);
                                         }

@@ -47,6 +47,8 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   PositionItem? FinitionselectedValue;
   PositionItem? BordureselectedValue;
   PositionItem? PlantationselectedValue;
+  PositionItem? CouleurfinitionselectedValue;
+  PositionItem? CouleurselectedValue;
 
   List<PositionItem> yourModelList = [
     PositionItem(id: 1, name: 'devant'),
@@ -72,6 +74,17 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     PositionItem(id: 4, name: 'Karl foerster'),
     PositionItem(id: 5, name: 'Annuel choix du paysagiste'),
   ];
+  List<PositionItem> CouleurfinitionList = [
+    PositionItem(id: 1, name: 'Rocher marbre blanc 3/4'),
+    PositionItem(id: 2, name: 'Rocher marbre blanc 3/4'),
+    PositionItem(id: 3, name: 'Pierre de riviere 3/4'),
+    PositionItem(id: 4, name: 'Ardoise noir petite'),
+  ];
+  List<PositionItem> CouleurList = [
+    PositionItem(id: 1, name: 'Gris Charbon'),
+    PositionItem(id: 2, name: 'Noir'),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -87,13 +100,19 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
             (item) => item.name == widget.platesBandesData!.finition,
         orElse: () => FinitionList.first,
       );
-      couleur_finitiController.text = widget.platesBandesData!.couleurFinition;
+      CouleurfinitionselectedValue = CouleurfinitionList.firstWhere(
+            (item) => item.name == widget.platesBandesData!.couleurFinition,
+        orElse: () => CouleurfinitionList.first,
+      );
       combien_de_pouController.text = widget.platesBandesData!.combienDePouces.toString();
       BordureselectedValue = BorduretList.firstWhere(
             (item) => item.name == widget.platesBandesData!.bordure,
         orElse: () => BorduretList.first,
       );
-      couleurpolyController.text = widget.platesBandesData!.couleur;
+      CouleurselectedValue = CouleurList.firstWhere(
+            (item) => item.name == widget.platesBandesData!.couleur,
+        orElse: () => CouleurList.first,
+      );
       PlantationselectedValue = PlantationList.firstWhere(
             (item) => item.name == widget.platesBandesData!.plantation,
         orElse: () => PlantationList.first,
@@ -364,18 +383,43 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                   const SizedBox(
                                     height: 5,
                                   ),
-                                  RegisterTextFieldWidget(
-                                    controller: couleur_finitiController,
-                                    color: Colors.white,
-                                    // length: 10,
-                                    validator: MultiValidator([
-                                      RequiredValidator(
-                                          errorText:
-                                              'Please enter your Couleur finition'),
-                                    ]).call,
-                                    keyboardType: TextInputType.emailAddress,
-                                    // textInputAction: TextInputAction.next,
-                                    // hint: 'Ardoise noir petite',
+                                  SizedBox(
+                                    height: 55,
+                                    width: Get.width,
+                                    child: Container(
+                                      padding: const EdgeInsets.only(left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(color: Colors.grey.shade400),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          DropdownButtonHideUnderline(
+                                            child: DropdownButton<PositionItem>(
+                                              value: CouleurfinitionselectedValue ?? CouleurfinitionList.first,
+                                              isExpanded: true,
+                                              onChanged: (PositionItem? newValue) {
+                                                setState(() {
+                                                  CouleurfinitionselectedValue = newValue;
+                                                });
+                                              },
+                                              items: CouleurfinitionList.map((PositionItem model) {
+                                                return DropdownMenuItem<PositionItem>(
+                                                  value: model,
+                                                  child: Text(
+                                                    model.name,
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w300,
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -493,17 +537,43 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        RegisterTextFieldWidget(
-                          controller: couleurpolyController,
-                          color: Colors.white,
-                          // length: 10,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'Please enter your Couleur'.tr),
-                          ]).call,
-                          // keyboardType: TextInputType.none,
-                          // textInputAction: TextInputAction.next,
-                          hint: 'noir',
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: CouleurselectedValue ?? CouleurList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        CouleurselectedValue = newValue;
+                                      });
+                                    },
+                                    items: CouleurList.map((PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -669,10 +739,10 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               "perimeter": perimeterController.text,
                               "positionnement": PositionnementselectedValue!.name,
                               "finition": FinitionselectedValue!.name,
-                              "couleur_finition": couleur_finitiController.text,
+                              "couleur_finition": CouleurfinitionselectedValue!.name,
                               "combien_de_pouces": combien_de_pouController.text,
                               "bordure": BordureselectedValue!.name,
-                              "couleur": couleurpolyController.text,
+                              "couleur": CouleurselectedValue!.name,
                               "plantation": PlantationselectedValue!.name,
                             };
                             if (kDebugMode) {
@@ -719,12 +789,16 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               "finition": FinitionselectedValue != null
                                   ? FinitionselectedValue!.name
                                   : "",
-                              "couleur_finition": couleur_finitiController.text,
+                              "couleur_finition": CouleurfinitionselectedValue != null
+                                  ? CouleurfinitionselectedValue!.name
+                                  : "",
                               "combien_de_pouces": combien_de_pouController.text,
                               "bordure": BordureselectedValue != null
                                   ? BordureselectedValue!.name
                                   : "",
-                              "couleur": couleurpolyController.text,
+                              "couleur": CouleurselectedValue != null
+                                  ? CouleurselectedValue!.name
+                                  : "",
                               "plantation": PlantationselectedValue != null
                                   ? PlantationselectedValue!.name
                                   : "",

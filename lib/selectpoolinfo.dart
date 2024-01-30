@@ -442,24 +442,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        if (detailsListModel.value.data != null &&
-                            detailsListModel.value.data!.isNotEmpty &&
-                            paveuniListModel.value.data != null &&
-                            paveuniListModel.value.data!.isNotEmpty &&
-                            asphalteListModel.value.data != null &&
-                            asphalteListModel.value.data!.isNotEmpty &&
-                            platesbandesListModel.value.data != null &&
-                            platesbandesListModel.value.data!.isNotEmpty &&
-                            muretListModel.value.data != null &&
-                            muretListModel.value.data!.isNotEmpty &&
-                            drainListModel.value.data != null &&
-                            drainListModel.value.data!.isNotEmpty &&
-                            margelleListModel.value.data != null &&
-                            margelleListModel.value.data!.isNotEmpty) {
-                          Get.to(const DownloadthequoteScreen());
-                        } else {
-                          showToast('Please fill all the forms');
-                        }
+                        Get.to(const DownloadthequoteScreen());
                       },
                       title: 'Submit',
                     ),

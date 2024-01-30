@@ -30,6 +30,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
   PositionItem? PositionnementselectedValue;
   PositionItem? DetourberselectedValue;
   PositionItem? TypededechetselectedValue;
+  PositionItem? profondeurselectedValue;
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
@@ -61,12 +62,35 @@ class _TourbeScreenState extends State<TourbeScreen> {
     PositionItem(id: 4, name: 'Beton / t'),
     PositionItem(id: 5, name: 'mix / t'),
   ];
+  List<PositionItem> profondeurList = [
+    PositionItem(id: 1, name: '1'),
+    PositionItem(id: 2, name: '2'),
+    PositionItem(id: 3, name: '3'),
+    PositionItem(id: 4, name: '4'),
+    PositionItem(id: 5, name: '5'),
+    PositionItem(id: 6, name: '6'),
+    PositionItem(id: 7, name: '7'),
+    PositionItem(id: 8, name: '8'),
+    PositionItem(id: 9, name: '9'),
+    PositionItem(id: 10, name: '10'),
+    PositionItem(id: 11, name: '11'),
+    PositionItem(id: 12, name: '12'),
+    PositionItem(id: 13, name: '13'),
+    PositionItem(id: 14, name: '14'),
+    PositionItem(id: 15, name: '15'),
+    PositionItem(id: 16, name: '16'),
+    PositionItem(id: 17, name: '17'),
+    PositionItem(id: 18, name: '18'),
+  ];
   @override
   void initState() {
     super.initState();
     if (widget.tourbeData != null) {
       superficieController.text = widget.tourbeData!.superficie.toString();
-      profondeurController.text = widget.tourbeData!.profondeur.toString();
+      profondeurselectedValue = profondeurList.firstWhere(
+        (item) => item.name == widget.tourbeData!.profondeur,
+        orElse: () => profondeurList.first,
+      );
       PositionnementselectedValue = yourModelList.firstWhere(
         (item) => item.name == widget.tourbeData!.positionnement,
         orElse: () => yourModelList.first,
@@ -99,9 +123,9 @@ class _TourbeScreenState extends State<TourbeScreen> {
           ),
         ),
         leading: GestureDetector(
-          onTap: (){
-            Get.back();
-          },
+            onTap: () {
+              Get.back();
+            },
             child: Icon(Icons.arrow_back)),
       ),
       body: SingleChildScrollView(
@@ -170,16 +194,45 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        RegisterTextFieldWidget(
-                          controller: profondeurController,
-                          color: Colors.white,
-                          // length: 10,
-                          validator: RequiredValidator(
-                                  errorText: 'Please enter your Profondeur')
-                              .call,
-                          keyboardType: TextInputType.number,
-                          // textInputAction: TextInputAction.next,
-                          // hint: '2 Pouce(s)',
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: profondeurselectedValue ??
+                                        profondeurList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        profondeurselectedValue = newValue;
+                                      });
+                                    },
+                                    items: profondeurList
+                                        .map((PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -233,7 +286,6 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                         ),
                                       );
                                     }).toList(),
-
                                   ),
                                 ),
                               ],
@@ -482,7 +534,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     "client": id.toString(),
                                     'id': widget.tourbeData!.id.toString(),
                                     "superficie": superficieController.text,
-                                    "profondeur": profondeurController.text,
+                                    "profondeur": profondeurselectedValue!.name,
                                     "positionnement":
                                         PositionnementselectedValue!.name,
                                     "detourber": DetourberselectedValue!.name,
@@ -498,19 +550,20 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                       .then((value) {
                                     log(value.toString());
 
-                                      if (_formKey.currentState!.validate()) {
-
-                                        Get.to(() => TourbeListScreen());
-                                    } else if(categoryFile.value.path == ""){
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Please select an image.'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      }else{
-                                        showToast('Fill All Fields');
-                                      }
+                                    if (_formKey.currentState!.validate()) {
+                                      Get.to(() => TourbeListScreen());
+                                    } else if (categoryFile.value.path == "") {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Please select an image.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    } else {
+                                      showToast('Fill All Fields');
+                                    }
                                   });
                                 },
                                 title: 'Update',
@@ -523,7 +576,10 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                   Map<String, String> mapData = {
                                     "client": id.toString(),
                                     "superficie": superficieController.text,
-                                    "profondeur": profondeurController.text,
+                                    "profondeur":
+                                        profondeurselectedValue != null
+                                            ? profondeurselectedValue!.name
+                                            : "",
                                     "positionnement":
                                         PositionnementselectedValue != null
                                             ? PositionnementselectedValue!.name
@@ -543,19 +599,20 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                           fieldName1: 'photo_video',
                                           file1: categoryFile.value)
                                       .then((value) {
-                                      if (_formKey.currentState!.validate() ) {
-
-                                        Get.to(() => TourbeListScreen());
-                                    }else if(categoryFile.value.path == ""){
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Please select an image.'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      }else{
-                                        showToast('Fill All Fields');
-                                      }
+                                    if (_formKey.currentState!.validate()) {
+                                      Get.to(() => TourbeListScreen());
+                                    } else if (categoryFile.value.path == "") {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Please select an image.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    } else {
+                                      showToast('Fill All Fields');
+                                    }
                                   });
                                 },
                                 title: 'Save',

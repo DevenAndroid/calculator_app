@@ -39,6 +39,8 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   PositionItem? CouleurdesableselectedValue;
   PositionItem? InfrastructureeselectedValue;
   PositionItem? TypedeBordureselectedValue;
+  PositionItem? TypeofpavageselectedValue;
+  PositionItem? CouleurdepaveselectedValue;
   Rx<CommonModal> dddd = CommonModal().obs;
 
   TextEditingController perimeterController = TextEditingController();
@@ -61,9 +63,10 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   List<PositionItem> TypededechetList = [
     PositionItem(id: 1, name: 'Aucun'),
     PositionItem(id: 2, name: 'Terre / VG'),
-    PositionItem(id: 2, name: 'Roche / t'),
-    PositionItem(id: 2, name: 'Beton / t'),
-    PositionItem(id: 2, name: 'mix / t'),
+    PositionItem(id: 3, name: 'Roche / t'),
+    PositionItem(id: 4, name: 'asphalte / t'),
+    PositionItem(id: 5, name: 'Beton / t'),
+    PositionItem(id: 6, name: 'mix / t'),
   ];
   List<PositionItem> CouleurdesableList = [
     PositionItem(id: 1, name: 'Gris'),
@@ -78,6 +81,25 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
     PositionItem(id: 1, name: 'plastique'),
     PositionItem(id: 2, name: 'pave'),
   ];
+
+  List<PositionItem> TypeofpavageList = [
+    PositionItem(id: 1, name: 'Bolduc Citadin Dalle M60'),
+    PositionItem(id: 2, name: 'Bolduc Dalle Richelieu M60'),
+    PositionItem(id: 4, name: 'Oaks Dalle Nueva 60MM'),
+    PositionItem(id: 4, name: 'Richer Dalle M100 50MM'),
+    PositionItem(id: 5, name: 'Richer Dalle T100 50MM'),
+  ];
+  List<PositionItem> CouleurdepaveList = [
+    PositionItem(id: 1, name: 'Beige Ivoire'),
+    PositionItem(id: 2, name: 'Beige Travertin'),
+    PositionItem(id: 4, name: 'Gris Onyx'),
+    PositionItem(id: 4, name: 'Gris Glacier'),
+    PositionItem(id: 5, name: 'Noir'),
+    PositionItem(id: 6, name: 'Brun Grès'),
+    PositionItem(id: 7, name: 'Gris et Charbon'),
+    PositionItem(id: 8, name: 'Gris'),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -90,7 +112,10 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
       );
       positionnementController.text = widget.paveUniData!.positionnement;
       superficieController.text = widget.paveUniData!.superficie.toString();
-      couleur_de_paveController.text = widget.paveUniData!.couleurDePave;
+      CouleurdepaveselectedValue = CouleurdepaveList.firstWhere(
+            (item) => item.name == widget.paveUniData!.couleurDePave,
+        orElse: () => CouleurdepaveList.first,
+      );
       CouleurdesableselectedValue = CouleurdesableList.firstWhere(
             (item) => item.name == widget.paveUniData!.polymerSandColor,
         orElse: () => CouleurdesableList.first,
@@ -104,7 +129,10 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
             (item) => item.name == widget.paveUniData!.typeOfWaste,
         orElse: () => TypededechetList.first,
       );
-      type_to_pavageController.text = widget.paveUniData!.typeToPavage;
+      TypeofpavageselectedValue = TypeofpavageList.firstWhere(
+            (item) => item.name == widget.paveUniData!.typeToPavage,
+        orElse: () => TypeofpavageList.first,
+      );
       // categoryFile.value = File(widget.data!.photoVideo);
     }
   }
@@ -403,16 +431,43 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: type_to_pavageController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter your Type to Pavage (FABRIQUANT)'.tr),
-                      ]).call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      // hint: 'Bolduc Citadin Dalle M60',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: TypeofpavageselectedValue ?? TypeofpavageList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    TypeofpavageselectedValue = newValue;
+                                  });
+                                },
+                                items: TypeofpavageList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -432,16 +487,43 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     const SizedBox(
                       height: 5,
                     ),
-                    RegisterTextFieldWidget(
-                      controller: couleur_de_paveController,
-                      color: Colors.white,
-                      // length: 10,
-                      validator: MultiValidator([
-                        RequiredValidator(errorText: 'Please enter yourCouleur de Pave'.tr),
-                      ]).call,
-                      // keyboardType: TextInputType.none,
-                      // textInputAction: TextInputAction.next,
-                      // hint: 'Gris Marbre',
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: CouleurdepaveselectedValue ?? CouleurdepaveList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    CouleurdepaveselectedValue = newValue;
+                                  });
+                                },
+                                items: CouleurdepaveList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -689,11 +771,11 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           "positionnement": PositionnementselectedValue!.name,
                           "client": id.toString(),
                           "superficie": superficieController.text,
-                          "couleur_de_pave": couleur_de_paveController.text,
+                          "couleur_de_pave": CouleurdepaveselectedValue!.name,
                           "polymer_sand_color": CouleurdesableselectedValue!.name,
                           "photo": photoController.text,
                           "infrastructure": InfrastructureeselectedValue!.name,
-                          "type_to_pavage": type_to_pavageController.text,
+                          "type_to_pavage": TypeofpavageselectedValue!.name,
                           "type_of_waste": TypededechetselectedValue!.name,
                         };
                         print(mapData.toString());
@@ -731,7 +813,9 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                               : "",
                           "client": id.toString(),
                           "superficie": superficieController.text,
-                          "couleur_de_pave": couleur_de_paveController.text,
+                          "couleur_de_pave": CouleurdepaveselectedValue != null
+                              ? CouleurdepaveselectedValue!.name
+                              : "",
                           "polymer_sand_color": CouleurdesableselectedValue != null
                               ? CouleurdesableselectedValue!.name
                               : "",
@@ -739,7 +823,9 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           "infrastructure": InfrastructureeselectedValue != null
                         ? InfrastructureeselectedValue!.name
                             : "",
-                          "type_to_pavage": type_to_pavageController.text,
+                          "type_to_pavage": TypeofpavageselectedValue != null
+                              ? TypeofpavageselectedValue!.name
+                              : "",
                           "type_of_waste": TypedeBordureselectedValue != null
                               ? TypedeBordureselectedValue!.name
                               : "",

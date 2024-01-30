@@ -45,6 +45,8 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   PositionItem? TypededechetselectedValue;
   PositionItem? ContourenPaveselectedValue;
   PositionItem? CouleurdesableselectedValue;
+  PositionItem? TypedepaveuniselectedValue;
+  PositionItem? CouleurdepaveselectedValue;
 
   List<PositionItem> NouvelleInfraList = [
     PositionItem(id: 1, name: 'Oui'),
@@ -61,9 +63,10 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   List<PositionItem> TypededechetList = [
     PositionItem(id: 1, name: 'Aucun'),
     PositionItem(id: 2, name: 'Terre / VG'),
-    PositionItem(id: 2, name: 'Roche / t'),
-    PositionItem(id: 2, name: 'Beton / t'),
-    PositionItem(id: 2, name: 'mix / t'),
+    PositionItem(id: 3, name: 'Roche / t'),
+    PositionItem(id: 4, name: 'asphalte / t'),
+    PositionItem(id: 5, name: 'Beton / t'),
+    PositionItem(id: 6, name: 'mix / t'),
   ];
 
   List<PositionItem> ContourenPaveList = [
@@ -73,6 +76,19 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   List<PositionItem> CouleurdesablePaveList = [
     PositionItem(id: 1, name: 'Gris'),
     PositionItem(id: 2, name: 'Beige'),
+  ];
+  List<PositionItem> CouleurdepaveList = [
+    PositionItem(id: 1, name: 'Nuance Beige'),
+    PositionItem(id: 2, name: 'Nuance Gris'),
+    PositionItem(id: 3, name: 'Noir'),
+  ];
+
+  List<PositionItem> TypedepaveuniList = [
+    PositionItem(id: 1, name: 'Bolduc Citadin Pave M80'),
+    PositionItem(id: 2, name: 'Bolduc Pave Richelieu M80'),
+    PositionItem(id: 3, name: 'Oaks Pave Nueva 80MM'),
+    PositionItem(id: 4, name: 'Richer Pave M100 80MM'),
+    PositionItem(id: 5, name: 'Richer Pave T100 80MM'),
   ];
 
   @override
@@ -98,9 +114,14 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
         (item) => item.name == widget.asphalteData!.contourEnPave,
         orElse: () => ContourenPaveList.first,
       );
-      type_of_plain_paversController.text =
-          widget.asphalteData!.typeOfPlainPavers;
-      paver_colorController.text = widget.asphalteData!.paverColor;
+      TypedepaveuniselectedValue = TypedepaveuniList.firstWhere(
+            (item) => item.name == widget.asphalteData!.typeOfPlainPavers,
+        orElse: () => TypedepaveuniList.first,
+      );
+      CouleurdepaveselectedValue = CouleurdepaveList.firstWhere(
+            (item) => item.name == widget.asphalteData!.paverColor,
+        orElse: () => CouleurdepaveList.first,
+      );
       CouleurdesableselectedValue = CouleurdesablePaveList.firstWhere(
         (item) => item.name == widget.asphalteData!.polymerSandColor,
         orElse: () => CouleurdesablePaveList.first,
@@ -461,18 +482,45 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        RegisterTextFieldWidget(
-                          color: Colors.white,
-                          controller: type_of_plain_paversController,
-                          // length: 10,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText:
-                                    'Please enter your Type de pavé uni'.tr),
-                          ]).call,
-                          // keyboardType: TextInputType.none,
-                          // textInputAction: TextInputAction.next,
-                          // hint: 'Bolduc Citadin Pave M80',
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: TypedepaveuniselectedValue ??
+                                        TypedepaveuniList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        TypedepaveuniselectedValue = newValue;
+                                      });
+                                    },
+                                    items: TypedepaveuniList.map(
+                                            (PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -480,7 +528,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'paver_color',
+                            'Couleur de pavé',
                             style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.normal,
@@ -492,18 +540,45 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        RegisterTextFieldWidget(
-                          controller: paver_colorController,
-                          color: Colors.white,
-                          // length: 10,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText:
-                                    'Please enter your Couleur de pavé'.tr),
-                          ]).call,
-                          // keyboardType: TextInputType.none,
-                          // textInputAction: TextInputAction.next,
-                          // hint: 'gris',
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: CouleurdepaveselectedValue ??
+                                        CouleurdepaveList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        CouleurdepaveselectedValue = newValue;
+                                      });
+                                    },
+                                    items: CouleurdepaveList.map(
+                                            (PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -701,8 +776,8 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                     "contour_en_pave":
                                         ContourenPaveselectedValue!.name,
                                     "type_of_plain_pavers":
-                                        type_of_plain_paversController.text,
-                                    "paver_color": paver_colorController.text,
+                                        TypedepaveuniselectedValue!.name,
+                                    "paver_color": CouleurdepaveselectedValue!.name,
                                     "polymer_sand_color":
                                         CouleurdesableselectedValue!.name,
                                   };
@@ -756,11 +831,15 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                             ? ContourenPaveselectedValue!.name
                                             : "",
                                     "type_of_plain_pavers":
-                                        type_of_plain_paversController.text,
-                                    "paver_color": paver_colorController.text,
+                                    TypedepaveuniselectedValue != null
+                                        ? TypedepaveuniselectedValue!.name
+                                        : "",
+                                    "paver_color": CouleurdesableselectedValue != null
+                                        ? CouleurdesableselectedValue!.name
+                                        : "",
                                     "polymer_sand_color":
-                                        CouleurdesableselectedValue != null
-                                            ? CouleurdesableselectedValue!.name
+                                    CouleurdepaveselectedValue != null
+                                            ? CouleurdepaveselectedValue!.name
                                             : "",
                                   };
                                   print(mapData.toString());

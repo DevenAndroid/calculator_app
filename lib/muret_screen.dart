@@ -47,12 +47,14 @@ class _MuretScreenState extends State<MuretScreen> {
   PositionItem? PositionnementselectedValue;
   PositionItem? TypedeMuretselectedValue;
   PositionItem? TypededechetselectedValue;
+  PositionItem? CouleurdepaveselectedValue;
+  PositionItem? CouronnementselectedValue;
+  PositionItem? CouleurducouronnementselectedValue;
+  PositionItem? infrastructureselectedValue;
 
   List<PositionItem> yourModelList = [
     PositionItem(id: 1, name: 'devant'),
     PositionItem(id: 2, name: 'derrière'),
-    PositionItem(id: 3, name: 'cote gauche vue de face'),
-    PositionItem(id: 4, name: 'cote droite vue de face'),
   ];
   List<PositionItem> TypedeMuretList = [
     PositionItem(id: 1, name: 'Citadin 90'),
@@ -60,13 +62,28 @@ class _MuretScreenState extends State<MuretScreen> {
   ];
 
   List<PositionItem> TypededechetList = [
-    PositionItem(id: 1, name: 'Aucun'),
     PositionItem(id: 2, name: 'Terre / VG'),
     PositionItem(id: 3, name: 'Roche / t'),
+    PositionItem(id: 1, name: 'asphalte / t'),
     PositionItem(id: 4, name: 'Beton / t'),
     PositionItem(id: 5, name: 'mix / t'),
   ];
+  List<PositionItem> CouleurdepaveList = [
+    PositionItem(id: 1, name: 'Nuance Beige'),
+    PositionItem(id: 2, name: 'Nuance Gris'),
+    PositionItem(id: 3, name: 'Noir'),
+  ];
 
+  List<PositionItem> CouronnementList = [
+    PositionItem(id: 1, name: 'Citadin'),
+  ];
+  List<PositionItem> CouleurducouronnementList = [
+    PositionItem(id: 1, name: 'Noir'),
+  ];
+  List<PositionItem> infrastructureList = [
+    PositionItem(id: 1, name: 'Nouvelle'),
+    PositionItem(id: 2, name: 'Ancienne'),
+  ];
   @override
   void initState() {
     super.initState();
@@ -87,10 +104,23 @@ class _MuretScreenState extends State<MuretScreen> {
         orElse: () => TypedeMuretList.first,
       );
       type_of_wasteController.text = widget.muretData!.typeOfWaste;
-      paver_colorController.text = widget.muretData!.paverColor;
-      couronnementController.text = widget.muretData!.couronnement;
-      couleur_du_couronnementController.text = widget.muretData!.couleurDuCouronnement;
-      infrastructureController.text = widget.muretData!.infrastructure;
+      CouleurdepaveselectedValue = CouleurdepaveList.firstWhere(
+            (item) => item.name == widget.muretData!.paverColor,
+        orElse: () => CouleurdepaveList.first,
+      );
+      CouronnementselectedValue = CouronnementList.firstWhere(
+            (item) => item.name == widget.muretData!.couronnement,
+        orElse: () => CouronnementList.first,
+      );
+      CouleurducouronnementselectedValue = CouleurducouronnementList.firstWhere(
+            (item) => item.name == widget.muretData!.couleurDuCouronnement,
+        orElse: () => CouleurducouronnementList.first,
+      );
+      infrastructureselectedValue = infrastructureList.firstWhere(
+            (item) => item.name == widget.muretData!.infrastructure,
+        orElse: () => infrastructureList.first,
+      );
+
       // categoryFile.value = File(widget.data!.photoVideo);
     }
   }
@@ -406,19 +436,45 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            RegisterTextFieldWidget(
-                              controller: paver_colorController,
-                              color: Colors.white,
-                              // length: 10,
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText:
-                                    'Please enter your Contour en Pave'
-                                        .tr),
-                              ]).call,
-                              // keyboardType: TextInputType.none,
-                              // textInputAction: TextInputAction.next,
-                              // hint: 'noir',
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: CouleurdepaveselectedValue ??
+                                            CouleurdepaveList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            CouleurdepaveselectedValue = newValue;
+                                          });
+                                        },
+                                        items: CouleurdepaveList.map(
+                                                (PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -438,17 +494,45 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            RegisterTextFieldWidget(
-                              controller: couronnementController,
-                              color: Colors.white,
-                              // length: 10,
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText: 'Please enter your Couronnement'.tr),
-                              ]).call,
-                              // keyboardType: TextInputType.none,
-                              // textInputAction: TextInputAction.next,
-                              // hint: 'Citadin',
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: CouronnementselectedValue ??
+                                            CouronnementList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            CouronnementselectedValue = newValue;
+                                          });
+                                        },
+                                        items: CouronnementList.map(
+                                                (PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -468,17 +552,45 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            RegisterTextFieldWidget(
-                              controller: couleur_du_couronnementController,
-                              color: Colors.white,
-                              // length: 10,
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText: 'Please enter your Couleur du couronnement'.tr),
-                              ]).call,
-                              // keyboardType: TextInputType.none,
-                              // textInputAction: TextInputAction.next,
-                              // hint: 'noir',
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: CouleurducouronnementselectedValue ??
+                                            CouleurducouronnementList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            CouleurducouronnementselectedValue = newValue;
+                                          });
+                                        },
+                                        items: CouleurducouronnementList.map(
+                                                (PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -498,17 +610,45 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 5,
                             ),
-                            RegisterTextFieldWidget(
-                              controller: infrastructureController,
-                              color: Colors.white,
-                              // length: 10,
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                    errorText: 'Please enter your Infrastructure'.tr),
-                              ]).call,
-                              // keyboardType: TextInputType.none,
-                              // textInputAction: TextInputAction.next,
-                              // hint: 'Nouvelle',
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: infrastructureselectedValue ??
+                                            infrastructureList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            infrastructureselectedValue = newValue;
+                                          });
+                                        },
+                                        items: infrastructureList.map(
+                                                (PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -617,10 +757,10 @@ class _MuretScreenState extends State<MuretScreen> {
                                   "positionnement": PositionnementselectedValue!.name,
                                   "type_of_waste": TypededechetselectedValue!.name,
                                   "type_de_muret": TypedeMuretselectedValue!.name,
-                                  "paver_color": paver_colorController.text,
-                                  "couronnement": couronnementController.text,
-                                  "couleur_du_couronnement": couleur_du_couronnementController.text,
-                                  "infrastructure": infrastructureController.text,
+                                  "paver_color": CouleurdepaveselectedValue!.name,
+                                  "couronnement": CouronnementselectedValue!.name,
+                                  "couleur_du_couronnement": CouleurducouronnementselectedValue!.name,
+                                  "infrastructure": infrastructureselectedValue!.name,
                                 };
                                 print(mapData.toString());
                                 muretScreenRepo(
@@ -663,10 +803,18 @@ class _MuretScreenState extends State<MuretScreen> {
                                   "type_de_muret":TypedeMuretselectedValue != null
                                       ? TypedeMuretselectedValue!.name
                                       : "",
-                                  "paver_color": paver_colorController.text,
-                                  "couronnement": couronnementController.text,
-                                  "couleur_du_couronnement": couleur_du_couronnementController.text,
-                                  "infrastructure": infrastructureController.text,
+                                  "paver_color": CouleurdepaveselectedValue != null
+                                      ? CouleurdepaveselectedValue!.name
+                                      : "",
+                                  "couronnement": CouronnementselectedValue != null
+                                      ? CouronnementselectedValue!.name
+                                      : "",
+                                  "couleur_du_couronnement": CouleurducouronnementselectedValue != null
+                                      ? CouleurducouronnementselectedValue!.name
+                                      : "",
+                                  "infrastructure": infrastructureselectedValue != null
+                                      ? infrastructureselectedValue!.name
+                                      : "",
                                 };
                                 print(mapData.toString());
                                 muretScreenRepo(

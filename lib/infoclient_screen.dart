@@ -1,3 +1,4 @@
+import 'package:calculator_app/model/existingClientModel.dart';
 import 'package:calculator_app/repo/client_info_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
@@ -10,7 +11,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InfoClientScreen extends StatefulWidget {
-  const InfoClientScreen({super.key});
+
+  ClientData? clientData;
+  String? clientId;
+  bool isnew;
+  InfoClientScreen({super.key,this.clientData,this.clientId,required this.isnew});
 
   @override
   State<InfoClientScreen> createState() => _InfoClientScreenState();
@@ -25,6 +30,30 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
   TextEditingController telephoneNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController codePostalController = TextEditingController();
+  getData(){
+    print("dddddd${widget.clientId}");
+    firstnameController.text = widget.clientData!.firstName ?? "".toString();
+    lastnameController.text = widget.clientData!.lastName ?? "".toString();
+    addressController.text = widget.clientData!.address ?? "".toString();
+    villeController.text = widget.clientData!.city ?? "".toString();
+    telephoneNumberController.text = widget.clientData!.phone.toString() ?? "";
+    emailController.text = widget.clientData!.email ?? "".toString();
+    codePostalController.text = widget.clientData!.postalCode ?? "".toString();
+    setState(() {
+
+    });
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.isnew == true){
+      getData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -270,20 +299,25 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Client_Info_Repo(firstnameController.text, lastnameController.text,telephoneNumberController.text, emailController.text,
-                                addressController.text, villeController.text, codePostalController.text, context)
-                            .then((value) async {
-                          if (value.status == true) {
-                            SharedPreferences pref = await SharedPreferences.getInstance();
-                            pref.setString("client_id", value.data.toString());
-                            showToast(value.message);
-                            if (_formKey.currentState!.validate()) {
-                              Get.to(() => const SelectPoolInfoScreen());
+                        if(widget.isnew == true){
+                          Get.to(() => const SelectPoolInfoScreen());
+                        }
+                        else{
+                          Client_Info_Repo(firstnameController.text, lastnameController.text,telephoneNumberController.text, emailController.text,
+                              addressController.text, villeController.text, codePostalController.text, context)
+                              .then((value) async {
+                            if (value.status == true) {
+                              SharedPreferences pref = await SharedPreferences.getInstance();
+                              pref.setString("client_id", value.data.toString());
+                              showToast(value.message);
+                              if (_formKey.currentState!.validate()) {
+                                Get.to(() => const SelectPoolInfoScreen());
+                              }
+                            } else {
+                              showToast(value.message);
                             }
-                          } else {
-                            showToast(value.message);
-                          }
-                        });
+                          });
+                        }
                       },
                       title: 'suivant',
                     ),

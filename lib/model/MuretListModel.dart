@@ -72,7 +72,7 @@ class MuretData {
     linearFeet = json['linear_feet'];
     positionnement = json['positionnement'];
     typeOfWaste = json['type_of_waste'];
-    typeOfMuret = json['typeOfMuret'];
+    typeOfMuret = json['type_de_muret'];
     paverColor = json['paver_color'];
     couronnement = json['couronnement'];
     couleurDuCouronnement = json['couleur_du_couronnement'];
@@ -90,7 +90,7 @@ class MuretData {
     data['superficie'] = this.superficie;
     data['hauteur'] = this.hauteur;
     data['linear_feet'] = this.linearFeet;
-    data['typeOfMuret'] = this.typeOfMuret;
+    data['type_de_muret'] = this.typeOfMuret;
     data['positionnement'] = this.positionnement;
     data['type_of_waste'] = this.typeOfWaste;
     data['paver_color'] = this.paverColor;
