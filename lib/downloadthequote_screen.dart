@@ -3,6 +3,7 @@ import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DownloadthequoteScreen extends StatefulWidget {
@@ -54,29 +55,36 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 2,
+        title:  const Text(
+          'Download the quote',
+          style: TextStyle(color: Colors.black,),
+        ),
+        leading: GestureDetector(
+          onTap: (){
+            Get.back();
+          },
+            child: const Icon(Icons.arrow_back)),
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: size.height * 0.06,
-            ),
-            const Text(
-              'Download the quote',
-              style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
-            ),
+
             Padding(
               padding: MediaQuery.of(context).size.width > 800
                   ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
                   : MediaQuery.of(context).size.width > 600
                       ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 7)
-                      : const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                      : const EdgeInsets.only(left: 5, right: 5, top: 20, bottom: 20),
               child: Form(
                 key: _formKey,
                 child: Container(
                     child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 20),
                   child: Column(
                     children: [
                       const Padding(
