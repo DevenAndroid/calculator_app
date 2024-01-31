@@ -40,13 +40,18 @@ class _ExistingClientListState extends State<ExistingClientList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 2,
+        backgroundColor: Colors.white,
         title: const Text('Existing Client'),
         actions: [
           GestureDetector(
             onTap: (){
               Get.to(InfoClientScreen(isnew: false,));
             },
-              child: Icon(Icons.add_circle_outline,size: 40,))
+              child: const Padding(
+                padding: EdgeInsets.only(right: 10),
+                child: Icon(Icons.add_circle_outline,size: 35,),
+              ))
         ],
         automaticallyImplyLeading: false,
       ),
@@ -68,8 +73,18 @@ class _ExistingClientListState extends State<ExistingClientList> {
                         width: Get.width,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(2),
-                            border: Border.all(color: Colors.grey)),
+                            borderRadius: BorderRadius.circular(11),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black26,
+                                offset: Offset(
+                                  0.2,
+                                  0.2,
+                                ),
+                                blurRadius: 1,
+                              ),
+                            ]
+                        ),
                         child: GestureDetector(
                           onTap: (){
                             print("ffffffff${itemdData.id.toString()}");
