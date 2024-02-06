@@ -24,8 +24,7 @@ class _ExistingClientListState extends State<ExistingClientList> {
     existingClientData().then((value) {
       isDataLoading = true;
       model = value;
-      setState(() {
-      });
+      setState(() {});
     });
   }
 
@@ -33,24 +32,32 @@ class _ExistingClientListState extends State<ExistingClientList> {
   void initState() {
     super.initState();
     getData();
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 2,
+        elevation: 0.5,
         backgroundColor: Colors.white,
-        title: const Text('Existing Client'),
+        title: const Text(
+          'Existing Client',
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
           GestureDetector(
-            onTap: (){
-              Get.to(InfoClientScreen(isnew: false,));
-            },
+              onTap: () {
+                Get.to(InfoClientScreen(
+                  isnew: false,
+                ));
+              },
               child: const Padding(
                 padding: EdgeInsets.only(right: 10),
-                child: Icon(Icons.add_circle_outline,size: 35,),
+                child: Icon(
+                  Icons.add_circle_outline,
+                  size: 35,
+                  color: Colors.black,
+                ),
               ))
         ],
         automaticallyImplyLeading: false,
@@ -83,22 +90,29 @@ class _ExistingClientListState extends State<ExistingClientList> {
                                 ),
                                 blurRadius: 1,
                               ),
-                            ]
-                        ),
+                            ]),
                         child: GestureDetector(
-                          onTap: (){
-                            print("ffffffff${itemdData.id.toString()}");
-                            Get.to(InfoClientScreen(clientData: itemdData,clientId: itemdData.id.toString(),isnew: true,));
+                          onTap: () {
+                            print("manish${itemdData.id.toString()}");
+                            Get.to(InfoClientScreen(
+                              clientData: itemdData,
+                              clientId: itemdData.id.toString(),
+                              isnew: true,
+                            ));
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("First Name : ${itemdData.firstName.toString()}"),
-                              Text("LastName : ${itemdData.lastName.toString()}"),
+                              Text(
+                                  "First Name : ${itemdData.firstName.toString()}"),
+                              const SizedBox(height: 3,),
+                              Text(
+                                  "LastName : ${itemdData.lastName.toString()}"),
+                              const SizedBox(height: 3,),
                               Text("Email : ${itemdData.email.toString()}"),
-                              Text("Date: ${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(itemdData.createdAt))}")
-
-
+                              const SizedBox(height: 3,),
+                              Text(
+                                  "Date: ${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.parse(itemdData.createdAt))}")
                             ],
                           ),
                         ),

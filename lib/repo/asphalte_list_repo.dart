@@ -23,7 +23,6 @@ Future<Asphalte_list_model> asphalteListRepo({required clientId, required servic
     HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.acceptHeader: "application/json",
     HttpHeaders.authorizationHeader: 'Bearer ${loginModel.authToken}'
-
   };
 
   final response = await http.get(Uri.parse("${ApiUrl.detailsListScreenUrl}?client_id=$clientId&service_type=$serviceType"),

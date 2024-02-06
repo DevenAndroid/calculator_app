@@ -57,34 +57,42 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 2,
-        title:  const Text(
+        elevation: 0.5,
+        title: const Text(
           'Download the quote',
-          style: TextStyle(color: Colors.black,),
+          style: TextStyle(
+            color: Colors.black,
+          ),
         ),
         leading: GestureDetector(
-          onTap: (){
-            Get.back();
-          },
-            child: const Icon(Icons.arrow_back)),
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            )),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             Padding(
               padding: MediaQuery.of(context).size.width > 800
-                  ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
+                  ? EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 3)
                   : MediaQuery.of(context).size.width > 600
-                      ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 7)
-                      : const EdgeInsets.only(left: 5, right: 5, top: 20, bottom: 20),
+                      ? EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 7)
+                      : const EdgeInsets.only(
+                          left: 5, right: 5, top: 20, bottom: 20),
               child: Form(
                 key: _formKey,
                 child: Container(
                     child: Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 20),
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 0, bottom: 20),
                   child: Column(
                     children: [
                       const Padding(
@@ -93,7 +101,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Prix du total - Tourbe',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -104,7 +115,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                               side: const BorderSide(color: Color(0xff019444)),
                               onChanged: (value) async {
                                 this.tourbe_Prix_du_marche_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -131,7 +143,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -156,7 +171,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.tourbe_Prix_gazon_tropical_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -185,7 +201,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -210,7 +229,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.tourbe_Prix_meuileur_offre_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -239,7 +259,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -264,7 +287,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.tourbe_Prix_conclu_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -293,7 +317,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -323,7 +350,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Prix du total - Pave',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -335,7 +365,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.pave_Prix_du_marche_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -364,7 +395,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -389,7 +423,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.pave_Prix_gazon_tropical_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -418,7 +453,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -443,7 +481,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.pave_Prix_meuileur_offre_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -472,7 +511,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -497,7 +539,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.pave_Prix_conclu_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -526,7 +569,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -556,7 +602,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Prix du total - Plates Bandes',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -568,7 +617,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.platesBands_Prix_du_marche_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -597,7 +647,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -622,7 +675,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.platesBands_gazon_tropical_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -651,7 +705,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -676,7 +733,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.platesBands_meuileur_offre_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -705,7 +763,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -730,7 +791,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.platesBands_conclu_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -759,7 +821,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -789,7 +854,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Prix du total - muret',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -801,7 +869,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_Prix_du_marche_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -830,7 +899,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -855,7 +927,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_gazon_tropical_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -884,7 +957,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -909,7 +985,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_meuileur_offre_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -938,7 +1015,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -963,7 +1043,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_conclu_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -992,7 +1073,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1022,7 +1106,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Prix du total - margelle',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -1034,7 +1121,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.margelle_Prix_du_marche_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1063,7 +1151,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1088,7 +1179,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.margelle_gazon_tropical_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1117,7 +1209,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1142,7 +1237,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.margelle_meuileur_offre_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1171,7 +1267,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1196,7 +1295,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.margelle_conclu_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1225,7 +1325,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1255,7 +1358,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Prix du total - Asphalte',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -1267,7 +1373,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.Asphalte_Prix_du_marche_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1296,7 +1403,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1321,7 +1431,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.Asphalte_gazon_tropical_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1350,7 +1461,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1375,7 +1489,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.Asphalte_meuileur_offre_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1404,7 +1519,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1429,7 +1547,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.Asphalte_conclu_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1458,7 +1577,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1488,7 +1610,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Prix du total - Drain',
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.normal),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                       ),
@@ -1500,7 +1625,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_Prix_du_marche_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1529,7 +1655,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1554,7 +1683,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_gazon_tropical_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1583,7 +1713,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1608,7 +1741,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_meuileur_offre_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1637,7 +1771,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
@@ -1662,7 +1799,8 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                             onChanged: (value) {
                               setState(() async {
                                 this.muret_conclu_value = value!;
-                                SharedPreferences pref = await SharedPreferences.getInstance();
+                                SharedPreferences pref =
+                                    await SharedPreferences.getInstance();
                                 var id = pref.getString("client_id");
                                 downloadquote_Repo(
                                         clientID: id.toString(),
@@ -1691,7 +1829,10 @@ class _DownloadthequoteScreenState extends State<DownloadthequoteScreen> {
                           const Spacer(),
                           const Text(
                             '\$${2357.55}',
-                            style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(
                             width: 5,
