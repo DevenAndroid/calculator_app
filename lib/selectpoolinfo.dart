@@ -16,10 +16,13 @@ import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/tourbe_list_screen.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'clotureScreen.dart';
+import 'cloture_list_screen.dart';
 import 'downloadthequote_screen.dart';
 import 'model/DrainListModel.dart';
 import 'model/MuretListModel.dart';
@@ -370,27 +373,32 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                   ),
                 ),
               ),
-              Container(
-                width: Get.width,
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(11),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(
-                          0.2,
-                          0.2,
+              GestureDetector(
+                onTap: (){
+                  Get.to(const ClotureListScreen());
+                },
+                child: Container(
+                  width: Get.width,
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(
+                            0.2,
+                            0.2,
+                          ),
+                          blurRadius: 1,
                         ),
-                        blurRadius: 1,
-                      ),
-                    ]),
-                child: const ListTile(
-                    title: Text(
-                  "Cloture",
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                )),
+                      ]),
+                  child: const ListTile(
+                      title: Text(
+                    "Cloture",
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  )),
+                ),
               ),
               Container(
                 width: Get.width,

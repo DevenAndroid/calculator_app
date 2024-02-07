@@ -27,6 +27,7 @@ class ApiUrl {
   static const String deletetourmargelle = "${baseUrl}margelle-delete";
   static const String downloadquotes = "${baseUrl}quatation-price";
   static const String existingClient = "${baseUrl}unsave-data";
+  static const String couleurClient = "${baseUrl}save-cloture-data";
 
 }
 
