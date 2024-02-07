@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Sunrise',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: false,
       ),
       home: const LoginScreen(),
