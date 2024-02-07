@@ -87,6 +87,14 @@ class _MuretScreenState extends State<MuretScreen> {
   @override
   void initState() {
     super.initState();
+    PositionnementselectedValue = yourModelList.first;
+    TypededechetselectedValue = TypededechetList.first;
+    TypedeMuretselectedValue = TypedeMuretList.first;
+    CouleurdepaveselectedValue = CouleurdepaveList.first;
+    CouronnementselectedValue = CouronnementList.first;
+    CouleurducouronnementselectedValue = CouleurducouronnementList.first;
+    infrastructureselectedValue = infrastructureList.first;
+
     if (widget.muretData != null) {
       superficieController.text = widget.muretData!.superficie.toString();
       hauteurController.text = widget.muretData!.hauteur.toString();
@@ -134,7 +142,7 @@ class _MuretScreenState extends State<MuretScreen> {
         title: Text(
           'Muret',
           style: GoogleFonts.poppins(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',

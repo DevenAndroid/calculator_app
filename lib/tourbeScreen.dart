@@ -85,6 +85,11 @@ class _TourbeScreenState extends State<TourbeScreen> {
   @override
   void initState() {
     super.initState();
+    profondeurselectedValue = profondeurList.first;
+    PositionnementselectedValue = yourModelList.first;
+    DetourberselectedValue = DetourberList.first;
+    TypededechetselectedValue = TypededechetList.first;
+
     if (widget.tourbeData != null) {
       superficieController.text = widget.tourbeData!.superficie.toString();
       profondeurselectedValue = profondeurList.firstWhere(

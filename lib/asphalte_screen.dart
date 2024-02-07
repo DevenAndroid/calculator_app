@@ -94,6 +94,13 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   @override
   void initState() {
     super.initState();
+    NouvelleInfraselectedValue = NouvelleInfraList.first;
+    PositionnementselectedValue = yourModelList.first;
+    TypededechetselectedValue = TypededechetList.first;
+    ContourenPaveselectedValue = ContourenPaveList.first;
+    TypedepaveuniselectedValue = TypedepaveuniList.first;
+    CouleurdepaveselectedValue = CouleurdepaveList.first;
+    CouleurdesableselectedValue = CouleurdesablePaveList.first;
     if (widget.asphalteData != null) {
       superficieController.text = widget.asphalteData!.superficie.toString();
       NouvelleInfraselectedValue = NouvelleInfraList.firstWhere(

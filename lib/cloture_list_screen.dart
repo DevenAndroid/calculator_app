@@ -92,209 +92,216 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Cloture Details',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+    return Obx(() {
+      return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Cloture Details',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+          ),
+          leading: GestureDetector(
+              onTap: () {
+                Get.to(const SelectPoolInfoScreen());
+              },
+              child: const Icon(Icons.arrow_back)),
         ),
-        leading: GestureDetector(
-            onTap: () {
-              Get.to(const SelectPoolInfoScreen());
-            },
-            child: const Icon(Icons.arrow_back)),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: clotureListModel.value.data!.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 10),
-                    width: Get.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(2),
-                        border: Border.all(color: Colors.grey)),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        // Left Column with Image and Icons
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 10, top: 20, bottom: 10),
-                              child: CachedNetworkImage(
-                                imageUrl: '',
-                                errorWidget: (_, __, ___) =>
-                                    Image.asset('assets/images/noimage.png'),
-                                width: 80,
-                                height: 70,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    height: 30,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xff019444),
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 5),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    height: 30,
-                                    width: 40,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xff019444),
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                        const SizedBox(width: 10),
-                        // Right Column with Details
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              clotureListModel.value.data != null
+                  ?   ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: clotureListModel.value.data!.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10),
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(2),
+                          border: Border.all(color: Colors.grey)),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 10),
+                          // Left Column with Image and Icons
+                          Column(
                             children: [
-                              buildDetailRow(
-                                  'Superficie:',
-                                  clotureListModel
-                                      .value.data![index].typeDeCloture
-                                      .toString()),
-                              buildDetailRow(
-                                  'hauteur:',
-                                  clotureListModel.value.data![index].couleur
-                                      .toString()),
-                              buildDetailRow(
-                                  'linear_feet:',
-                                  clotureListModel.value.data![index].hauteur
-                                      .toString()),
-                              buildDetailRow(
-                                  'positionnement:',
-                                  clotureListModel
-                                      .value.data![index].porteDouble
-                                      .toString()),
-                              buildDetailRow(
-                                  'type_of_waste',
-                                  clotureListModel
-                                      .value.data![index].porteSimple
-                                      .toString()),
-                              buildDetailRow(
-                                  'type_de_muret',
-                                  clotureListModel
-                                      .value.data![index].nombreDeCoteauCarree
-                                      .toString()),
-                              buildDetailRow(
-                                  'paver_color',
-                                  clotureListModel
-                                      .value.data![index].nombreDePiedLineaire
-                                      .toString()),
-                              buildDetailRow(
-                                  'couronnement',
-                                  clotureListModel.value.data![index]
-                                      .nombreDePoteauFrostRond
-                                      .toString()),
-                              buildDetailRow(
-                                  'couleur_du_couronnement',
-                                  clotureListModel.value.data![index]
-                                      .nombreDePoteauPlaqueCarree
-                                      .toString()),
-                              buildDetailRow(
-                                  'infrastructure',
-                                  clotureListModel.value.data![index]
-                                      .nombreDePoteauPlaqueRond
-                                      .toString()),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 20, bottom: 10),
+                                child: CachedNetworkImage(
+                                  imageUrl: '',
+                                  errorWidget: (_, __, ___) =>
+                                      Image.asset('assets/images/noimage.png'),
+                                  width: 80,
+                                  height: 70,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      height: 30,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xff019444),
+                                          borderRadius: BorderRadius.circular(
+                                              5)),
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      height: 30,
+                                      width: 40,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xff019444),
+                                          borderRadius: BorderRadius.circular(
+                                              5)),
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
                             ],
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                      ],
-                    ),
-                  );
-                }),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CommonButtonBlue(
-                    onPressed: () async {
-                      Get.to(const SelectPoolInfoScreen());
-                    },
-                    title: 'Final Save',
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    width: Get.width,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Get.to(ClotureScreen());
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        surfaceTintColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          side: const BorderSide(
-                            color: Color(0xff019444),
+                          const SizedBox(width: 10),
+                          // Right Column with Details
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                buildDetailRow(
+                                    'Superficie:',
+                                    clotureListModel
+                                        .value.data![index].typeDeCloture
+                                        .toString()),
+                                buildDetailRow(
+                                    'hauteur:',
+                                    clotureListModel.value.data![index].couleur
+                                        .toString()),
+                                buildDetailRow(
+                                    'linear_feet:',
+                                    clotureListModel.value.data![index].hauteur
+                                        .toString()),
+                                buildDetailRow(
+                                    'positionnement:',
+                                    clotureListModel
+                                        .value.data![index].porteDouble
+                                        .toString()),
+                                buildDetailRow(
+                                    'type_of_waste',
+                                    clotureListModel
+                                        .value.data![index].porteSimple
+                                        .toString()),
+                                buildDetailRow(
+                                    'type_de_muret',
+                                    clotureListModel
+                                        .value.data![index].nombreDeCoteauCarree
+                                        .toString()),
+                                buildDetailRow(
+                                    'paver_color',
+                                    clotureListModel
+                                        .value.data![index].nombreDePiedLineaire
+                                        .toString()),
+                                buildDetailRow(
+                                    'couronnement',
+                                    clotureListModel.value.data![index]
+                                        .nombreDePoteauFrostRond
+                                        .toString()),
+                                buildDetailRow(
+                                    'couleur_du_couronnement',
+                                    clotureListModel.value.data![index]
+                                        .nombreDePoteauPlaqueCarree
+                                        .toString()),
+                                buildDetailRow(
+                                    'infrastructure',
+                                    clotureListModel.value.data![index]
+                                        .nombreDePoteauPlaqueRond
+                                        .toString()),
+                              ],
+                            ),
                           ),
+                          const SizedBox(width: 10),
+                        ],
+                      ),
+                    );
+                  })
+                  : const CircularProgressIndicator(),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CommonButtonBlue(
+                      onPressed: () async {
+                        Get.to(const SelectPoolInfoScreen());
+                      },
+                      title: 'Final Save',
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: Get.width,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Get.to(ClotureScreen());
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            side: const BorderSide(
+                              color: Color(0xff019444),
+                            ),
+                          ),
+                          textStyle: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
                         ),
-                        textStyle: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      icon: const Icon(
-                        Icons.add_circle_outline,
-                        color: Color(0xff019444),
-                      ),
-                      label: Text(
-                        "Add New".tr.toUpperCase(),
-                        style: GoogleFonts.poppins(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff019444)),
+                        icon: const Icon(
+                          Icons.add_circle_outline,
+                          color: Color(0xff019444),
+                        ),
+                        label: Text(
+                          "Add New".tr.toUpperCase(),
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff019444)),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            )
-          ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

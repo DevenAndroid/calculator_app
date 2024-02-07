@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:calculator_app/repo/cloture_Repo.dart';
@@ -47,8 +48,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
     PositionItem(id: 2, name: 'Ornemental'),
     PositionItem(id: 3, name: 'Verre'),
     PositionItem(id: 4, name: 'PVC'),
-    PositionItem(id: 4, name: 'ZEN'),
-    PositionItem(id: 4, name: 'Karbon'),
+    PositionItem(id: 5, name: 'ZEN'),
+    PositionItem(id: 6, name: 'Karbon'),
   ];
   List<PositionItem> choosesMailledechaineList = [
     PositionItem(id: 1, name: 'Noir'),
@@ -99,8 +100,10 @@ class _ClotureScreenState extends State<ClotureScreen> {
 
   List<PositionItem> PorteSimpleList = [];
 
+
+
   void generatePorteSimpleList() {
-    for (int i = 1; i <= 100; i++) {
+    for (int i = 1; i <= 50; i++) {
       PorteSimpleList.add(PositionItem(id: i, name: '$i'));
     }
   }
@@ -108,7 +111,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
   List<PositionItem> PorteDoubleList = [];
 
   void generatePorteDoubleList() {
-    for (int i = 1; i <= 100; i++) {
+    for (int i = 1; i <= 50; i++) {
       PorteDoubleList.add(PositionItem(id: i, name: '$i'));
     }
   }
@@ -148,13 +151,74 @@ class _ClotureScreenState extends State<ClotureScreen> {
   List<PositionItem> NombredepiedlineaireList = [];
 
   void generateNombredepiedlineaire() {
-    for (int i = 1; i <= 100; i++) {
+    for (int i = 1; i <= 600; i++) {
       NombredepiedlineaireList.add(PositionItem(id: i, name: '$i'));
       print('NombredepiedlineaireList generated');
       print(NombredepiedlineaireList.toString());
 
     }
   }
+
+  List<PositionItem> CouleurList = [];
+
+
+  List<PositionItem> getCouleurListForTypedecloture(PositionItem? selectedValue) {
+    if (selectedValue != null) {
+      if (selectedValue.id == 1) {
+        return [
+          PositionItem(id: 1, name: 'Noir'),
+          PositionItem(id: 2, name: 'Blanc'),
+          PositionItem(id: 3, name: 'Brun'),
+          PositionItem(id: 4, name: 'Taupe'),
+          PositionItem(id: 5, name: 'Vert'),
+          PositionItem(id: 6, name: 'Galvanise'),
+        ];
+      }
+      else if (selectedValue.id == 2) {
+        return [
+          PositionItem(id: 1, name: 'Noir'),
+          PositionItem(id: 2, name: 'Blanc'),
+          PositionItem(id: 3, name: 'Brun'),
+          PositionItem(id: 4, name: 'Taupe'),
+          PositionItem(id: 5, name: 'Vert'),
+          PositionItem(id: 6, name: 'Brun Commercial'),
+          PositionItem(id: 7, name: 'Argent Veine'),
+          PositionItem(id: 8, name: 'Cuivre Veine'),
+        ];
+      }
+      else if (selectedValue.id == 3) {
+        return [
+          PositionItem(id: 1, name: 'Verre'),
+
+        ];
+      }
+      else if (selectedValue.id == 4) {
+        return [
+          PositionItem(id: 1, name: 'Brun'),
+
+        ];
+      }
+      else if (selectedValue.id == 5) {
+        return [
+          PositionItem(id: 1, name: 'Noir'),
+
+        ];
+      }
+      else if (selectedValue.id == 6) {
+        return [
+          PositionItem(id: 1, name: 'Noir'),
+          PositionItem(id: 2, name: 'Gris'),
+          PositionItem(id: 3, name: 'Brun Commercial'),
+          PositionItem(id: 4, name: 'Brun Frost'),
+          PositionItem(id: 5, name: 'Brun Renard'),
+          PositionItem(id: 6, name: 'Brun Sierra'),
+          PositionItem(id: 7, name: 'Taupe'),
+        ];
+      }
+    }
+    return [];
+  }
+
 
   @override
   void initState() {
@@ -167,6 +231,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
     generateNombredepoteauFrostRondList();
     generatePorteDoubleList();
     generatePorteSimpleList();
+
+
 
   }
 
@@ -189,7 +255,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
             onTap: () {
               Get.back();
             },
-            child: Icon(Icons.arrow_back)),
+            child: const Icon(Icons.arrow_back)),
       ),
       body: SingleChildScrollView(
           child: Padding(
@@ -229,40 +295,38 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         ),
                         SizedBox(
                           height: 55,
-                          width: Get.width,
+                          width: MediaQuery.of(context).size.width,
                           child: Container(
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.grey.shade400),
                             ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: TypedeclotureselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        TypedeclotureselectedValue = newValue;
-                                      });
-                                    },
-                                    items: TypedeclotureList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: TypedeclotureselectedValue,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+
+                                    TypedeclotureselectedValue = newValue;
+                                    CouleurList = getCouleurListForTypedecloture(newValue);
+                                    CouleurselectedValue = CouleurList.first;
+                                  });
+                                },
+                                items: TypedeclotureList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           ),
                         ),
@@ -342,45 +406,43 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
+
+                        const SizedBox(height: 20),
                         SizedBox(
                           height: 55,
-                          width: Get.width,
+                          width: MediaQuery.of(context).size.width,
                           child: Container(
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.grey.shade400),
                             ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: CouleurselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        CouleurselectedValue = newValue;
-                                      });
-                                    },
-                                    items:
-                                    choosesMailledechaineList.map((PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: CouleurselectedValue,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    CouleurselectedValue = newValue;
+                                  });
+                                },
+                                items: CouleurList.map((PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
                             ),
                           ),
                         ),
+
                         const SizedBox(
                           height: 10,
                         ),

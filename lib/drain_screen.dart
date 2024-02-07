@@ -43,10 +43,10 @@ class _DrainScreenState extends State<DrainScreen> {
     PositionItem(
         id: 5, name: 'Drain de stationnement avec aluminum avec bassin'),
   ];
-
   @override
   void initState() {
     super.initState();
+    TypededrainselectedValue = TypededrainList.first; // Initialize with the first item
     if (widget.drainData != null) {
       TypededrainselectedValue = TypededrainList.firstWhere(
             (item) => item.name == widget.drainData!.typeDeDrain,
@@ -56,6 +56,7 @@ class _DrainScreenState extends State<DrainScreen> {
       log(widget.drainData!.toJson().toString());
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

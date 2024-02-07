@@ -103,14 +103,24 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   @override
   void initState() {
     super.initState();
+    TypedeBordureselectedValue = TypedeBordureList.first;
+    PositionnementselectedValue = yourModelList.first;
+    CouleurdepaveselectedValue = CouleurdepaveList.first;
+    CouleurdesableselectedValue = CouleurdesableList.first;
+    InfrastructureeselectedValue = InfrastructureList.first;
+    TypededechetselectedValue = TypededechetList.first;
+    TypeofpavageselectedValue = TypeofpavageList.first;
+
     if (widget.paveUniData != null) {
       perimeterController.text = widget.paveUniData!.perimeter.toString();
-      type_de_bordureController.text = widget.paveUniData!.typeDeBordure;
+      TypedeBordureselectedValue = TypedeBordureList.firstWhere(
+            (item) => item.name == widget.paveUniData!.typeDeBordure,
+        orElse: () => TypedeBordureList.first,
+      );
       PositionnementselectedValue = yourModelList.firstWhere(
             (item) => item.name == widget.paveUniData!.positionnement,
         orElse: () => yourModelList.first,
       );
-      positionnementController.text = widget.paveUniData!.positionnement;
       superficieController.text = widget.paveUniData!.superficie.toString();
       CouleurdepaveselectedValue = CouleurdepaveList.firstWhere(
             (item) => item.name == widget.paveUniData!.couleurDePave,
@@ -146,7 +156,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
         title: Text(
           'Pave Uni',
           style: GoogleFonts.poppins(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',

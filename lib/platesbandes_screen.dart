@@ -88,6 +88,12 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   @override
   void initState() {
     super.initState();
+    PositionnementselectedValue = yourModelList.first;
+    FinitionselectedValue = FinitionList.first;
+    CouleurfinitionselectedValue = CouleurfinitionList.first;
+    BordureselectedValue = BorduretList.first;
+    CouleurselectedValue = CouleurList.first;
+    PlantationselectedValue = PlantationList.first;
     if (widget.platesBandesData != null) {
       superficieController.text = widget.platesBandesData!.superficie.toString();
       profondeurController.text = widget.platesBandesData!.profondeur.toString();
@@ -129,7 +135,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
         title: Text(
           'Plates Bandes',
           style: GoogleFonts.poppins(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',

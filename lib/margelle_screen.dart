@@ -59,7 +59,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
         title: Text(
           'Margelle',
           style: GoogleFonts.poppins(
-            color: Colors.black,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',
