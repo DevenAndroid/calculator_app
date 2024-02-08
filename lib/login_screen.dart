@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:calculator_app/infoclient_screen.dart';
 import 'package:calculator_app/repo/login_repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -49,34 +48,36 @@ class _LoginScreenState extends State<LoginScreen> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Container(
-                height: Get.height,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.9), BlendMode.darken),
-                        image:
-                            const AssetImage('assets/images/background.png'))),
-                child: Padding(
-                  padding: MediaQuery.of(context).size.width > 800
-                      ? EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width / 3)
-                      : MediaQuery.of(context).size.width > 600
-                          ? EdgeInsets.symmetric(
-                              horizontal: MediaQuery.of(context).size.width / 7)
-                          : const EdgeInsets.only(
-                              left: 10, right: 10, top: 20, bottom: 20),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: size.height * 0.34,
-                          ),
+        body: Container(
+          height: Get.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.9),
+                BlendMode.darken,
+              ),
+              image: const AssetImage('assets/images/background.png'),
+            ),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+                padding: MediaQuery.of(context).size.width > 800
+                    ? EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 3)
+                    : MediaQuery.of(context).size.width > 600
+                    ? EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 7)
+                    : const EdgeInsets.only(
+                    left: 10, right: 10, top: 20, bottom: 20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                  SizedBox(height: size.height * 0.34),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,

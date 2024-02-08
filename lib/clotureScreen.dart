@@ -59,7 +59,6 @@ class _ClotureScreenState extends State<ClotureScreen> {
     PositionItem(id: 2, name: 'Vert'),
     PositionItem(id: 2, name: 'Galvanise'),
   ];
-
   List<PositionItem> choosesOrnementalList = [
     PositionItem(id: 1, name: 'Noir'),
     PositionItem(id: 2, name: 'Blanc'),
@@ -70,15 +69,12 @@ class _ClotureScreenState extends State<ClotureScreen> {
     PositionItem(id: 2, name: 'Argent Veine'),
     PositionItem(id: 2, name: 'Cuivre Veine'),
   ];
-
-
   List<PositionItem> choosesPVCList = [
     PositionItem(id: 2, name: 'Brun'),
   ];
   List<PositionItem> choosesZENList = [
     PositionItem(id: 2, name: 'Noir'),
   ];
-
   List<PositionItem> choosesKARBONList = [
     PositionItem(id: 1, name: 'Noir'),
     PositionItem(id: 2, name: 'Gris'),
@@ -88,16 +84,12 @@ class _ClotureScreenState extends State<ClotureScreen> {
     PositionItem(id: 2, name: 'Brun Sierra'),
     PositionItem(id: 2, name: 'Taupe'),
   ];
-
-
   List<PositionItem> HauteurList = [
     PositionItem(id: 1, name: '3 pieds'),
     PositionItem(id: 1, name: '4 pieds'),
     PositionItem(id: 1, name: '5 pieds'),
     PositionItem(id: 1, name: '6 pieds'),
   ];
-
-
   List<PositionItem> PorteSimpleList = [];
 
 
@@ -232,6 +224,9 @@ class _ClotureScreenState extends State<ClotureScreen> {
     generatePorteDoubleList();
     generatePorteSimpleList();
 
+    if (widget.clotureData != null){
+
+    }
 
 
   }

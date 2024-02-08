@@ -147,7 +147,12 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                               Row(
                                 children: [
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Get.to(ClotureScreen(
+                                        clotureData: clotureListModel
+                                            .value.data![index],
+                                      ));
+                                    },
                                     child: Container(
                                       height: 30,
                                       width: 40,

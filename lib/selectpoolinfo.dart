@@ -8,6 +8,8 @@ import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/paveuni_list_screen.dart';
 import 'package:calculator_app/repo/MuretListRepo.dart';
 import 'package:calculator_app/repo/asphalte_list_repo.dart';
+import 'package:calculator_app/repo/clotureListRepo.dart';
+import 'package:calculator_app/repo/cloture_Repo.dart';
 import 'package:calculator_app/repo/drainList_repo.dart';
 import 'package:calculator_app/repo/margelleListRepo.dart';
 import 'package:calculator_app/repo/paveuni_list_repo.dart';
@@ -28,6 +30,7 @@ import 'model/DrainListModel.dart';
 import 'model/MuretListModel.dart';
 import 'model/PlatesBandesListModel.dart';
 import 'model/asphalte_list_model.dart';
+import 'model/cloturelistScreenModel.dart';
 import 'model/margelleListModel.dart';
 import 'model/paveuni_list_model.dart';
 import 'model/tourbe_list_model.dart';
@@ -48,6 +51,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   Rx<MuretListModel> muretListModel = MuretListModel().obs;
   Rx<DrainListModel> drainListModel = DrainListModel().obs;
   Rx<MargelleListModel> margelleListModel = MargelleListModel().obs;
+  Rx<CloturelistScreenModel> cloturelistScreenModel = CloturelistScreenModel().obs;
 
   @override
   initState() {
@@ -59,6 +63,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
     muretListRepoFunction();
     drainListRepoFunction();
     margelleListRepoFunction();
+    clotureListRepoFunction();
   }
 
   detailsListRepoFunction() async {
@@ -140,6 +145,17 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     margelleListRepo(clientId: id, serviceType: "margelle").then((value) {
       margelleListModel.value = value;
+      log(value.toString());
+      setState(() {});
+    });
+  }
+  clotureListRepoFunction() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var id = pref.getString("client_id");
+    log("999999${id.toString()}");
+
+    clotureListRepo(clientId: id, serviceType: "couleur").then((value) {
+      cloturelistScreenModel.value = value;
       log(value.toString());
       setState(() {});
     });
@@ -393,11 +409,16 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                           blurRadius: 1,
                         ),
                       ]),
-                  child: const ListTile(
-                      title: Text(
-                    "Cloture",
-                    style: TextStyle(color: Colors.black, fontSize: 20),
-                  )),
+                  child: ListTile(
+                    title: const Text(
+                      "Cloture",
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    ),
+                    trailing: cloturelistScreenModel.value.data != null && cloturelistScreenModel.value.data!.isNotEmpty
+                        ? const Text('checked', style: TextStyle(color: Colors.black))
+                        : const SizedBox(),
+                  ),
+
                 ),
               ),
               Container(
