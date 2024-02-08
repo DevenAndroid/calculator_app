@@ -28,6 +28,7 @@ class ApiUrl {
   static const String downloadquotes = "${baseUrl}quatation-price";
   static const String existingClient = "${baseUrl}unsave-data";
   static const String couleurClient = "${baseUrl}save-cloture-data";
+  static const String deletecouleurClient = "${baseUrl}clotureData-delete";
 
 }
 

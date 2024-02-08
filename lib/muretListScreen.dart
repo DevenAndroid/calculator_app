@@ -213,7 +213,7 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                             .value.data![index].hauteur
                                             .toString()),
                                     buildDetailRow(
-                                        'linear_feet:',
+                                        'linear feet:',
                                         muretListModel
                                             .value.data![index].linearFeet
                                             .toString()),
@@ -223,17 +223,17 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                             .value.data![index].positionnement
                                             .toString()),
                                     buildDetailRow(
-                                        'type_of_waste',
+                                        'type of waste',
                                         muretListModel
                                             .value.data![index].typeOfWaste
                                             .toString()),
                                     buildDetailRow(
-                                        'type_de_muret',
+                                        'type de muret',
                                         muretListModel
                                             .value.data![index].typeOfMuret
                                             .toString()),
                                     buildDetailRow(
-                                        'paver_color',
+                                        'paver color',
                                         muretListModel
                                             .value.data![index].paverColor
                                             .toString()),
@@ -243,7 +243,7 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                             .value.data![index].couronnement
                                             .toString()),
                                     buildDetailRow(
-                                        'couleur_du_couronnement',
+                                        'couleur du couronnement',
                                         muretListModel.value.data![index]
                                             .couleurDuCouronnement
                                             .toString()),

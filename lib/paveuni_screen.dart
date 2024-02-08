@@ -156,7 +156,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
         title: Text(
           'Pave Uni',
           style: GoogleFonts.poppins(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',

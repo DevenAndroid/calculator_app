@@ -135,7 +135,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
         title: Text(
           'Plates Bandes',
           style: GoogleFonts.poppins(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',

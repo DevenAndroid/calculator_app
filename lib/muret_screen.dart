@@ -142,7 +142,7 @@ class _MuretScreenState extends State<MuretScreen> {
         title: Text(
           'Muret',
           style: GoogleFonts.poppins(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',

@@ -1,20 +1,13 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:calculator_app/repo/cloture_Repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'cloture_list_screen.dart';
-import 'model/client_info_model.dart';
 import 'model/cloturelistScreenModel.dart';
 
 class ClotureScreen extends StatefulWidget {
@@ -214,7 +207,6 @@ class _ClotureScreenState extends State<ClotureScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     generateNombredepiedlineaire();
     generateNombredePoteauPlaqueCarreeList();
@@ -224,12 +216,66 @@ class _ClotureScreenState extends State<ClotureScreen> {
     generatePorteDoubleList();
     generatePorteSimpleList();
 
+    TypedeclotureselectedValue = TypedeclotureList.isNotEmpty ? TypedeclotureList.first : null;
+    CouleurselectedValue = CouleurList.isNotEmpty ? CouleurList.first : null;
+    HauteurselectedValue = HauteurList.isNotEmpty ? HauteurList.first : null;
+    PorteSimpleselectedValue = PorteSimpleList.isNotEmpty ? PorteSimpleList.first : null;
+    PorteDoubleselectedValue = PorteDoubleList.isNotEmpty ? PorteDoubleList.first : null;
+    NombredepoteauFrostRondselectedValue = NombredepoteauFrostRondList.isNotEmpty ? NombredepoteauFrostRondList.first : null;
+    NombredePoteauPlaqueRondselectedValue = NombredePoteauPlaqueRondList.isNotEmpty ? NombredePoteauPlaqueRondList.first : null;
+    NombredePoteauCarreeselectedValue = NombredePoteauCarreeList.isNotEmpty ? NombredePoteauCarreeList.first : null;
+    NombredePoteauPlaqueCarreeselectedValue = NombredePoteauPlaqueCarreeList.isNotEmpty ? NombredePoteauPlaqueCarreeList.first : null;
+    NombredepiedlineaireselectedValue = NombredepiedlineaireList.isNotEmpty ? NombredepiedlineaireList.first : null;
+
     if (widget.clotureData != null){
+      TypedeclotureselectedValue = TypedeclotureList.isNotEmpty
+          ? TypedeclotureList.firstWhere(
+            (item) => item.name == widget.clotureData!.typeDeCloture,
+        orElse: () => TypedeclotureList.first,
+      )
+          : null;
+      CouleurselectedValue = CouleurList.isNotEmpty ?
+      CouleurselectedValue = CouleurList.firstWhere(
+            (item) => item.name == widget.clotureData!.couleur,
+        orElse: () => CouleurList.first,
+      ) :null ;
+      HauteurselectedValue = HauteurList.isNotEmpty ?
+      HauteurselectedValue = HauteurList.firstWhere(
+            (item) => item.name == widget.clotureData!.hauteur,
+        orElse: () => HauteurList.first,
+      ) : null;
+      PorteSimpleselectedValue = PorteSimpleList.firstWhere(
+            (item) => item.name == widget.clotureData!.porteSimple,
+        orElse: () => PorteSimpleList.first,
+      );
+      PorteDoubleselectedValue = PorteDoubleList.firstWhere(
+            (item) => item.name == widget.clotureData!.porteDouble,
+        orElse: () => PorteDoubleList.first,
+      );
+      NombredepoteauFrostRondselectedValue = NombredepoteauFrostRondList.firstWhere(
+            (item) => item.name == widget.clotureData!.nombreDePoteauFrostRond,
+        orElse: () => NombredepoteauFrostRondList.first,
+      );
+      NombredePoteauPlaqueRondselectedValue = NombredePoteauPlaqueRondList.firstWhere(
+            (item) => item.name == widget.clotureData!.nombreDePoteauPlaqueRond,
+        orElse: () => NombredePoteauPlaqueRondList.first,
+      );
+      NombredePoteauCarreeselectedValue = NombredePoteauCarreeList.firstWhere(
+            (item) => item.name == widget.clotureData!.nombreDeCoteauCarree,
+        orElse: () => NombredePoteauCarreeList.first,
+      );
+      NombredePoteauPlaqueCarreeselectedValue = NombredePoteauPlaqueCarreeList.firstWhere(
+            (item) => item.name == widget.clotureData!.nombreDePoteauPlaqueCarree,
+        orElse: () => NombredePoteauPlaqueCarreeList.first,
+      );
 
+      NombredepiedlineaireselectedValue = NombredepiedlineaireList.firstWhere(
+            (item) => item.name == widget.clotureData!.nombreDePiedLineaire,
+        orElse: () => NombredepiedlineaireList.first,
+      );
     }
-
-
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -240,7 +286,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
         title: Text(
           'Cloture',
           style: GoogleFonts.poppins(
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 30,
             // fontFamily: 'poppins',

@@ -226,12 +226,12 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                             .value.data![index].finition
                                             .toString()),
                                     buildDetailRow(
-                                        'couleur_finition',
+                                        'couleur finition',
                                         platesbandesListModel
                                             .value.data![index].couleurFinition
                                             .toString()),
                                     buildDetailRow(
-                                        'combien_de_pouces',
+                                        'combien de pouces',
                                         platesbandesListModel
                                             .value.data![index].combienDePouces
                                             .toString()),

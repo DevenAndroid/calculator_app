@@ -201,7 +201,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     buildDetailRow(
-                                        'type_de_drain:',
+                                        'type de drain:',
                                         drainListModel
                                             .value.data![index].typeDeDrain
                                             .toString()),

@@ -206,7 +206,7 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                             .value.data![index].superficie
                                             .toString()),
                                     buildDetailRow(
-                                        'nouvelle_infra:',
+                                        'nouvelle infra:',
                                         asphalteListModel
                                             .value.data![index].nouvelleInfra
                                             .toString()),
@@ -216,32 +216,32 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                             .value.data![index].positionnement
                                             .toString()),
                                     buildDetailRow(
-                                        'type_of_waste:',
+                                        'type of waste:',
                                         asphalteListModel
                                             .value.data![index].typeOfWaste
                                             .toString()),
                                     buildDetailRow(
-                                        'pouces_asphalte',
+                                        'pouces asphalte',
                                         asphalteListModel
                                             .value.data![index].poucesAsphalte
                                             .toString()),
                                     buildDetailRow(
-                                        'contour_en_pave',
+                                        'contour en pave',
                                         asphalteListModel
                                             .value.data![index].contourEnPave
                                             .toString()),
                                     buildDetailRow(
-                                        'type_of_plain_pavers',
+                                        'type of plain pavers',
                                         asphalteListModel
                                             .value.data![index].typeOfPlainPavers
                                             .toString()),
                                     buildDetailRow(
-                                        'paver_color',
+                                        'paver color',
                                         asphalteListModel
                                             .value.data![index].paverColor
                                             .toString()),
                                     buildDetailRow(
-                                        'polymer_sand_color',
+                                        'polymer sand color',
                                         asphalteListModel
                                             .value.data![index].polymerSandColor
                                             .toString()),

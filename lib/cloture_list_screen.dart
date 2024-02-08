@@ -35,6 +35,8 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
     detailsListRepoFunction();
   }
 
+
+
   Widget buildDetailRow(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,7 +70,7 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
     };
-    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourbodata),
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletecouleurClient),
         headers: headers, body: jsonEncode(map));
     log(response.body.toString());
     if (response.statusCode == 200 || response.statusCode == 400) {
@@ -168,7 +170,14 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                                   ),
                                   const SizedBox(width: 5),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      removeAddress(
+                                        context: context,
+                                        id: clotureListModel
+                                            .value.data![index].id,
+                                      ).then((value) =>
+                                      {detailsListRepoFunction()});
+                                    },
                                     child: Container(
                                       height: 30,
                                       width: 40,
@@ -194,50 +203,50 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 buildDetailRow(
-                                    'Superficie:',
+                                    'type De Cloture:',
                                     clotureListModel
                                         .value.data![index].typeDeCloture
                                         .toString()),
                                 buildDetailRow(
-                                    'hauteur:',
+                                    'couleur:',
                                     clotureListModel.value.data![index].couleur
                                         .toString()),
                                 buildDetailRow(
-                                    'linear_feet:',
+                                    'hauteur:',
                                     clotureListModel.value.data![index].hauteur
                                         .toString()),
                                 buildDetailRow(
-                                    'positionnement:',
+                                    'porte Double:',
                                     clotureListModel
                                         .value.data![index].porteDouble
                                         .toString()),
                                 buildDetailRow(
-                                    'type_of_waste',
+                                    'porte Simple',
                                     clotureListModel
                                         .value.data![index].porteSimple
                                         .toString()),
                                 buildDetailRow(
-                                    'type_de_muret',
+                                    'nombre De CoteauCarree',
                                     clotureListModel
                                         .value.data![index].nombreDeCoteauCarree
                                         .toString()),
                                 buildDetailRow(
-                                    'paver_color',
+                                    'nombre De Pied Lineaire',
                                     clotureListModel
                                         .value.data![index].nombreDePiedLineaire
                                         .toString()),
                                 buildDetailRow(
-                                    'couronnement',
+                                    'nombre De Poteau Frost Rond',
                                     clotureListModel.value.data![index]
                                         .nombreDePoteauFrostRond
                                         .toString()),
                                 buildDetailRow(
-                                    'couleur_du_couronnement',
+                                    'nombre De Poteau Plaque Carree',
                                     clotureListModel.value.data![index]
                                         .nombreDePoteauPlaqueCarree
                                         .toString()),
                                 buildDetailRow(
-                                    'infrastructure',
+                                    'nombre De Poteau Plaque Rond',
                                     clotureListModel.value.data![index]
                                         .nombreDePoteauPlaqueRond
                                         .toString()),
