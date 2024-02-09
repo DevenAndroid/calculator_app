@@ -211,6 +211,14 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                                     'couleur:',
                                     clotureListModel.value.data![index].couleur
                                         .toString()),
+                                clotureListModel.value.data![index] != null ? buildDetailRow(
+                                    'Lattes:',
+                                    clotureListModel.value.data![index].modele
+                                        .toString()) :SizedBox(),
+                                clotureListModel.value.data![index] != null ? buildDetailRow(
+                                    'Modele:',
+                                    clotureListModel.value.data![index].lattes
+                                        .toString()) : SizedBox(),
                                 buildDetailRow(
                                     'hauteur:',
                                     clotureListModel.value.data![index].hauteur

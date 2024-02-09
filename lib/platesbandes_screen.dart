@@ -79,6 +79,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     PositionItem(id: 2, name: 'Rocher marbre blanc 3/4'),
     PositionItem(id: 3, name: 'Pierre de riviere 3/4'),
     PositionItem(id: 4, name: 'Ardoise noir petite'),
+    PositionItem(id: 5, name: 'terre de finition noir'),
   ];
   List<PositionItem> CouleurList = [
     PositionItem(id: 1, name: 'Gris Charbon'),

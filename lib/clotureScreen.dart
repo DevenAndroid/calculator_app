@@ -1,9 +1,12 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:calculator_app/repo/cloture_Repo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,22 +22,32 @@ class ClotureScreen extends StatefulWidget {
 }
 
 class _ClotureScreenState extends State<ClotureScreen> {
+  TextEditingController NombredepiedlineaireselectedValue =
+      TextEditingController();
+  TextEditingController PorteSimpleselectedValue = TextEditingController();
+  TextEditingController PorteDoubleselectedValue = TextEditingController();
+  TextEditingController NombredepoteauFrostRondselectedValue =
+      TextEditingController();
+  TextEditingController NombredePoteauPlaqueRondselectedValue =
+      TextEditingController();
+  TextEditingController NombredePoteauCarreeselectedValue =
+      TextEditingController();
+  TextEditingController NombredePoteauPlaqueCarreeselectedValue =
+      TextEditingController();
+
   PositionItem? TypedeclotureselectedValue;
   PositionItem? CouleurselectedValue;
   PositionItem? HauteurselectedValue;
-  PositionItem? PorteSimpleselectedValue;
-  PositionItem? PorteDoubleselectedValue;
-  PositionItem? NombredepoteauFrostRondselectedValue;
-  PositionItem? NombredePoteauPlaqueRondselectedValue;
-  PositionItem? NombredePoteauCarreeselectedValue;
-  PositionItem? NombredePoteauPlaqueCarreeselectedValue;
-  PositionItem? NombredepiedlineaireselectedValue;
+  PositionItem? LattesselectedValue;
+  PositionItem? ModeleselectedValue;
+
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+
 
   List<PositionItem> TypedeclotureList = [
     PositionItem(id: 1, name: 'Maille de chaine'),
@@ -83,71 +96,23 @@ class _ClotureScreenState extends State<ClotureScreen> {
     PositionItem(id: 1, name: '5 pieds'),
     PositionItem(id: 1, name: '6 pieds'),
   ];
-  List<PositionItem> PorteSimpleList = [];
 
+  List<PositionItem> lattesList = [
+    PositionItem(id: 1, name: 'Yes'),
+    PositionItem(id: 2, name: 'No'),
+  ];
 
-
-  void generatePorteSimpleList() {
-    for (int i = 1; i <= 50; i++) {
-      PorteSimpleList.add(PositionItem(id: i, name: '$i'));
-    }
-  }
-
-  List<PositionItem> PorteDoubleList = [];
-
-  void generatePorteDoubleList() {
-    for (int i = 1; i <= 50; i++) {
-      PorteDoubleList.add(PositionItem(id: i, name: '$i'));
-    }
-  }
-
-  List<PositionItem> NombredepoteauFrostRondList = [];
-
-  void generateNombredepoteauFrostRondList() {
-    for (int i = 1; i <= 100; i++) {
-      NombredepoteauFrostRondList.add(PositionItem(id: i, name: '$i'));
-    }
-  }
-
-  List<PositionItem> NombredePoteauPlaqueRondList = [];
-
-  void generateNombredePoteauPlaqueRondList() {
-    for (int i = 1; i <= 100; i++) {
-      NombredePoteauPlaqueRondList.add(PositionItem(id: i, name: '$i'));
-    }
-  }
-
-  List<PositionItem> NombredePoteauCarreeList = [];
-
-  void generateNombredePoteauCarreeList() {
-    for (int i = 1; i <= 100; i++) {
-      NombredePoteauCarreeList.add(PositionItem(id: i, name: '$i'));
-    }
-  }
-
-  List<PositionItem> NombredePoteauPlaqueCarreeList = [];
-
-  void generateNombredePoteauPlaqueCarreeList() {
-    for (int i = 1; i <= 100; i++) {
-      NombredePoteauPlaqueCarreeList.add(PositionItem(id: i, name: '$i'));
-    }
-  }
-
-  List<PositionItem> NombredepiedlineaireList = [];
-
-  void generateNombredepiedlineaire() {
-    for (int i = 1; i <= 600; i++) {
-      NombredepiedlineaireList.add(PositionItem(id: i, name: '$i'));
-      print('NombredepiedlineaireList generated');
-      print(NombredepiedlineaireList.toString());
-
-    }
-  }
-
+  List<PositionItem> modeleList = [
+    PositionItem(id: 1, name: 'Cartier A'),
+    PositionItem(id: 2, name: 'Californien B'),
+    PositionItem(id: 2, name: 'Darwin D'),
+    PositionItem(id: 2, name: 'Eiffel E'),
+    PositionItem(id: 2, name: 'Faubourg F'),
+  ];
   List<PositionItem> CouleurList = [];
 
-
-  List<PositionItem> getCouleurListForTypedecloture(PositionItem? selectedValue) {
+  List<PositionItem> getCouleurListForTypedecloture(
+      PositionItem? selectedValue) {
     if (selectedValue != null) {
       if (selectedValue.id == 1) {
         return [
@@ -158,8 +123,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
           PositionItem(id: 5, name: 'Vert'),
           PositionItem(id: 6, name: 'Galvanise'),
         ];
-      }
-      else if (selectedValue.id == 2) {
+      } else if (selectedValue.id == 2) {
         return [
           PositionItem(id: 1, name: 'Noir'),
           PositionItem(id: 2, name: 'Blanc'),
@@ -170,26 +134,19 @@ class _ClotureScreenState extends State<ClotureScreen> {
           PositionItem(id: 7, name: 'Argent Veine'),
           PositionItem(id: 8, name: 'Cuivre Veine'),
         ];
-      }
-      else if (selectedValue.id == 3) {
+      } else if (selectedValue.id == 3) {
         return [
           PositionItem(id: 1, name: 'Verre'),
-
         ];
-      }
-      else if (selectedValue.id == 4) {
+      } else if (selectedValue.id == 4) {
         return [
           PositionItem(id: 1, name: 'Brun'),
-
         ];
-      }
-      else if (selectedValue.id == 5) {
+      } else if (selectedValue.id == 5) {
         return [
           PositionItem(id: 1, name: 'Noir'),
-
         ];
-      }
-      else if (selectedValue.id == 6) {
+      } else if (selectedValue.id == 6) {
         return [
           PositionItem(id: 1, name: 'Noir'),
           PositionItem(id: 2, name: 'Gris'),
@@ -204,78 +161,64 @@ class _ClotureScreenState extends State<ClotureScreen> {
     return [];
   }
 
-
   @override
   void initState() {
     super.initState();
-    generateNombredepiedlineaire();
-    generateNombredePoteauPlaqueCarreeList();
-    generateNombredePoteauCarreeList();
-    generateNombredePoteauPlaqueRondList();
-    generateNombredepoteauFrostRondList();
-    generatePorteDoubleList();
-    generatePorteSimpleList();
-
-    TypedeclotureselectedValue = TypedeclotureList.isNotEmpty ? TypedeclotureList.first : null;
+    TypedeclotureselectedValue =
+        TypedeclotureList.isNotEmpty ? TypedeclotureList.first : null;
     CouleurselectedValue = CouleurList.isNotEmpty ? CouleurList.first : null;
     HauteurselectedValue = HauteurList.isNotEmpty ? HauteurList.first : null;
-    PorteSimpleselectedValue = PorteSimpleList.isNotEmpty ? PorteSimpleList.first : null;
-    PorteDoubleselectedValue = PorteDoubleList.isNotEmpty ? PorteDoubleList.first : null;
-    NombredepoteauFrostRondselectedValue = NombredepoteauFrostRondList.isNotEmpty ? NombredepoteauFrostRondList.first : null;
-    NombredePoteauPlaqueRondselectedValue = NombredePoteauPlaqueRondList.isNotEmpty ? NombredePoteauPlaqueRondList.first : null;
-    NombredePoteauCarreeselectedValue = NombredePoteauCarreeList.isNotEmpty ? NombredePoteauCarreeList.first : null;
-    NombredePoteauPlaqueCarreeselectedValue = NombredePoteauPlaqueCarreeList.isNotEmpty ? NombredePoteauPlaqueCarreeList.first : null;
-    NombredepiedlineaireselectedValue = NombredepiedlineaireList.isNotEmpty ? NombredepiedlineaireList.first : null;
+    LattesselectedValue = lattesList.isNotEmpty ? lattesList.first : null;
+    ModeleselectedValue = modeleList.isNotEmpty ? modeleList.first : null;
 
-    if (widget.clotureData != null){
+    if (widget.clotureData != null) {
+      NombredepiedlineaireselectedValue.text =
+          widget.clotureData!.nombreDePiedLineaire.toString();
+      PorteSimpleselectedValue.text =
+          widget.clotureData!.porteSimple.toString();
+      PorteDoubleselectedValue.text =
+          widget.clotureData!.porteDouble.toString();
+      NombredepoteauFrostRondselectedValue.text =
+          widget.clotureData!.nombreDePoteauFrostRond.toString();
+      NombredePoteauPlaqueRondselectedValue.text =
+          widget.clotureData!.nombreDePoteauPlaqueRond.toString();
+      NombredePoteauCarreeselectedValue.text =
+          widget.clotureData!.nombreDeCoteauCarree.toString();
+      NombredePoteauPlaqueCarreeselectedValue.text =
+          widget.clotureData!.nombreDePoteauPlaqueCarree.toString();
+
       TypedeclotureselectedValue = TypedeclotureList.isNotEmpty
           ? TypedeclotureList.firstWhere(
-            (item) => item.name == widget.clotureData!.typeDeCloture,
-        orElse: () => TypedeclotureList.first,
+              (item) => item.name == widget.clotureData!.typeDeCloture,
+              orElse: () => TypedeclotureList.first,
+            )
+          : null;
+      CouleurselectedValue = CouleurList.isNotEmpty
+          ? CouleurselectedValue = CouleurList.firstWhere(
+              (item) => item.name == widget.clotureData!.couleur,
+              orElse: () => CouleurList.first,
+            )
+          : null;
+      HauteurselectedValue = HauteurList.isNotEmpty
+          ? HauteurselectedValue = HauteurList.firstWhere(
+              (item) => item.name == widget.clotureData!.hauteur,
+              orElse: () => HauteurList.first,
+            )
+          : null;
+      LattesselectedValue = lattesList.isNotEmpty
+          ? LattesselectedValue = lattesList.firstWhere(
+            (item) => item.name == widget.clotureData!.lattes,
+        orElse: () => lattesList.first,
       )
           : null;
-      CouleurselectedValue = CouleurList.isNotEmpty ?
-      CouleurselectedValue = CouleurList.firstWhere(
-            (item) => item.name == widget.clotureData!.couleur,
-        orElse: () => CouleurList.first,
-      ) :null ;
-      HauteurselectedValue = HauteurList.isNotEmpty ?
-      HauteurselectedValue = HauteurList.firstWhere(
-            (item) => item.name == widget.clotureData!.hauteur,
-        orElse: () => HauteurList.first,
-      ) : null;
-      PorteSimpleselectedValue = PorteSimpleList.firstWhere(
-            (item) => item.name == widget.clotureData!.porteSimple,
-        orElse: () => PorteSimpleList.first,
-      );
-      PorteDoubleselectedValue = PorteDoubleList.firstWhere(
-            (item) => item.name == widget.clotureData!.porteDouble,
-        orElse: () => PorteDoubleList.first,
-      );
-      NombredepoteauFrostRondselectedValue = NombredepoteauFrostRondList.firstWhere(
-            (item) => item.name == widget.clotureData!.nombreDePoteauFrostRond,
-        orElse: () => NombredepoteauFrostRondList.first,
-      );
-      NombredePoteauPlaqueRondselectedValue = NombredePoteauPlaqueRondList.firstWhere(
-            (item) => item.name == widget.clotureData!.nombreDePoteauPlaqueRond,
-        orElse: () => NombredePoteauPlaqueRondList.first,
-      );
-      NombredePoteauCarreeselectedValue = NombredePoteauCarreeList.firstWhere(
-            (item) => item.name == widget.clotureData!.nombreDeCoteauCarree,
-        orElse: () => NombredePoteauCarreeList.first,
-      );
-      NombredePoteauPlaqueCarreeselectedValue = NombredePoteauPlaqueCarreeList.firstWhere(
-            (item) => item.name == widget.clotureData!.nombreDePoteauPlaqueCarree,
-        orElse: () => NombredePoteauPlaqueCarreeList.first,
-      );
-
-      NombredepiedlineaireselectedValue = NombredepiedlineaireList.firstWhere(
-            (item) => item.name == widget.clotureData!.nombreDePiedLineaire,
-        orElse: () => NombredepiedlineaireList.first,
-      );
+      ModeleselectedValue = modeleList.isNotEmpty
+          ? ModeleselectedValue = modeleList.firstWhere(
+            (item) => item.name == widget.clotureData!.modele,
+        orElse: () => modeleList.first,
+      )
+          : null;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -349,13 +292,16 @@ class _ClotureScreenState extends State<ClotureScreen> {
                                 isExpanded: true,
                                 onChanged: (PositionItem? newValue) {
                                   setState(() {
-
                                     TypedeclotureselectedValue = newValue;
-                                    CouleurList = getCouleurListForTypedecloture(newValue);
+                                    CouleurList =
+                                        getCouleurListForTypedecloture(
+                                            newValue);
                                     CouleurselectedValue = CouleurList.first;
+                                    log(CouleurList.toString());
                                   });
                                 },
-                                items: TypedeclotureList.map((PositionItem model) {
+                                items:
+                                    TypedeclotureList.map((PositionItem model) {
                                   return DropdownMenuItem<PositionItem>(
                                     value: model,
                                     child: Text(
@@ -389,45 +335,17 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: NombredepiedlineaireselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        NombredepiedlineaireselectedValue =
-                                            newValue;
-                                      });
-                                    },
-                                    items: NombredepiedlineaireList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        RegisterTextFieldWidget(
+                          controller: NombredepiedlineaireselectedValue,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -447,8 +365,6 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-
-                        const SizedBox(height: 20),
                         SizedBox(
                           height: 55,
                           width: MediaQuery.of(context).size.width,
@@ -483,7 +399,128 @@ class _ClotureScreenState extends State<ClotureScreen> {
                             ),
                           ),
                         ),
-
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (TypedeclotureselectedValue?.name ==
+                            'Maille de chaine')
+                          Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'Lattes',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                    // fontFamily: 'poppins',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                height: 55,
+                                width: MediaQuery.of(context).size.width,
+                                child: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border:
+                                        Border.all(color: Colors.grey.shade400),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<PositionItem>(
+                                      value: LattesselectedValue,
+                                      isExpanded: true,
+                                      onChanged: (PositionItem? newValue) {
+                                        setState(() {
+                                          LattesselectedValue = newValue;
+                                        });
+                                      },
+                                      items:
+                                          lattesList.map((PositionItem model) {
+                                        return DropdownMenuItem<PositionItem>(
+                                          value: model,
+                                          child: Text(
+                                            model.name,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (TypedeclotureselectedValue?.name ==
+                            'Ornemental')
+                          Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'Modele',
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15,
+                                    // fontFamily: 'poppins',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                height: 55,
+                                width: MediaQuery.of(context).size.width,
+                                child: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    border:
+                                        Border.all(color: Colors.grey.shade400),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<PositionItem>(
+                                      value: ModeleselectedValue,
+                                      isExpanded: true,
+                                      onChanged: (PositionItem? newValue) {
+                                        setState(() {
+                                          ModeleselectedValue = newValue;
+                                        });
+                                      },
+                                      items:
+                                          modeleList.map((PositionItem model) {
+                                        return DropdownMenuItem<PositionItem>(
+                                          value: model,
+                                          child: Text(
+                                            model.name,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w300,
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -559,44 +596,17 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: PorteDoubleselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        PorteDoubleselectedValue = newValue;
-                                      });
-                                    },
-                                    items: PorteDoubleList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        RegisterTextFieldWidget(
+                          controller: PorteDoubleselectedValue,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -619,44 +629,17 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: PorteSimpleselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        PorteSimpleselectedValue = newValue;
-                                      });
-                                    },
-                                    items: PorteSimpleList.map(
-                                            (PositionItem model) {
-                                          return DropdownMenuItem<PositionItem>(
-                                            value: model,
-                                            child: Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        RegisterTextFieldWidget(
+                          controller: PorteSimpleselectedValue,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -676,45 +659,17 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: NombredepoteauFrostRondselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        NombredepoteauFrostRondselectedValue =
-                                            newValue;
-                                      });
-                                    },
-                                    items: NombredepoteauFrostRondList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        RegisterTextFieldWidget(
+                          controller: NombredepoteauFrostRondselectedValue,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -734,46 +689,17 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value:
-                                        NombredePoteauPlaqueRondselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        NombredePoteauPlaqueRondselectedValue =
-                                            newValue;
-                                      });
-                                    },
-                                    items: NombredePoteauPlaqueRondList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        RegisterTextFieldWidget(
+                          controller: NombredePoteauPlaqueRondselectedValue,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -793,45 +719,17 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: NombredePoteauCarreeselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        NombredePoteauCarreeselectedValue =
-                                            newValue;
-                                      });
-                                    },
-                                    items: NombredePoteauCarreeList.map(
-                                            (PositionItem model) {
-                                          return DropdownMenuItem<PositionItem>(
-                                            value: model,
-                                            child: Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        RegisterTextFieldWidget(
+                          controller: NombredePoteauCarreeselectedValue,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -854,46 +752,17 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value:
-                                        NombredePoteauPlaqueCarreeselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        NombredePoteauPlaqueCarreeselectedValue =
-                                            newValue;
-                                      });
-                                    },
-                                    items: NombredePoteauPlaqueCarreeList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        RegisterTextFieldWidget(
+                          controller: NombredePoteauPlaqueCarreeselectedValue,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
                         ),
                         const SizedBox(
                           height: 10,
@@ -911,92 +780,92 @@ class _ClotureScreenState extends State<ClotureScreen> {
                       children: [
                         widget.clotureData != null
                             ? CommonButtonBlue(
-                                onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
+                          onPressed: () async {
+                            SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                            var id = pref.getString("client_id");
 
-                                  cloture_Repo(
-                                    id.toString(),
-                                    TypedeclotureselectedValue!.name,
-                                    NombredepiedlineaireselectedValue!.name,
-                                    CouleurselectedValue!.name,
-                                    HauteurselectedValue!.name,
-                                    PorteSimpleselectedValue!.name,
-                                    PorteDoubleselectedValue!.name,
-                                    NombredepoteauFrostRondselectedValue!.name,
-                                    NombredePoteauPlaqueRondselectedValue!.name,
-                                    NombredePoteauCarreeselectedValue!.name,
-                                    NombredePoteauPlaqueCarreeselectedValue!.name,
-                                    context
-                                  ).then((value) async {
-                                    if (value.status == true) {
-                                      showToast(value.message);
-                                        Get.to(() => const ClotureListScreen());
-                                    } else {
-                                      showToast(value.message);
-                                    }
-                                  });
-                                },
-                                title: 'Update',
-                              )
+                            cloture_Repo(
+                              id.toString(),
+                              TypedeclotureselectedValue!.name,
+                              NombredepiedlineaireselectedValue.text,
+                              CouleurselectedValue!.name,
+                              HauteurselectedValue!.name,
+                              PorteSimpleselectedValue.text,
+                              PorteDoubleselectedValue.text,
+                              NombredepoteauFrostRondselectedValue.text,
+                              NombredePoteauPlaqueRondselectedValue.text,
+                              NombredePoteauCarreeselectedValue.text,
+                              NombredePoteauPlaqueCarreeselectedValue.text,
+                              LattesselectedValue!.name,
+                              ModeleselectedValue!.name,
+                              context,
+                            ).then((value) async {
+                              log('fffffff');
+
+                              if (value.status == true) {
+                                showToast(value.message);
+                                Get.to(() => const ClotureListScreen());
+                              } else {
+                                showToast(value.message);
+                              }
+                            });
+                          },
+                          title: 'Update',
+                        )
                             : CommonButtonBlue(
-                                onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
-                                  cloture_Repo(
-                                    id.toString(),
-                                    TypedeclotureselectedValue != null
-                                        ? TypedeclotureselectedValue!.name
-                                        : "",
-                                    NombredepiedlineaireselectedValue != null
-                                        ? NombredepiedlineaireselectedValue!
-                                            .name
-                                        : "",
-                                    CouleurselectedValue != null
-                                        ? CouleurselectedValue!.name
-                                        : "",
-                                    HauteurselectedValue != null
-                                        ? HauteurselectedValue!.name
-                                        : "",
-                                    PorteSimpleselectedValue != null
-                                        ? PorteSimpleselectedValue!.name
-                                        : "",
-                                    PorteDoubleselectedValue != null
-                                        ? PorteDoubleselectedValue!.name
-                                        : "",
-                                    NombredepoteauFrostRondselectedValue != null
-                                        ? NombredepoteauFrostRondselectedValue!
-                                            .name
-                                        : "",
-                                    NombredePoteauPlaqueRondselectedValue !=
-                                            null
-                                        ? NombredePoteauPlaqueRondselectedValue!
-                                            .name
-                                        : "",
-                                    NombredePoteauCarreeselectedValue != null
-                                        ? NombredePoteauCarreeselectedValue!
-                                            .name
-                                        : "",
-                                    NombredePoteauPlaqueCarreeselectedValue !=
-                                            null
-                                        ? NombredePoteauPlaqueCarreeselectedValue!
-                                            .name
-                                        : "",
-                                    context
-                                  ).then((value) {
-                                    if (value.status == true) {
-                                      showToast(value.message);
+                          onPressed: () async {
+                            SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                            var id = pref.getString("client_id");
 
-                                        Get.to(() => const ClotureListScreen());
-                                    } else {
-                                      showToast(value.message);
-                                    }
-                                  });
-                                },
-                                title: 'Save',
-                              ),
+                            String? selectedType;
+                            String? selectedLattes;
+                            String? selectedModele;
+
+                            if (TypedeclotureselectedValue != null) {
+                              selectedType = TypedeclotureselectedValue!.name;
+                            }
+
+                            if (selectedType == 'Maille de chaine' &&
+                                LattesselectedValue != null) {
+                              selectedLattes = LattesselectedValue!.name;
+                            }
+                            if (selectedType == 'Ornemental' &&
+                                ModeleselectedValue != null) {
+                              selectedModele = ModeleselectedValue!.name;
+                            }
+
+                            cloture_Repo(
+                              id.toString(),
+                              selectedType ?? '', // Send selected type if not null, otherwise send an empty string
+                              NombredepiedlineaireselectedValue.text,
+                              CouleurselectedValue != null
+                                  ? CouleurselectedValue!.name
+                                  : "",
+                              HauteurselectedValue != null
+                                  ? HauteurselectedValue!.name
+                                  : "",
+                              PorteSimpleselectedValue.text,
+                              PorteDoubleselectedValue.text,
+                              NombredepoteauFrostRondselectedValue.text,
+                              NombredePoteauPlaqueRondselectedValue.text,
+                              NombredePoteauCarreeselectedValue.text,
+                              NombredePoteauPlaqueCarreeselectedValue.text,
+                              selectedLattes ?? '',
+                              selectedModele ?? '',
+                              context,
+                            ).then((value) {
+                              if (value.status == true) {
+                                showToast(value.message);
+                                Get.to(() => const ClotureListScreen());
+                              } else {
+                                showToast(value.message);
+                              }
+                            });
+                          },
+                          title: 'Save',
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -1006,6 +875,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                       ],
                     ),
                   )
+
                 ]),
           ),
         ),
