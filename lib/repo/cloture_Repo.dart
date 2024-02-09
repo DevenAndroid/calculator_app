@@ -14,7 +14,7 @@ import '../widget/apiUrl.dart';
 
 Future<ClotureScreenModel> cloture_Repo(clientID,type_de_cloture, nombre_de_pied_lineaire,couleur,
     hauteur,porte_simple,porte_double,nombre_de_poteau_frost_rond,nombre_de_poteau_plaque_rond,nombre_de_coteau_carree,
-    nombre_de_poteau_plaque_carree,modele,lattes,context) async {
+    nombre_de_poteau_plaque_carree,modele,lattes,note,context) async {
   OverlayEntry loader = Helper.overlayLoader(context);
   Overlay.of(context)?.insert(loader);
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -33,6 +33,7 @@ Future<ClotureScreenModel> cloture_Repo(clientID,type_de_cloture, nombre_de_pied
   map['nombre_de_poteau_plaque_carree'] = nombre_de_poteau_plaque_carree;
   map['modele'] = modele;
   map['lattes'] = lattes;
+  map['note'] = note;
   log("fffffffff${map.toString()}");
   var header = {
     HttpHeaders.contentTypeHeader: "application/json",

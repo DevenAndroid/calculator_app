@@ -259,6 +259,11 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                                     clotureListModel.value.data![index]
                                         .nombreDePoteauPlaqueRond
                                         .toString()),
+                                buildDetailRow(
+                                    'note',
+                                    clotureListModel.value.data![index]
+                                        .note
+                                        .toString()),
                               ],
                             ),
                           ),

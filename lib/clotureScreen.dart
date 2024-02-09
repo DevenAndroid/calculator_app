@@ -35,6 +35,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
       TextEditingController();
   TextEditingController NombredePoteauPlaqueCarreeselectedValue =
       TextEditingController();
+  TextEditingController notecontroller =
+  TextEditingController();
 
   PositionItem? TypedeclotureselectedValue;
   PositionItem? CouleurselectedValue;
@@ -187,6 +189,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
           widget.clotureData!.nombreDeCoteauCarree.toString();
       NombredePoteauPlaqueCarreeselectedValue.text =
           widget.clotureData!.nombreDePoteauPlaqueCarree.toString();
+      notecontroller.text =
+          widget.clotureData!.note.toString();
 
       TypedeclotureselectedValue = TypedeclotureList.isNotEmpty
           ? TypedeclotureList.firstWhere(
@@ -768,6 +772,35 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Note',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: notecontroller,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: RequiredValidator(errorText: 'Please enter your Note').call,
+                          // keyboardType: TextInputType.none,
+                          // textInputAction: TextInputAction.next,
+                          // hint: 'Note...',
+                          maxLines: 3,
+                          minLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
@@ -796,6 +829,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                               NombredePoteauPlaqueCarreeselectedValue.text,
                               LattesselectedValue!.name,
                               ModeleselectedValue!.name,
+                              notecontroller.text,
                               context,
                             ).then((value) async {
                               log('fffffff');
@@ -849,6 +883,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                               NombredePoteauPlaqueCarreeselectedValue.text,
                               selectedLattes ?? '',
                               selectedModele ?? '',
+                              notecontroller.text,
                               context,
                             ).then((value) {
                               if (value.status == true) {
