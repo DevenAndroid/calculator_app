@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:calculator_app/model/existingClientModel.dart';
 import 'package:calculator_app/repo/existingClientRepo.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +26,7 @@ class _ExistingClientListState extends State<ExistingClientList> {
     existingClientData().then((value) {
       isDataLoading = true;
       model = value;
+      log("fhghhgf"+model.toJson().toString());
       setState(() {});
     });
   }
@@ -48,7 +51,7 @@ class _ExistingClientListState extends State<ExistingClientList> {
           GestureDetector(
               onTap: () {
                 Get.to(InfoClientScreen(
-                  isnew: false,
+                  isnew: true,
                 ));
               },
               child: const Padding(
@@ -97,7 +100,7 @@ class _ExistingClientListState extends State<ExistingClientList> {
                             Get.to(InfoClientScreen(
                               clientData: itemdData,
                               clientId: itemdData.id.toString(),
-                              isnew: true,
+                              isnew: false,
                             ));
                           },
                           child: Column(

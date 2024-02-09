@@ -15,7 +15,8 @@ import 'model/cloturelistScreenModel.dart';
 
 class ClotureScreen extends StatefulWidget {
   ClotureData? clotureData;
-  ClotureScreen({super.key, this.clotureData});
+  final String clientId;
+  ClotureScreen({super.key, this.clotureData, required this.clientId});
 
   @override
   State<ClotureScreen> createState() => _ClotureScreenState();
@@ -781,12 +782,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         widget.clotureData != null
                             ? CommonButtonBlue(
                           onPressed: () async {
-                            SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                            var id = pref.getString("client_id");
-
                             cloture_Repo(
-                              id.toString(),
+                              widget.clientId.toString(),
                               TypedeclotureselectedValue!.name,
                               NombredepiedlineaireselectedValue.text,
                               CouleurselectedValue!.name,
@@ -805,7 +802,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
 
                               if (value.status == true) {
                                 showToast(value.message);
-                                Get.to(() => const ClotureListScreen());
+                                Get.to(() => ClotureListScreen(clientId: widget.clientId,));
                               } else {
                                 showToast(value.message);
                               }
@@ -815,9 +812,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         )
                             : CommonButtonBlue(
                           onPressed: () async {
-                            SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                            var id = pref.getString("client_id");
+
 
                             String? selectedType;
                             String? selectedLattes;
@@ -837,7 +832,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                             }
 
                             cloture_Repo(
-                              id.toString(),
+                              widget.clientId.toString(),
                               selectedType ?? '', // Send selected type if not null, otherwise send an empty string
                               NombredepiedlineaireselectedValue.text,
                               CouleurselectedValue != null
@@ -858,7 +853,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                             ).then((value) {
                               if (value.status == true) {
                                 showToast(value.message);
-                                Get.to(() => const ClotureListScreen());
+                                Get.to(() => ClotureListScreen(clientId: widget.clientId));
                               } else {
                                 showToast(value.message);
                               }

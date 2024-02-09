@@ -20,7 +20,8 @@ import 'drain_screen.dart';
 
 class MuretScreen extends StatefulWidget {
   MuretData? muretData;
-   MuretScreen({super.key,this.muretData});
+  final String clientId;
+   MuretScreen({super.key,this.muretData, required this.clientId});
 
   @override
   State<MuretScreen> createState() => _MuretScreenState();
@@ -754,11 +755,8 @@ class _MuretScreenState extends State<MuretScreen> {
                             widget.muretData != null ?
                             CommonButtonBlue(
                               onPressed: () async {
-                                SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                                var id = pref.getString("client_id");
                                 Map<String, String> mapData = {
-                                  "client_id": id.toString(),
+                                  "client_id": widget.clientId.toString(),
                                   "superficie": superficieController.text,
                                   "hauteur": hauteurController.text,
                                   "linear_feet": linear_feetController.text,
@@ -778,7 +776,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                     file1: categoryFile.value)
                                     .then((value) {
                                   if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                                    Get.to(const MuretListScreen());
+                                    Get.to( MuretListScreen(clientId: widget.clientId));
 
                                   }else{
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -794,11 +792,8 @@ class _MuretScreenState extends State<MuretScreen> {
                             ) :
                             CommonButtonBlue(
                               onPressed: () async {
-                                SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                                var id = pref.getString("client_id");
                                 Map<String, String> mapData = {
-                                  "client_id": id.toString(),
+                                  "client_id": widget.clientId.toString(),
                                   "superficie": superficieController.text,
                                   "hauteur": hauteurController.text,
                                   "linear_feet": linear_feetController.text,
@@ -832,7 +827,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                     file1: categoryFile.value)
                                     .then((value) {
                                   if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                                    Get.to(const MuretListScreen());
+                                    Get.to( MuretListScreen(clientId: widget.clientId));
 
                                   }else
                                     {

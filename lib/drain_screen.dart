@@ -17,7 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DrainScreen extends StatefulWidget {
   DrainData? drainData;
-  DrainScreen({super.key, this.drainData});
+  final String clientId;
+  DrainScreen({super.key, this.drainData, required this.clientId});
 
   @override
   State<DrainScreen> createState() => _DrainScreenState();
@@ -305,11 +306,8 @@ class _DrainScreenState extends State<DrainScreen> {
                         widget.drainData != null
                             ? CommonButtonBlue(
                                 onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
                                   Map<String, String> mapData = {
-                                    "client_id": id.toString(),
+                                    "client_id": widget.clientId.toString(),
                                     'id': widget.drainData!.id.toString(),
                                     "type_de_drain":
                                         TypededrainselectedValue!.name,
@@ -323,7 +321,7 @@ class _DrainScreenState extends State<DrainScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (_formKey.currentState!.validate()) {
-                                      Get.to(const DrainListScreen());
+                                      Get.to( DrainListScreen(clientId: widget.clientId));
                                     }
                                   });
                                 },
@@ -331,11 +329,8 @@ class _DrainScreenState extends State<DrainScreen> {
                               )
                             : CommonButtonBlue(
                                 onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
                                   Map<String, String> mapData = {
-                                    "client_id": id.toString(),
+                                    "client_id": widget.clientId.toString(),
                                     "type_de_drain":
                                         TypededrainselectedValue != null
                                             ? TypededrainselectedValue!.name
@@ -350,7 +345,9 @@ class _DrainScreenState extends State<DrainScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                                      Get.to(const DrainListScreen());
+                                      Get.to( DrainListScreen(
+                                          clientId: widget.clientId
+                                      ));
                                     }else{
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(

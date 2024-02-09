@@ -20,7 +20,8 @@ import 'clotureScreen.dart';
 import 'model/login_mode.dart';
 
 class ClotureListScreen extends StatefulWidget {
-  const ClotureListScreen({super.key});
+  final String clientId;
+  const ClotureListScreen({super.key, required this.clientId});
 
   @override
   State<ClotureListScreen> createState() => _ClotureListScreenState();
@@ -83,10 +84,9 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
   }
 
   detailsListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
 
-    clotureListRepo(clientId: id, serviceType: "couleur").then((value) {
+
+    clotureListRepo(clientId: widget.clientId, serviceType: "couleur").then((value) {
       clotureListModel.value = value;
       setState(() {});
     });
@@ -104,7 +104,7 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -153,6 +153,7 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                                       Get.to(ClotureScreen(
                                         clotureData: clotureListModel
                                             .value.data![index],
+                                          clientId: widget.clientId
                                       ));
                                     },
                                     child: Container(
@@ -275,7 +276,7 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -287,7 +288,7 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(ClotureScreen());
+                          Get.to(ClotureScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

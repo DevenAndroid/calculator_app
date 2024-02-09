@@ -17,7 +17,8 @@ import 'package:calculator_app/widget/helper.dart';
 import 'package:http/http.dart' as http;
 
 class MargelleListScreen extends StatefulWidget {
-  const MargelleListScreen({super.key});
+  final String clientId;
+  const MargelleListScreen({super.key, required this.clientId});
 
   @override
   State<MargelleListScreen> createState() => _MargelleListScreenState();
@@ -74,10 +75,9 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
   }
 
   margelleListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
 
-    margelleListRepo(clientId: id, serviceType: "margelle").then((value) {
+
+    margelleListRepo(clientId: widget.clientId, serviceType: "margelle").then((value) {
       margelleListModel.value = value;
       setState(() {});
 
@@ -96,7 +96,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -149,6 +149,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                           Get.to(MargelleScreen(
                                             margelleData: margelleListModel
                                                 .value.data![index],
+                                              clientId: widget.clientId
                                           ));
                                         },
                                         child: Container(
@@ -229,7 +230,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -241,7 +242,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(MargelleScreen());
+                          Get.to(MargelleScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

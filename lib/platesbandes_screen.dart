@@ -19,7 +19,8 @@ import 'muret_screen.dart';
 
 class PlatesBandesScreen extends StatefulWidget {
   PlatesBandesData? platesBandesData;
-  PlatesBandesScreen({super.key,this.platesBandesData});
+  final String clientId;
+  PlatesBandesScreen({super.key,this.platesBandesData, required this.clientId});
 
   @override
   State<PlatesBandesScreen> createState() => _PlatesBandesScreenState();
@@ -734,12 +735,9 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         widget.platesBandesData != null ?
                         CommonButtonBlue(
                           onPressed: () async {
-                            SharedPreferences pref =
-                                await SharedPreferences.getInstance();
-                            var id = pref.getString("client_id");
-                            log("wwwwwww${id.toString()}");
+
                             Map<String, String> mapData = {
-                              "client_id": id.toString(),
+                              "client_id": widget.clientId.toString(),
                               'id' : widget.platesBandesData!.id.toString(),
                               "superficie": superficieController.text,
                               "profondeur": profondeurController.text,
@@ -763,7 +761,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                 .then((value) {
                                   log(value.toJson().toString());
                                   if (_formKey.currentState!.validate()) {
-                                    Get.to(const PlatesBandesListScreen());
+                                    Get.to( PlatesBandesListScreen(clientId: widget.clientId));
                                   }else if(categoryFile.value.path == ""){
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -781,12 +779,8 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         ) :
                         CommonButtonBlue(
                           onPressed: () async {
-                            SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                            var id = pref.getString("client_id");
-                            log("wwwwwww${id.toString()}");
                             Map<String, String> mapData = {
-                              "client_id": id.toString(),
+                              "client_id": widget.clientId.toString(),
                               "superficie": superficieController.text,
                               "profondeur": profondeurController.text,
                               "perimeter": perimeterController.text,
@@ -821,7 +815,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                 .then((value) {
                               log(value.toJson().toString());
                               if (_formKey.currentState!.validate()) {
-                                Get.to(const PlatesBandesListScreen());
+                                Get.to( PlatesBandesListScreen(clientId: widget.clientId));
                               }else if(categoryFile.value.path == ""){
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(

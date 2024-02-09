@@ -18,7 +18,8 @@ import 'model/login_mode.dart';
 import 'model/paveuni_list_model.dart';
 
 class AsphalteListScreen extends StatefulWidget {
-  const AsphalteListScreen({super.key});
+  final String clientId;
+  const AsphalteListScreen({super.key, required this.clientId});
 
   @override
   State<AsphalteListScreen> createState() => _AsphalteListScreenState();
@@ -75,11 +76,8 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
   }
 
   asphalteListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
-    log("999999${id.toString()}");
 
-    asphalteListRepo(clientId: id, serviceType: "asphalte").then((value) {
+    asphalteListRepo(clientId: widget.clientId, serviceType: "asphalte").then((value) {
       asphalteListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
@@ -98,7 +96,7 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -151,6 +149,7 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                           Get.to(AsphalteScreen(
                                             asphalteData: asphalteListModel
                                                 .value.data![index],
+                                              clientId: widget.clientId
                                           ));
                                         },
                                         child: Container(
@@ -261,7 +260,7 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -273,7 +272,7 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(AsphalteScreen());
+                          Get.to(AsphalteScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

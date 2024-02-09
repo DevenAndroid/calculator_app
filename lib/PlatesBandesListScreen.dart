@@ -17,7 +17,8 @@ import 'model/PlatesBandesListModel.dart';
 import 'model/login_mode.dart';
 
 class PlatesBandesListScreen extends StatefulWidget {
-  const PlatesBandesListScreen({super.key});
+  final String clientId;
+  const PlatesBandesListScreen({super.key, required this.clientId});
 
   @override
   State<PlatesBandesListScreen> createState() => _PlatesBandesListScreenState();
@@ -75,11 +76,8 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
   }
 
   platesbandesListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
-    log("999999${id.toString()}");
 
-    platesbandesListRepo(clientId: id, serviceType: "plates_bandes").then((value) {
+    platesbandesListRepo(clientId: widget.clientId, serviceType: "plates_bandes").then((value) {
       platesbandesListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
@@ -98,7 +96,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -151,6 +149,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                           Get.to(PlatesBandesScreen(
                                             platesBandesData: platesbandesListModel
                                                 .value.data![index],
+                                              clientId: widget.clientId
                                           ));
                                         },
                                         child: Container(
@@ -266,7 +265,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -278,7 +277,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(PlatesBandesScreen());
+                          Get.to(PlatesBandesScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

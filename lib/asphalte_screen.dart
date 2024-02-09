@@ -16,7 +16,8 @@ import 'model/asphalte_list_model.dart';
 
 class AsphalteScreen extends StatefulWidget {
   AsphalteData? asphalteData;
-  AsphalteScreen({super.key, this.asphalteData});
+  final String clientId;
+  AsphalteScreen({super.key, this.asphalteData, required this.clientId});
 
   @override
   State<AsphalteScreen> createState() => _AsphalteScreenState();
@@ -765,11 +766,8 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         widget.asphalteData != null
                             ? CommonButtonBlue(
                                 onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
                                   Map<String, String> mapData = {
-                                    "client": id.toString(),
+                                    "client": widget.clientId.toString(),
                                     'id': widget.asphalteData!.id.toString(),
                                     "superficie": superficieController.text,
                                     "nouvelle_infra":
@@ -796,7 +794,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                       if (_formKey.currentState!.validate()) {
-                                        Get.to(const AsphalteListScreen());
+                                        Get.to( AsphalteListScreen(clientId: widget.clientId,));
                                       }else if(categoryFile.value.path == ""){
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(
@@ -813,11 +811,8 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                               )
                             : CommonButtonBlue(
                                 onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
                                   Map<String, String> mapData = {
-                                    "client": id.toString(),
+                                    "client": widget.clientId.toString(),
                                     "superficie": superficieController.text,
                                     "nouvelle_infra":
                                         NouvelleInfraselectedValue != null
@@ -857,7 +852,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                       if (_formKey.currentState!.validate()) {
-                                        Get.to(const AsphalteListScreen());
+                                        Get.to( AsphalteListScreen(clientId: widget.clientId));
                                       }else if(categoryFile.value.path == ""){
                                         ScaffoldMessenger.of(context).showSnackBar(
                                           const SnackBar(

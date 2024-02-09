@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:calculator_app/model/existingClientModel.dart';
 import 'package:calculator_app/repo/client_info_repo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
@@ -49,7 +51,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.isnew == true){
+    if(widget.isnew != true){
       getData();
     }
   }
@@ -300,18 +302,25 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                     CommonButtonBlue(
                       onPressed: () async {
                         if(widget.isnew == true){
-                          Get.to(() => const SelectPoolInfoScreen());
+                          Client_Info_Repo(firstnameController.text, lastnameController.text,telephoneNumberController.text, emailController.text,
+                              addressController.text, villeController.text, codePostalController.text, context).then((value){
+                            Get.to(() => SelectPoolInfoScreen(
+                              clientId: value.data.toString(),
+                            ));
+                            print("dfsdgfhsdgfhsgf"+value.data.toString());
+                          });
                         }
                         else{
                           Client_Info_Repo(firstnameController.text, lastnameController.text,telephoneNumberController.text, emailController.text,
                               addressController.text, villeController.text, codePostalController.text, context)
                               .then((value) async {
                             if (value.status == true) {
-                              SharedPreferences pref = await SharedPreferences.getInstance();
-                              pref.setString("client_id", value.data.toString());
+                              // SharedPreferences pref = await SharedPreferences.getInstance();
+                              // pref.setString("client_id", value.data.toString());
                               showToast(value.message);
                               if (_formKey.currentState!.validate()) {
-                                Get.to(() => const SelectPoolInfoScreen());
+                                Get.to(() => SelectPoolInfoScreen(
+                                  clientId: widget.clientId.toString(),));
                               }
                             } else {
                               showToast(value.message);

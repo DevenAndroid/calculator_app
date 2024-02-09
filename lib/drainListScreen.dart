@@ -17,7 +17,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'model/login_mode.dart';
 
 class DrainListScreen extends StatefulWidget {
-  const DrainListScreen({super.key});
+  final String clientId;
+  const DrainListScreen({super.key, required this.clientId});
 
   @override
   State<DrainListScreen> createState() => _DrainListScreenState();
@@ -31,6 +32,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
     super.initState();
     drainListRepoFunction();
   }
+
   Widget buildDetailRow(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +52,8 @@ class _DrainListScreenState extends State<DrainListScreen> {
     );
   }
 
-  Future<DrainListModel> removeAddress({required id, required BuildContext context}) async {
+  Future<DrainListModel> removeAddress(
+      {required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
     OverlayEntry loader = Helper.overlayLoader(context);
@@ -63,7 +66,8 @@ class _DrainListScreenState extends State<DrainListScreen> {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
     };
-    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourdrain), headers: headers, body: jsonEncode(map));
+    http.Response response = await http.post(Uri.parse(ApiUrl.deletetourdrain),
+        headers: headers, body: jsonEncode(map));
     log(response.body.toString());
     if (response.statusCode == 200 || response.statusCode == 400) {
       Helper.hideLoader(loader);
@@ -75,11 +79,11 @@ class _DrainListScreenState extends State<DrainListScreen> {
   }
 
   drainListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
-    log("999999${id.toString()}");
+    // SharedPreferences pref = await SharedPreferences.getInstance();
+    // var id = pref.getString("client_id");
+    // log("999999${id.toString()}");
 
-    drainListRepo(clientId: id, serviceType: "drain").then((value) {
+    drainListRepo(clientId: widget.clientId, serviceType: "drain").then((value) {
       drainListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
@@ -98,7 +102,9 @@ class _DrainListScreenState extends State<DrainListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to(SelectPoolInfoScreen(
+                  clientId: widget.clientId,
+                ));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -115,7 +121,8 @@ class _DrainListScreenState extends State<DrainListScreen> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
                           width: Get.width,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -137,8 +144,8 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                       imageUrl: drainListModel
                                           .value.data![index].photoVideo
                                           .toString(),
-                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
-
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/noimage.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -151,6 +158,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                           Get.to(DrainScreen(
                                             drainData: drainListModel
                                                 .value.data![index],
+                                              clientId: widget.clientId
                                           ));
                                         },
                                         child: Container(
@@ -159,7 +167,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                           decoration: BoxDecoration(
                                               color: const Color(0xff019444),
                                               borderRadius:
-                                              BorderRadius.circular(5)),
+                                                  BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
@@ -174,7 +182,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                             id: drainListModel
                                                 .value.data![index].id,
                                           ).then((value) =>
-                                          {drainListRepoFunction()});
+                                              {drainListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
@@ -182,7 +190,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                           decoration: BoxDecoration(
                                               color: const Color(0xff019444),
                                               borderRadius:
-                                              BorderRadius.circular(5)),
+                                                  BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -226,7 +234,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -238,7 +246,7 @@ class _DrainListScreenState extends State<DrainListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(DrainScreen());
+                          Get.to(DrainScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
@@ -249,7 +257,8 @@ class _DrainListScreenState extends State<DrainListScreen> {
                               color: Color(0xff019444),
                             ),
                           ),
-                          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                          textStyle: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w500),
                         ),
                         icon: const Icon(
                           Icons.add_circle_outline,
@@ -257,7 +266,10 @@ class _DrainListScreenState extends State<DrainListScreen> {
                         ),
                         label: Text(
                           "Add New".tr.toUpperCase(),
-                          style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
+                          style: GoogleFonts.poppins(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xff019444)),
                         ),
                       ),
                     ),

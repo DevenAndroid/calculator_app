@@ -21,7 +21,7 @@ import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import 'clotureScreen.dart';
 import 'cloture_list_screen.dart';
@@ -36,7 +36,8 @@ import 'model/paveuni_list_model.dart';
 import 'model/tourbe_list_model.dart';
 
 class SelectPoolInfoScreen extends StatefulWidget {
-  const SelectPoolInfoScreen({super.key});
+  const SelectPoolInfoScreen({super.key, required this.clientId});
+  final String clientId;
 
   @override
   State<SelectPoolInfoScreen> createState() => _SelectPoolInfoScreenState();
@@ -67,8 +68,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   }
 
   detailsListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
@@ -79,8 +79,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   }
 
   paveuniListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     PaveuniListRepo(clientId: id, serviceType: "pave_uni").then((value) {
@@ -91,8 +90,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   }
 
   asphalteListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     asphalteListRepo(clientId: id, serviceType: "asphalte").then((value) {
@@ -103,8 +101,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   }
 
   platesbandesListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     platesbandesListRepo(clientId: id, serviceType: "plates_bandes").then((value) {
@@ -115,8 +112,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   }
 
   muretListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     muretListRepo(clientId: id, serviceType: "muret").then((value) {
@@ -127,8 +123,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   }
 
   drainListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     drainListRepo(clientId: id, serviceType: "drain").then((value) {
@@ -139,8 +134,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   }
 
   margelleListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     margelleListRepo(clientId: id, serviceType: "margelle").then((value) {
@@ -150,8 +144,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
     });
   }
   clotureListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    var id = widget.clientId;
     log("999999${id.toString()}");
 
     clotureListRepo(clientId: id, serviceType: "couleur").then((value) {
@@ -164,7 +157,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
+    log("dfjhgdshfgdhfg"+widget.clientId);
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -189,7 +182,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(const TourbeListScreen());
+                  Get.to( TourbeListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,
@@ -217,7 +210,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(const PaveuniListScreen());
+                  Get.to( PaveuniListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,
@@ -246,7 +239,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(const AsphalteListScreen());
+                  Get.to( AsphalteListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,
@@ -275,7 +268,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(const PlatesBandesListScreen());
+                  Get.to( PlatesBandesListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,
@@ -304,7 +297,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(const MuretListScreen());
+                  Get.to( MuretListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,
@@ -333,7 +326,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(const DrainListScreen());
+                  Get.to( DrainListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,
@@ -362,7 +355,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(const MargelleListScreen());
+                  Get.to( MargelleListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,
@@ -391,7 +384,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: (){
-                  Get.to(const ClotureListScreen());
+                  Get.to( ClotureListScreen(clientId: widget.clientId));
                 },
                 child: Container(
                   width: Get.width,

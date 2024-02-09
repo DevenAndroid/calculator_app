@@ -20,7 +20,8 @@ import 'model/login_mode.dart';
 import 'model/tourbe_list_model.dart';
 
 class TourbeListScreen extends StatefulWidget {
-  const TourbeListScreen({super.key});
+  final String clientId;
+  const TourbeListScreen({super.key, required this.clientId});
 
   @override
   State<TourbeListScreen> createState() => _TourbeListScreenState();
@@ -81,10 +82,10 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
   }
 
   detailsListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
+    // SharedPreferences pref = await SharedPreferences.getInstance();
+    // var id = pref.getString("client_id");
 
-    detailsListRepo(clientId: id, serviceType: "tourbe").then((value) {
+    detailsListRepo(clientId: widget.clientId, serviceType: "tourbe").then((value) {
       detailsListModel.value = value;
       setState(() {});
     });
@@ -102,7 +103,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -149,6 +150,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                         onTap: () {
                                           Get.to(TourbeScreen(
                                             tourbeData: detailsListModel.value.data![index],
+                                              clientId: widget.clientId
                                           ));
                                         },
                                         child: Container(
@@ -219,7 +221,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -231,7 +233,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(TourbeScreen());
+                          Get.to(TourbeScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

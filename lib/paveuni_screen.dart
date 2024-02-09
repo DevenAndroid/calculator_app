@@ -21,7 +21,8 @@ import 'model/paveuni_list_model.dart';
 
 class PaveUniScreen extends StatefulWidget {
   PaveUniData? paveUniData;
-  PaveUniScreen({super.key,this.paveUniData});
+  final String clientId;
+  PaveUniScreen({super.key,this.paveUniData, required this.clientId});
 
   @override
   State<PaveUniScreen> createState() => _PaveUniScreenState();
@@ -772,14 +773,12 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     widget.paveUniData != null
                    ?  CommonButtonBlue(
                       onPressed: () async {
-                        SharedPreferences pref = await SharedPreferences.getInstance();
-                        var id = pref.getString("client_id");
                         Map<String, String> mapData = {
                           'id' : widget.paveUniData!.id.toString(),
                           "perimeter": perimeterController.text,
                           "type_de_bordure": TypedeBordureselectedValue!.name,
                           "positionnement": PositionnementselectedValue!.name,
-                          "client": id.toString(),
+                          "client": widget.clientId.toString(),
                           "superficie": superficieController.text,
                           "couleur_de_pave": CouleurdepaveselectedValue!.name,
                           "polymer_sand_color": CouleurdesableselectedValue!.name,
@@ -794,7 +793,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                             .then((value) {
                           dddd.value = value;
                           if (_formKey.currentState!.validate()) {
-                            Get.to(PaveuniListScreen());
+                            Get.to(PaveuniListScreen(clientId: widget.clientId));
                           }else if(categoryFile.value.path == ""){
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -811,8 +810,6 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                     ) :
                     CommonButtonBlue(
                       onPressed: () async {
-                        SharedPreferences pref = await SharedPreferences.getInstance();
-                        var id = pref.getString("client_id");
                         Map<String, String> mapData = {
                           "perimeter": perimeterController.text,
                           "type_de_bordure": TypedeBordureselectedValue != null
@@ -821,7 +818,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           "positionnement": PositionnementselectedValue != null
                               ? PositionnementselectedValue!.name
                               : "",
-                          "client": id.toString(),
+                          "client": widget.clientId.toString(),
                           "superficie": superficieController.text,
                           "couleur_de_pave": CouleurdepaveselectedValue != null
                               ? CouleurdepaveselectedValue!.name
@@ -846,7 +843,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                             .then((value) {
                           dddd.value = value;
                           if (_formKey.currentState!.validate() ) {
-                            Get.to(PaveuniListScreen());
+                            Get.to(PaveuniListScreen(clientId: widget.clientId));
                           }else if(categoryFile.value.path == ""){
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

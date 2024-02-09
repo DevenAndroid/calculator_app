@@ -19,7 +19,8 @@ import 'model/login_mode.dart';
 import 'model/paveuni_list_model.dart';
 
 class PaveuniListScreen extends StatefulWidget {
-  const PaveuniListScreen({super.key});
+  final String clientId;
+  const PaveuniListScreen({super.key, required this.clientId});
 
   @override
   State<PaveuniListScreen> createState() => _PaveuniListScreenState();
@@ -82,11 +83,8 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
   }
 
   paveuniListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
-    log("999999${id.toString()}");
 
-    PaveuniListRepo(clientId: id, serviceType: "pave_uni").then((value) {
+    PaveuniListRepo(clientId: widget.clientId, serviceType: "pave_uni").then((value) {
       paveuniListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
@@ -105,7 +103,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -159,6 +157,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                                           Get.to(PaveUniScreen(
                                             paveUniData: paveuniListModel
                                                 .value.data![index],
+                                              clientId: widget.clientId
                                           ));
                                         },
                                         child: Container(
@@ -274,7 +273,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -286,7 +285,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(PaveUniScreen());
+                          Get.to(PaveUniScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

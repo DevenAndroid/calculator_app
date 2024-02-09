@@ -22,7 +22,8 @@ import 'margelle_screen.dart';
 
 class MargelleScreen extends StatefulWidget {
   MargelleData? margelleData;
-   MargelleScreen({super.key,this.margelleData});
+  final String clientId;
+   MargelleScreen({super.key,this.margelleData, required this.clientId});
 
   @override
   State<MargelleScreen> createState() => _MargelleScreenState();
@@ -266,10 +267,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
                     widget.margelleData != null ?
                     CommonButtonBlue(
                       onPressed: () async {
-                        SharedPreferences pref = await SharedPreferences.getInstance();
-                        var id = pref.getString("client_id");
                         Map<String, String> mapData = {
-                          "client_id": id.toString(),
+                          "client_id": widget.clientId.toString(),
                           'id' : widget.margelleData!.id.toString(),
                           "coping_quantity": coping_quantityController.text,
                           "mesure": mesureController.text,
@@ -283,7 +282,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             file1: categoryFile.value)
                             .then((value) {
                           if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                            Get.to(const MargelleListScreen());
+                            Get.to( MargelleListScreen(clientId: widget.clientId));
 
                           }else{
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -299,10 +298,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
                     ) :
                     CommonButtonBlue(
                       onPressed: () async {
-                        SharedPreferences pref = await SharedPreferences.getInstance();
-                        var id = pref.getString("client_id");
                         Map<String, String> mapData = {
-                          "client_id": id.toString(),
+                          "client_id": widget.clientId.toString(),
                           "coping_quantity": coping_quantityController.text,
                           "mesure": mesureController.text,
                           "note": noteController.text,
@@ -315,7 +312,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             file1: categoryFile.value)
                             .then((value) {
                           if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                            Get.to(const MargelleListScreen());
+                            Get.to( MargelleListScreen(clientId: widget.clientId));
 
                           }else{
                             ScaffoldMessenger.of(context).showSnackBar(

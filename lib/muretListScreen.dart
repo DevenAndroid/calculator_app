@@ -17,7 +17,8 @@ import 'model/MuretListModel.dart';
 import 'model/login_mode.dart';
 
 class MuretListScreen extends StatefulWidget {
-  const MuretListScreen({super.key});
+  final String clientId;
+  const MuretListScreen({super.key, required this.clientId});
 
   @override
   State<MuretListScreen> createState() => _MuretListScreenState();
@@ -78,10 +79,8 @@ class _MuretListScreenState extends State<MuretListScreen> {
   }
 
   muretListRepoFunction() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    var id = pref.getString("client_id");
 
-    muretListRepo(clientId: id, serviceType: "muret").then((value) {
+    muretListRepo(clientId: widget.clientId, serviceType: "muret").then((value) {
       muretListModel.value = value;
       setState(() {});
     });
@@ -99,7 +98,7 @@ class _MuretListScreenState extends State<MuretListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to(const SelectPoolInfoScreen());
+                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -153,6 +152,7 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                           Get.to(MuretScreen(
                                             muretData: muretListModel
                                                 .value.data![index],
+                                              clientId: widget.clientId
                                           ));
                                         },
                                         child: Container(
@@ -268,7 +268,7 @@ class _MuretListScreenState extends State<MuretListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to(const SelectPoolInfoScreen());
+                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
                       },
                       title: 'Final Save',
                     ),
@@ -280,7 +280,7 @@ class _MuretListScreenState extends State<MuretListScreen> {
                       width: Get.width,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Get.to(MuretScreen());
+                          Get.to(MuretScreen(clientId: widget.clientId));
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,

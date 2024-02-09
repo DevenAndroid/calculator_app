@@ -19,7 +19,8 @@ import 'model/tourbe_list_model.dart';
 
 class TourbeScreen extends StatefulWidget {
   Data? tourbeData;
-  TourbeScreen({super.key, this.tourbeData});
+  final String clientId;
+  TourbeScreen({super.key, this.tourbeData, required this.clientId});
 
   @override
   State<TourbeScreen> createState() => _TourbeScreenState();
@@ -532,11 +533,9 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         widget.tourbeData != null
                             ? CommonButtonBlue(
                                 onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
+
                                   Map<String, String> mapData = {
-                                    "client": id.toString(),
+                                    "client": widget.clientId.toString(),
                                     'id': widget.tourbeData!.id.toString(),
                                     "superficie": superficieController.text,
                                     "profondeur": profondeurselectedValue!.name,
@@ -556,7 +555,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     log(value.toString());
 
                                     if (_formKey.currentState!.validate()) {
-                                      Get.to(() => TourbeListScreen());
+                                      Get.to(() => TourbeListScreen(clientId: widget.clientId));
                                     } else if (categoryFile.value.path == "") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -575,11 +574,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
                               )
                             : CommonButtonBlue(
                                 onPressed: () async {
-                                  SharedPreferences pref =
-                                      await SharedPreferences.getInstance();
-                                  var id = pref.getString("client_id");
                                   Map<String, String> mapData = {
-                                    "client": id.toString(),
+                                    "client": widget.clientId.toString(),
                                     "superficie": superficieController.text,
                                     "profondeur":
                                         profondeurselectedValue != null
@@ -605,7 +601,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (_formKey.currentState!.validate()) {
-                                      Get.to(() => TourbeListScreen());
+                                      Get.to(() => TourbeListScreen(clientId: widget.clientId));
                                     } else if (categoryFile.value.path == "") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
