@@ -244,6 +244,11 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                         asphalteListModel
                                             .value.data![index].polymerSandColor
                                             .toString()),
+                                    buildDetailRow(
+                                        'pieds lineaire de pave',
+                                        (asphalteListModel
+                                            .value.data![index].piedslineairedepave ?? "")
+                                            .toString()),
                                   ],
                                 ),
                               ),

@@ -44,6 +44,8 @@ class PaveUniData {
   dynamic infrastructure;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic accessalacour;
+  dynamic note;
 
   PaveUniData(
       {this.id,
@@ -61,7 +63,10 @@ class PaveUniData {
         this.photoVideo,
         this.infrastructure,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.accessalacour,
+        this.note
+      });
 
   PaveUniData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -80,6 +85,8 @@ class PaveUniData {
     infrastructure = json['infrastructure'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    accessalacour = json['access_a_la_cour'];
+    note = json['note'];
   }
 
   Map<String, dynamic> toJson() {
@@ -100,6 +107,8 @@ class PaveUniData {
     data['infrastructure'] = this.infrastructure;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['access_a_la_cour'] = this.accessalacour;
+    data['note'] = this.note;
     return data;
   }
 }

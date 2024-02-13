@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:calculator_app/AsphalteListScreen.dart';
 import 'package:calculator_app/repo/asphalteScreenRepo.dart';
@@ -34,8 +35,8 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   TextEditingController nouvelleInfraController = TextEditingController();
   TextEditingController positionnementController = TextEditingController();
   TextEditingController type_of_wasteController = TextEditingController();
-  TextEditingController poucesasphalteController = TextEditingController();
   TextEditingController contourenPaveController = TextEditingController();
+  TextEditingController piedslineairedepaveController = TextEditingController();
   TextEditingController type_of_plain_paversController =
       TextEditingController();
   TextEditingController paver_colorController = TextEditingController();
@@ -48,6 +49,7 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   PositionItem? CouleurdesableselectedValue;
   PositionItem? TypedepaveuniselectedValue;
   PositionItem? CouleurdepaveselectedValue;
+  PositionItem? poucesasphalteselectedValue;
 
   List<PositionItem> NouvelleInfraList = [
     PositionItem(id: 1, name: 'Oui'),
@@ -91,6 +93,11 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
     PositionItem(id: 4, name: 'Richer Pave M100 80MM'),
     PositionItem(id: 5, name: 'Richer Pave T100 80MM'),
   ];
+  List<PositionItem> poucesasphalteList = [
+    PositionItem(id: 1, name: '2’’ '),
+    PositionItem(id: 2, name: '2.5’’'),
+    PositionItem(id: 3, name: '3’’ '),
+  ];
 
   @override
   void initState() {
@@ -102,8 +109,10 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
     TypedepaveuniselectedValue = TypedepaveuniList.first;
     CouleurdepaveselectedValue = CouleurdepaveList.first;
     CouleurdesableselectedValue = CouleurdesablePaveList.first;
+    poucesasphalteselectedValue = poucesasphalteList.first;
     if (widget.asphalteData != null) {
       superficieController.text = widget.asphalteData!.superficie.toString();
+      piedslineairedepaveController.text = widget.asphalteData!.piedslineairedepave.toString();
       NouvelleInfraselectedValue = NouvelleInfraList.firstWhere(
         (item) => item.name == widget.asphalteData!.nouvelleInfra,
         orElse: () => NouvelleInfraList.first,
@@ -116,23 +125,25 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
         (item) => item.name == widget.asphalteData!.typeOfWaste,
         orElse: () => TypededechetList.first,
       );
-      poucesasphalteController.text =
-          widget.asphalteData!.poucesAsphalte.toString();
       ContourenPaveselectedValue = ContourenPaveList.firstWhere(
         (item) => item.name == widget.asphalteData!.contourEnPave,
         orElse: () => ContourenPaveList.first,
       );
       TypedepaveuniselectedValue = TypedepaveuniList.firstWhere(
-            (item) => item.name == widget.asphalteData!.typeOfPlainPavers,
+        (item) => item.name == widget.asphalteData!.typeOfPlainPavers,
         orElse: () => TypedepaveuniList.first,
       );
       CouleurdepaveselectedValue = CouleurdepaveList.firstWhere(
-            (item) => item.name == widget.asphalteData!.paverColor,
+        (item) => item.name == widget.asphalteData!.paverColor,
         orElse: () => CouleurdepaveList.first,
       );
       CouleurdesableselectedValue = CouleurdesablePaveList.firstWhere(
         (item) => item.name == widget.asphalteData!.polymerSandColor,
         orElse: () => CouleurdesablePaveList.first,
+      );
+      poucesasphalteselectedValue = poucesasphalteList.firstWhere(
+        (item) => item.name == widget.asphalteData!.poucesAsphalte,
+        orElse: () => poucesasphalteList.first,
       );
       polymer_sand_colorController.text = widget.asphalteData!.polymerSandColor;
       // categoryFile.value = File(widget.data!.photoVideo);
@@ -155,12 +166,11 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
           ),
         ),
         leading: GestureDetector(
-            onTap: (){
+            onTap: () {
               Get.back();
             },
             child: Icon(Icons.arrow_back)),
       ),
-
       body: SingleChildScrollView(
           child: Padding(
         padding: MediaQuery.of(context).size.width > 800
@@ -401,18 +411,45 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        RegisterTextFieldWidget(
-                          controller: poucesasphalteController,
-                          color: Colors.white,
-                          // length: 10,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText:
-                                    'Please enter your Pouces asphalte'.tr),
-                          ]).call,
-                          keyboardType: TextInputType.number,
-                          // textInputAction: TextInputAction.next,
-                          // hint: '2',
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: poucesasphalteselectedValue ??
+                                        poucesasphalteList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        poucesasphalteselectedValue = newValue;
+                                      });
+                                    },
+                                    items: poucesasphalteList
+                                        .map((PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 10,
@@ -475,6 +512,41 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        ContourenPaveselectedValue?.name == 'Oui' ?Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'pieds lineaire de pave',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  // fontFamily: 'poppins',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            RegisterTextFieldWidget(
+                              controller: piedslineairedepaveController,
+                              color: Colors.white,
+                              // length: 10,
+                              validator: MultiValidator([
+                                RequiredValidator(
+                                    errorText: 'Please enter your pieds_lineaire_de_pave'),
+                              ]).call,
+                              keyboardType: TextInputType.number,
+                              // textInputAction: TextInputAction.next,
+                              // hint: '400 Pieds carré(s)',
+                            ),
+                          ],
+                        ) : SizedBox(),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
@@ -512,18 +584,18 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                       });
                                     },
                                     items: TypedepaveuniList.map(
-                                            (PositionItem model) {
-                                          return DropdownMenuItem<PositionItem>(
-                                            value: model,
-                                            child: Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
+                                        (PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
                               ],
@@ -570,18 +642,18 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                                       });
                                     },
                                     items: CouleurdepaveList.map(
-                                            (PositionItem model) {
-                                          return DropdownMenuItem<PositionItem>(
-                                            value: model,
-                                            child: Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
+                                        (PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
                                 ),
                               ],
@@ -766,104 +838,111 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         widget.asphalteData != null
                             ? CommonButtonBlue(
                                 onPressed: () async {
-                                  Map<String, String> mapData = {
-                                    "client": widget.clientId.toString(),
-                                    'id': widget.asphalteData!.id.toString(),
-                                    "superficie": superficieController.text,
-                                    "nouvelle_infra":
-                                        NouvelleInfraselectedValue!.name,
-                                    "positionnement":
-                                        PositionnementselectedValue!.name,
-                                    "type_of_waste":
-                                        TypededechetselectedValue!.name,
-                                    "pouces_asphalte":
-                                        poucesasphalteController.text,
-                                    "contour_en_pave":
-                                        ContourenPaveselectedValue!.name,
-                                    "type_of_plain_pavers":
-                                        TypedepaveuniselectedValue!.name,
-                                    "paver_color": CouleurdepaveselectedValue!.name,
-                                    "polymer_sand_color":
-                                        CouleurdesableselectedValue!.name,
-                                  };
-                                  print(mapData.toString());
-                                  asphalteScreenRepo(
-                                          context: context,
-                                          mapData: mapData,
-                                          fieldName1: 'photo_video',
-                                          file1: categoryFile.value)
-                                      .then((value) {
-                                      if (_formKey.currentState!.validate()) {
-                                        Get.to( AsphalteListScreen(clientId: widget.clientId,));
-                                      }else if(categoryFile.value.path == ""){
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Please select an image.'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      }else{
-                                        showToast('Fill All Fields');
+                                  if (_formKey.currentState!.validate()) {
+                                    if (categoryFile.value.path == "") {
+                                      showToast("Please select image");
+                                      return;
+                                    }
+                                    Map<String, String> mapData = {
+                                      "client": widget.clientId.toString(),
+                                      'id': widget.asphalteData!.id.toString(),
+                                      "superficie": superficieController.text,
+                                      "nouvelle_infra":
+                                          NouvelleInfraselectedValue!.name,
+                                      "positionnement":
+                                          PositionnementselectedValue!.name,
+                                      "type_of_waste":
+                                          TypededechetselectedValue!.name,
+                                      "pouces_asphalte":
+                                          poucesasphalteselectedValue!.name,
+                                      "contour_en_pave":
+                                          ContourenPaveselectedValue!.name,
+                                      "type_of_plain_pavers":
+                                          TypedepaveuniselectedValue!.name,
+                                      "paver_color":
+                                          CouleurdepaveselectedValue!.name,
+                                      "polymer_sand_color":
+                                          CouleurdesableselectedValue!.name,
+                                    };
+                                    asphalteScreenRepo(
+                                            context: context,
+                                            mapData: mapData,
+                                            fieldName1: 'photo_video',
+                                            file1: categoryFile.value)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.to(AsphalteListScreen(
+                                            clientId: widget.clientId));
+                                      } else {
+                                        log(value.status.toString());
                                       }
-                                  });
+                                    });
+                                  }
                                 },
                                 title: 'update',
                               )
                             : CommonButtonBlue(
                                 onPressed: () async {
-                                  Map<String, String> mapData = {
-                                    "client": widget.clientId.toString(),
-                                    "superficie": superficieController.text,
-                                    "nouvelle_infra":
-                                        NouvelleInfraselectedValue != null
-                                            ? NouvelleInfraselectedValue!.name
-                                            : "",
-                                    "positionnement":
-                                        PositionnementselectedValue != null
-                                            ? PositionnementselectedValue!.name
-                                            : "",
-                                    "type_of_waste":
-                                        TypededechetselectedValue != null
-                                            ? TypededechetselectedValue!.name
-                                            : "",
-                                    "pouces_asphalte":
-                                        poucesasphalteController.text,
-                                    "contour_en_pave":
-                                        ContourenPaveselectedValue != null
-                                            ? ContourenPaveselectedValue!.name
-                                            : "",
-                                    "type_of_plain_pavers":
-                                    TypedepaveuniselectedValue != null
-                                        ? TypedepaveuniselectedValue!.name
-                                        : "",
-                                    "paver_color": CouleurdesableselectedValue != null
-                                        ? CouleurdesableselectedValue!.name
-                                        : "",
-                                    "polymer_sand_color":
-                                    CouleurdepaveselectedValue != null
-                                            ? CouleurdepaveselectedValue!.name
-                                            : "",
-                                  };
-                                  print(mapData.toString());
-                                  asphalteScreenRepo(
-                                          context: context,
-                                          mapData: mapData,
-                                          fieldName1: 'photo_video',
-                                          file1: categoryFile.value)
-                                      .then((value) {
-                                      if (_formKey.currentState!.validate()) {
-                                        Get.to( AsphalteListScreen(clientId: widget.clientId));
-                                      }else if(categoryFile.value.path == ""){
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Please select an image.'),
-                                            backgroundColor: Colors.red,
-                                          ),
-                                        );
-                                      }else{
-                                        showToast('Fill All Fields');
+                                  if (_formKey.currentState!.validate()) {
+                                    if (categoryFile.value.path == "") {
+                                      showToast("Please select image");
+                                      return;
+                                    }
+                                    Map<String, String> mapData = {
+                                      "client": widget.clientId.toString(),
+                                      "superficie": superficieController.text,
+                                      "nouvelle_infra":
+                                          NouvelleInfraselectedValue != null
+                                              ? NouvelleInfraselectedValue!.name
+                                              : "",
+                                      "positionnement":
+                                          PositionnementselectedValue != null
+                                              ? PositionnementselectedValue!
+                                                  .name
+                                              : "",
+                                      "type_of_waste":
+                                          TypededechetselectedValue != null
+                                              ? TypededechetselectedValue!.name
+                                              : "",
+                                      "contour_en_pave":
+                                          ContourenPaveselectedValue != null
+                                              ? ContourenPaveselectedValue!.name
+                                              : "",
+                                      "type_of_plain_pavers":
+                                          TypedepaveuniselectedValue != null
+                                              ? TypedepaveuniselectedValue!.name
+                                              : "",
+                                      "paver_color":
+                                          CouleurdesableselectedValue != null
+                                              ? CouleurdesableselectedValue!
+                                                  .name
+                                              : "",
+                                      "polymer_sand_color":
+                                          CouleurdepaveselectedValue != null
+                                              ? CouleurdepaveselectedValue!.name
+                                              : "",
+                                      "pouces_asphalte":
+                                          poucesasphalteselectedValue != null
+                                              ? poucesasphalteselectedValue!
+                                                  .name
+                                              : "",
+                                    };
+
+                                    print(mapData.toString());
+                                    asphalteScreenRepo(
+                                            context: context,
+                                            mapData: mapData,
+                                            fieldName1: 'photo_video',
+                                            file1: categoryFile.value)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.to(AsphalteListScreen(
+                                            clientId: widget.clientId));
+                                      } else {
+                                        log(value.message.toString());
                                       }
-                                  });
+                                    });
+                                  }
                                 },
                                 title: 'Save',
                               ),

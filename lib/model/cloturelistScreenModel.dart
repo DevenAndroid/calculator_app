@@ -45,6 +45,9 @@ class ClotureData {
   String? updatedAt;
   String? lattes;
   String? modele;
+  String? kitdeconversionorno;
+  String? typededechets;
+  String? demolition;
 
   ClotureData(
       {this.id,
@@ -63,7 +66,10 @@ class ClotureData {
         this.createdAt,
         this.updatedAt,
         this.lattes,
-        this.modele
+        this.modele,
+        this.kitdeconversionorno,
+        this.typededechets,
+        this.demolition
       });
 
   ClotureData.fromJson(Map<String, dynamic> json) {
@@ -84,6 +90,9 @@ class ClotureData {
     updatedAt = json['updated_at'];
     lattes = json['lattes'];
     modele = json['modele'];
+    kitdeconversionorno = json['kit_de_conversion_orno'];
+    typededechets = json['type_de_dechets'];
+    demolition = json['demolition'];
   }
 
   Map<String, dynamic> toJson() {
@@ -105,6 +114,9 @@ class ClotureData {
     data['updated_at'] = this.updatedAt;
     data['lattes'] = this.lattes;
     data['modele'] = this.modele;
+    data['kit_de_conversion_orno'] = this.kitdeconversionorno;
+    data['type_de_dechets'] = this.typededechets;
+    data['demolition'] = this.demolition;
     return data;
   }
 }

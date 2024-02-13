@@ -210,9 +210,19 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                             .value.data![index].mesure
                                             .toString()),
                                     buildDetailRow(
+                                        'De Fenetre:',
+                                        margelleListModel
+                                            .value.data![index].defenetre
+                                            .toString()),
+                                    buildDetailRow(
                                         'note:',
                                         margelleListModel
                                             .value.data![index].note
+                                            .toString()),
+                                    buildDetailRow(
+                                        'mesure de margelle:',
+                                        margelleListModel
+                                            .value.data![index].mesuredemargelle
                                             .toString()),
                                   ],
                                 ),

@@ -37,7 +37,6 @@ Future<CommonModal> pavauniScreenRepo({
     }
 
     log(request.fields.toString());
-
     log(request.toString());
 
     log(request.files.map((e) => e.filename).toList().toString());
@@ -45,7 +44,8 @@ Future<CommonModal> pavauniScreenRepo({
 
     if (response.statusCode == 200) {
       return CommonModal.fromJson(jsonDecode(await response.stream.bytesToString()));
-    } else {
+    }
+    else {
       Helper.hideLoader(loader);
       log("hhhhhhhhh${response.stream.bytesToString()}");
       return CommonModal.fromJson(jsonDecode(await response.stream.bytesToString()));

@@ -43,6 +43,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   TextEditingController bordurepaveController = TextEditingController();
   TextEditingController couleurpolyController = TextEditingController();
   TextEditingController plantationpController = TextEditingController();
+  TextEditingController quantitedeplantationController = TextEditingController();
 
   PositionItem? PositionnementselectedValue;
   PositionItem? FinitionselectedValue;
@@ -97,6 +98,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     CouleurselectedValue = CouleurList.first;
     PlantationselectedValue = PlantationList.first;
     if (widget.platesBandesData != null) {
+      quantitedeplantationController.text = widget.platesBandesData!.quantitedeplantation.toString();
       superficieController.text = widget.platesBandesData!.superficie.toString();
       profondeurController.text = widget.platesBandesData!.profondeur.toString();
       perimeterController.text = widget.platesBandesData!.perimeter.toString();
@@ -642,6 +644,36 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Quantite de plantation',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: quantitedeplantationController,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText: 'Please enter your Superficie'),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '50 Pieds carré(s)',
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
@@ -740,6 +772,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               "client_id": widget.clientId.toString(),
                               'id' : widget.platesBandesData!.id.toString(),
                               "superficie": superficieController.text,
+                              "quantite_de_plantation": quantitedeplantationController.text,
                               "profondeur": profondeurController.text,
                               "perimeter": perimeterController.text,
                               "positionnement": PositionnementselectedValue!.name,
@@ -782,6 +815,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                             Map<String, String> mapData = {
                               "client_id": widget.clientId.toString(),
                               "superficie": superficieController.text,
+                              "quantite_de_plantation": quantitedeplantationController.text,
                               "profondeur": profondeurController.text,
                               "perimeter": perimeterController.text,
                               "positionnement": PositionnementselectedValue != null

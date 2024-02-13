@@ -35,12 +35,16 @@ class _ClotureScreenState extends State<ClotureScreen> {
       TextEditingController();
   TextEditingController NombredePoteauPlaqueCarreeselectedValue =
       TextEditingController();
+  TextEditingController kitdeconversionornocontroller =
+      TextEditingController();
 
   PositionItem? TypedeclotureselectedValue;
   PositionItem? CouleurselectedValue;
   PositionItem? HauteurselectedValue;
   PositionItem? LattesselectedValue;
   PositionItem? ModeleselectedValue;
+  PositionItem? demolitionselectedValue;
+  PositionItem? type_de_dechetsselectedValue;
 
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
@@ -48,7 +52,6 @@ class _ClotureScreenState extends State<ClotureScreen> {
   Rx<File> image = File("").obs;
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
-
 
   List<PositionItem> TypedeclotureList = [
     PositionItem(id: 1, name: 'Maille de chaine'),
@@ -162,6 +165,16 @@ class _ClotureScreenState extends State<ClotureScreen> {
     return [];
   }
 
+  List<PositionItem> demolitionList = [
+    PositionItem(id: 1, name: 'Oui'),
+    PositionItem(id: 2, name: 'Non'),
+  ];
+  List<PositionItem> type_de_dechetsList = [
+    PositionItem(id: 1, name: 'Cloture Frost'),
+    PositionItem(id: 2, name: 'Cloture bois'),
+    PositionItem(id: 3, name: 'Autre cloture '),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -171,6 +184,10 @@ class _ClotureScreenState extends State<ClotureScreen> {
     HauteurselectedValue = HauteurList.isNotEmpty ? HauteurList.first : null;
     LattesselectedValue = lattesList.isNotEmpty ? lattesList.first : null;
     ModeleselectedValue = modeleList.isNotEmpty ? modeleList.first : null;
+    demolitionselectedValue =
+        demolitionList.isNotEmpty ? demolitionList.first : null;
+    type_de_dechetsselectedValue =
+        type_de_dechetsList.isNotEmpty ? type_de_dechetsList.first : null;
 
     if (widget.clotureData != null) {
       NombredepiedlineaireselectedValue.text =
@@ -187,6 +204,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
           widget.clotureData!.nombreDeCoteauCarree.toString();
       NombredePoteauPlaqueCarreeselectedValue.text =
           widget.clotureData!.nombreDePoteauPlaqueCarree.toString();
+      kitdeconversionornocontroller.text =
+          widget.clotureData!.kitdeconversionorno.toString();
 
       TypedeclotureselectedValue = TypedeclotureList.isNotEmpty
           ? TypedeclotureList.firstWhere(
@@ -208,15 +227,27 @@ class _ClotureScreenState extends State<ClotureScreen> {
           : null;
       LattesselectedValue = lattesList.isNotEmpty
           ? LattesselectedValue = lattesList.firstWhere(
-            (item) => item.name == widget.clotureData!.lattes,
-        orElse: () => lattesList.first,
-      )
+              (item) => item.name == widget.clotureData!.lattes,
+              orElse: () => lattesList.first,
+            )
           : null;
       ModeleselectedValue = modeleList.isNotEmpty
           ? ModeleselectedValue = modeleList.firstWhere(
-            (item) => item.name == widget.clotureData!.modele,
-        orElse: () => modeleList.first,
-      )
+              (item) => item.name == widget.clotureData!.modele,
+              orElse: () => modeleList.first,
+            )
+          : null;
+      demolitionselectedValue = demolitionList.isNotEmpty
+          ? demolitionselectedValue = demolitionList.firstWhere(
+              (item) => item.name == widget.clotureData!.demolition,
+              orElse: () => demolitionList.first,
+            )
+          : null;
+      type_de_dechetsselectedValue = type_de_dechetsList.isNotEmpty
+          ? type_de_dechetsselectedValue = type_de_dechetsList.firstWhere(
+              (item) => item.name == widget.clotureData!.typededechets,
+              orElse: () => type_de_dechetsList.first,
+            )
           : null;
     }
   }
@@ -464,8 +495,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        if (TypedeclotureselectedValue?.name ==
-                            'Ornemental')
+                        if (TypedeclotureselectedValue?.name == 'Ornemental')
                           Column(
                             children: [
                               Align(
@@ -768,6 +798,153 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'demolition',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: demolitionselectedValue ??
+                                        demolitionList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        demolitionselectedValue = newValue;
+                                      });
+                                    },
+                                    items: demolitionList
+                                        .map((PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'type de dechets',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: type_de_dechetsselectedValue ??
+                                        type_de_dechetsList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        type_de_dechetsselectedValue = newValue;
+                                      });
+                                    },
+                                    items: type_de_dechetsList
+                                        .map((PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'kit_de_conversion_orno',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: kitdeconversionornocontroller,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                                errorText:
+                                    'Please enter your kit_de_conversion_orno'),
+                          ]).call,
+                          keyboardType: TextInputType.text,
+                          // textInputAction: TextInputAction.next,
+                          // hint: '1000 Pieds carré(s)',
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
@@ -781,86 +958,112 @@ class _ClotureScreenState extends State<ClotureScreen> {
                       children: [
                         widget.clotureData != null
                             ? CommonButtonBlue(
-                          onPressed: () async {
-                            cloture_Repo(
-                              widget.clientId.toString(),
-                              TypedeclotureselectedValue!.name,
-                              NombredepiedlineaireselectedValue.text,
-                              CouleurselectedValue!.name,
-                              HauteurselectedValue!.name,
-                              PorteSimpleselectedValue.text,
-                              PorteDoubleselectedValue.text,
-                              NombredepoteauFrostRondselectedValue.text,
-                              NombredePoteauPlaqueRondselectedValue.text,
-                              NombredePoteauCarreeselectedValue.text,
-                              NombredePoteauPlaqueCarreeselectedValue.text,
-                              LattesselectedValue!.name,
-                              ModeleselectedValue!.name,
-                              context,
-                            ).then((value) async {
-                              log('fffffff');
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    cloture_Repo(
+                                      widget.clientId.toString(),
+                                      TypedeclotureselectedValue!.name,
+                                      NombredepiedlineaireselectedValue.text,
+                                      CouleurselectedValue!.name,
+                                      HauteurselectedValue!.name,
+                                      PorteSimpleselectedValue.text,
+                                      PorteDoubleselectedValue.text,
+                                      NombredepoteauFrostRondselectedValue.text,
+                                      NombredePoteauPlaqueRondselectedValue
+                                          .text,
+                                      NombredePoteauCarreeselectedValue.text,
+                                      NombredePoteauPlaqueCarreeselectedValue
+                                          .text,
+                                      LattesselectedValue!.name,
+                                      ModeleselectedValue!.name,
+                                      demolitionselectedValue!.name,
+                                      type_de_dechetsselectedValue!.name,
+                                      kitdeconversionornocontroller.text,
+                                      context,
+                                    ).then((value) async {
+                                      log('fffffff');
 
-                              if (value.status == true) {
-                                showToast(value.message);
-                                Get.to(() => ClotureListScreen(clientId: widget.clientId,));
-                              } else {
-                                showToast(value.message);
-                              }
-                            });
-                          },
-                          title: 'Update',
-                        )
+                                      if (value.status == true) {
+                                        log('message');
+                                        showToast(value.message);
+                                        Get.to(() => ClotureListScreen(
+                                              clientId: widget.clientId,
+                                            ));
+                                      } else {
+                                        log('message');
+                                        showToast(value.message);
+                                      }
+                                    });
+                                  }
+                                },
+                                title: 'Update',
+                              )
                             : CommonButtonBlue(
-                          onPressed: () async {
+                                onPressed: () async {
+                                  String? selectedType;
+                                  String? selectedLattes;
+                                  String? selectedModele;
 
+                                  if (TypedeclotureselectedValue != null) {
+                                    selectedType =
+                                        TypedeclotureselectedValue!.name;
+                                  }
 
-                            String? selectedType;
-                            String? selectedLattes;
-                            String? selectedModele;
+                                  if (selectedType == 'Maille de chaine' &&
+                                      LattesselectedValue != null) {
+                                    selectedLattes = LattesselectedValue!.name;
+                                  }
+                                  if (selectedType == 'Ornemental' &&
+                                      ModeleselectedValue != null) {
+                                    selectedModele = ModeleselectedValue!.name;
+                                  }
+                                  if (_formKey.currentState!.validate()) {
+                                    cloture_Repo(
+                                      widget.clientId.toString(),
+                                      selectedType ??
+                                          '',
+                                      NombredepiedlineaireselectedValue.text,
+                                      CouleurselectedValue != null
+                                          ? CouleurselectedValue!.name
+                                          : "",
+                                      HauteurselectedValue != null
+                                          ? HauteurselectedValue!.name
+                                          : "",
 
-                            if (TypedeclotureselectedValue != null) {
-                              selectedType = TypedeclotureselectedValue!.name;
-                            }
+                                      PorteSimpleselectedValue.text,
+                                      PorteDoubleselectedValue.text,
+                                      NombredepoteauFrostRondselectedValue.text,
+                                      NombredePoteauPlaqueRondselectedValue
+                                          .text,
+                                      NombredePoteauCarreeselectedValue.text,
+                                      NombredePoteauPlaqueCarreeselectedValue
+                                          .text,
+                                      demolitionselectedValue != null
+                                          ? demolitionselectedValue!.name
+                                          : "",
+                                      type_de_dechetsselectedValue != null
+                                          ? type_de_dechetsselectedValue!.name
+                                          : "",
+                                      kitdeconversionornocontroller.text,
 
-                            if (selectedType == 'Maille de chaine' &&
-                                LattesselectedValue != null) {
-                              selectedLattes = LattesselectedValue!.name;
-                            }
-                            if (selectedType == 'Ornemental' &&
-                                ModeleselectedValue != null) {
-                              selectedModele = ModeleselectedValue!.name;
-                            }
-
-                            cloture_Repo(
-                              widget.clientId.toString(),
-                              selectedType ?? '', // Send selected type if not null, otherwise send an empty string
-                              NombredepiedlineaireselectedValue.text,
-                              CouleurselectedValue != null
-                                  ? CouleurselectedValue!.name
-                                  : "",
-                              HauteurselectedValue != null
-                                  ? HauteurselectedValue!.name
-                                  : "",
-                              PorteSimpleselectedValue.text,
-                              PorteDoubleselectedValue.text,
-                              NombredepoteauFrostRondselectedValue.text,
-                              NombredePoteauPlaqueRondselectedValue.text,
-                              NombredePoteauCarreeselectedValue.text,
-                              NombredePoteauPlaqueCarreeselectedValue.text,
-                              selectedLattes ?? '',
-                              selectedModele ?? '',
-                              context,
-                            ).then((value) {
-                              if (value.status == true) {
-                                showToast(value.message);
-                                Get.to(() => ClotureListScreen(clientId: widget.clientId));
-                              } else {
-                                showToast(value.message);
-                              }
-                            });
-                          },
-                          title: 'Save',
-                        ),
+                                      selectedLattes ?? '',
+                                      selectedModele ?? '',
+                                      context,
+                                    ).then((value) {
+                                      if (value.status == true) {
+                                        print('message');
+                                        showToast(value.message);
+                                        Get.to(() => ClotureListScreen(
+                                            clientId: widget.clientId));
+                                      } else {
+                                        print('message');
+                                        showToast(value.message);
+                                      }
+                                    });
+                                  }
+                                },
+                                title: 'Save',
+                              ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -870,7 +1073,6 @@ class _ClotureScreenState extends State<ClotureScreen> {
                       ],
                     ),
                   )
-
                 ]),
           ),
         ),

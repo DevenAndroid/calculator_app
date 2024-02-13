@@ -249,6 +249,11 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                         platesbandesListModel
                                             .value.data![index].plantation
                                             .toString()),
+                                    buildDetailRow(
+                                        'quantite de plantation',
+                                        platesbandesListModel
+                                            .value.data![index].quantitedeplantation
+                                            .toString()),
                                   ],
                                 ),
                               ),

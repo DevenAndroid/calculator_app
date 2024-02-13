@@ -93,6 +93,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(widget.clientId);
     return Obx(() {
       return Scaffold(
         appBar: AppBar(
@@ -248,14 +249,19 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                                             .value.data![index].polymerSandColor
                                             .toString()),
                                     buildDetailRow(
-                                        'Photo(s)',
-                                        paveuniListModel
-                                            .value.data![index].photo
-                                            .toString()),
-                                    buildDetailRow(
                                         'Infrastructure',
                                         paveuniListModel
                                             .value.data![index].infrastructure
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Access a la cour',
+                                        (paveuniListModel
+                                            .value.data![index].accessalacour ??"")
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Note',
+                                        (paveuniListModel
+                                            .value.data![index].note ??"")
                                             .toString()),
                                   ],
                                 ),

@@ -39,14 +39,34 @@ class _MargelleScreenState extends State<MargelleScreen> {
   TextEditingController coping_quantityController = TextEditingController();
   TextEditingController mesureController = TextEditingController();
   TextEditingController noteController = TextEditingController();
-
+  TextEditingController defenetreController = TextEditingController();
+  PositionItem? mesuredemargelleselectedValue;
+  bool _showWidgets = false;
+  void _buildColumnWithWidgets() {
+    // Set state to show the column with widgets
+    setState(() {
+      _showWidgets = true;
+    });
+  }
+  List<PositionItem> mesuredemargelleList = [
+    PositionItem(id: 1, name: '49’’ x 22’’ x 22’’'),
+    PositionItem(id: 2, name: '54’’ x 22’’ x 22’’'),
+    PositionItem(id: 3, name: 'Autre (svp indiquer dans les notes)'),
+  ];
   @override
   void initState() {
     super.initState();
+    mesuredemargelleselectedValue = mesuredemargelleList.first;
+
     if (widget.margelleData != null) {
       coping_quantityController.text = widget.margelleData!.copingQuantity.toString();
       mesureController.text = widget.margelleData!.mesure.toString();
       noteController.text = widget.margelleData!.note;
+      defenetreController.text = widget.margelleData!.defenetre;
+      mesuredemargelleselectedValue = mesuredemargelleList.firstWhere(
+            (item) => item.name == widget.margelleData!.mesuredemargelle,
+        orElse: () => mesuredemargelleList.first,
+      );
       // categoryFile.value = File(widget.data!.photoVideo);
     }
   }
@@ -141,6 +161,91 @@ class _MargelleScreenState extends State<MargelleScreen> {
                        keyboardType: TextInputType.number,
                       // textInputAction: TextInputAction.next,
                       // hint: '67 Pieds Linéaire',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        '# De fenetre',
+                        style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                          // fontFamily: 'poppins',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    RegisterTextFieldWidget(
+                      controller: defenetreController,
+                      color: Colors.white,
+                      // length: 10,
+                      validator: RequiredValidator(errorText: 'Please enter your de fenetre').call,
+                      keyboardType: TextInputType.number,
+                      // textInputAction: TextInputAction.next,
+                      // hint: '67 Pieds Linéaire',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Mesure de margelle',
+                        style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                          // fontFamily: 'poppins',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    SizedBox(
+                      height: 55,
+                      width: Get.width,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.grey.shade400),
+                        ),
+                        child: Column(
+                          children: [
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton<PositionItem>(
+                                value: mesuredemargelleselectedValue ??
+                                    mesuredemargelleList.first,
+                                isExpanded: true,
+                                onChanged: (PositionItem? newValue) {
+                                  setState(() {
+                                    mesuredemargelleselectedValue = newValue;
+                                  });
+                                },
+                                items: mesuredemargelleList.map(
+                                        (PositionItem model) {
+                                      return DropdownMenuItem<PositionItem>(
+                                        value: model,
+                                        child: Text(
+                                          model.name,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
@@ -273,6 +378,9 @@ class _MargelleScreenState extends State<MargelleScreen> {
                           "coping_quantity": coping_quantityController.text,
                           "mesure": mesureController.text,
                           "note": noteController.text,
+                          "de_fenetre": defenetreController.text,
+                          "mesure_de_margelle":
+                          mesuredemargelleselectedValue!.name,
                         };
                         print(mapData.toString());
                         margelleScreenRepo(
@@ -303,6 +411,11 @@ class _MargelleScreenState extends State<MargelleScreen> {
                           "coping_quantity": coping_quantityController.text,
                           "mesure": mesureController.text,
                           "note": noteController.text,
+                          "de_fenetre": defenetreController.text,
+                          "mesure_de_margelle":
+                          mesuredemargelleselectedValue != null
+                              ? mesuredemargelleselectedValue!.name
+                              : "",
                         };
                         print(mapData.toString());
                         margelleScreenRepo(
@@ -329,45 +442,369 @@ class _MargelleScreenState extends State<MargelleScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    // SizedBox(
-                    //   height: 50,
-                    //   width: Get.width,
-                    //   child: ElevatedButton.icon(
-                    //     onPressed: () {
-                    //
-                    //       Get.to(const DownloadthequoteScreen());
-                    //
-                    //     },
-                    //     style: ElevatedButton.styleFrom(
-                    //       backgroundColor: Colors.white,
-                    //       surfaceTintColor: Colors.white,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(5),
-                    //         side: const BorderSide(
-                    //           color: Color(0xff019444),
-                    //         ),
-                    //       ),
-                    //       textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                    //     ),
-                    //     icon: const Icon(
-                    //       Icons.add_circle_outline,
-                    //       color: Color(0xff019444),
-                    //     ),
-                    //     label: Text(
-                    //       "Add New".tr.toUpperCase(),
-                    //       style:
-                    //           GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600, color: const Color(0xff019444)),
-                    //     ),
-                    //   ),
-                    // ),
+                    CommonButtonBlue(
+                      onPressed: (){
+                        _buildColumnWithWidgets();
+
+                      },
+                      title: 'Add',
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
+                    _showWidgets ? Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Quantité de margelle',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      // fontFamily: 'poppins',
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                RegisterTextFieldWidget(
+                  controller: coping_quantityController,
+                  color: Colors.white,
+                  // length: 10,
+                  validator: MultiValidator([
+                    RequiredValidator(errorText: 'Please enter your Quantité de margelle'),
+                  ]).call,
+                  keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.next,
+                  // hint: '100 Pieds carré(s)',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Mesure',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      // fontFamily: 'poppins',
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                RegisterTextFieldWidget(
+                  controller: mesureController,
+                  color: Colors.white,
+                  // length: 10,
+                  validator: RequiredValidator(errorText: 'Please enter your Mesure').call,
+                  keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.next,
+                  // hint: '67 Pieds Linéaire',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    '# De fenetre',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      // fontFamily: 'poppins',
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                RegisterTextFieldWidget(
+                  controller: defenetreController,
+                  color: Colors.white,
+                  // length: 10,
+                  validator: RequiredValidator(errorText: 'Please enter your de fenetre').call,
+                  keyboardType: TextInputType.number,
+                  // textInputAction: TextInputAction.next,
+                  // hint: '67 Pieds Linéaire',
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Mesure de margelle',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      // fontFamily: 'poppins',
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  height: 55,
+                  width: Get.width,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.grey.shade400),
+                    ),
+                    child: Column(
+                      children: [
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton<PositionItem>(
+                            value: mesuredemargelleselectedValue ??
+                                mesuredemargelleList.first,
+                            isExpanded: true,
+                            onChanged: (PositionItem? newValue) {
+                              setState(() {
+                                mesuredemargelleselectedValue = newValue;
+                              });
+                            },
+                            items: mesuredemargelleList.map(
+                                    (PositionItem model) {
+                                  return DropdownMenuItem<PositionItem>(
+                                    value: model,
+                                    child: Text(
+                                      model.name,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Note',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      // fontFamily: 'poppins',
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                RegisterTextFieldWidget(
+                  controller: noteController,
+                  color: Colors.white,
+                  // length: 10,
+                  validator: RequiredValidator(errorText: 'Please enter your Note').call,
+                  // keyboardType: TextInputType.none,
+                  // textInputAction: TextInputAction.next,
+                  // hint: 'Note...',
+                  maxLines: 3,
+                  minLines: 3,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                DottedBorder(
+                  borderType: BorderType.RRect,
+                  radius: const Radius.circular(2),
+                  padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
+                  color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
+                  dashPattern: const [6],
+                  strokeWidth: 1,
+                  child: InkWell(
+                      onTap: () {
+                        showActionSheet(context);
+                      },
+                      child: categoryFile.value.path == ""
+                          ? widget.margelleData != null && widget.margelleData!.photoVideo != null
+                          ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        width: double.maxFinite,
+                        height: 180,
+                        alignment: Alignment.center,
+                        child: Image.network(widget.margelleData!.photoVideo,
+                            errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
+                                errorBuilder: (_, __, ___) => const SizedBox())),
+                      )
+                          : Container(
+                        padding: const EdgeInsets.only(top: 8),
+                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                        width: double.maxFinite,
+                        height: 150,
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/upload.png',
+                              height: 60,
+                              width: 50,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text(
+                              'upload Swimming Image And Videos',
+                              style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
+                              style: const TextStyle(fontSize: 12, color: Colors.black54),
+                              textAlign: TextAlign.center,
+                            ),
+                            // const SizedBox(
+                            //   height: 11,
+                            // ),
+                          ],
+                        ),
+                      )
+                          : Obx(() {
+                        return Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                              width: double.maxFinite,
+                              height: 180,
+                              alignment: Alignment.center,
+                              child: Image.file(
+                                categoryFile.value,
+                              ),
+                            ),
+                          ],
+                        );
+                      })),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                widget.margelleData != null ?
+                CommonButtonBlue(
+                  onPressed: () async {
+                    Map<String, String> mapData = {
+                      "client_id": widget.clientId.toString(),
+                      'id' : widget.margelleData!.id.toString(),
+                      "coping_quantity": coping_quantityController.text,
+                      "mesure": mesureController.text,
+                      "note": noteController.text,
+                      "de_fenetre": defenetreController.text,
+                      "mesure_de_margelle":
+                      mesuredemargelleselectedValue!.name,
+                    };
+                    print(mapData.toString());
+                    margelleScreenRepo(
+                        context: context,
+                        mapData: mapData,
+                        fieldName1: 'photo_video',
+                        file1: categoryFile.value)
+                        .then((value) {
+                      if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+                        Get.to( MargelleListScreen(clientId: widget.clientId));
+
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select an image.'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    });
+                  },
+                  title: 'Update',
+                ) :
+                CommonButtonBlue(
+                  onPressed: () async {
+                    Map<String, String> mapData = {
+                      "client_id": widget.clientId.toString(),
+                      "coping_quantity": coping_quantityController.text,
+                      "mesure": mesureController.text,
+                      "note": noteController.text,
+                      "de_fenetre": defenetreController.text,
+                      "mesure_de_margelle":
+                      mesuredemargelleselectedValue != null
+                          ? mesuredemargelleselectedValue!.name
+                          : "",
+                    };
+                    print(mapData.toString());
+                    margelleScreenRepo(
+                        context: context,
+                        mapData: mapData,
+                        fieldName1: 'photo_video',
+                        file1: categoryFile.value)
+                        .then((value) {
+                      if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
+                        Get.to( MargelleListScreen(clientId: widget.clientId));
+
+                      }else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select an image.'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    });
+                  },
+                  title: 'Save',
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+
+              ],
+            ),
+          )
+        ]): SizedBox()
+
                   ],
                 ),
               )
             ]),
           ),
+
         ),
       )),
     );
@@ -417,4 +854,10 @@ class _MargelleScreenState extends State<MargelleScreen> {
       ),
     );
   }
+}
+class PositionItem {
+  final int id;
+  final String name;
+
+  PositionItem({required this.id, required this.name});
 }

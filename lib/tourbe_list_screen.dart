@@ -202,6 +202,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                     buildDetailRow('Positionnement', detailsListModel.value.data![index].positionnement.toString()),
                                     buildDetailRow('Detourber', detailsListModel.value.data![index].detourber.toString()),
                                     buildDetailRow('Type de dechet', detailsListModel.value.data![index].typeDeDechet.toString()),
+                                    buildDetailRow('Access a la cour', detailsListModel.value.data![index].accessalacour.toString()),
                                   ],
                                 ),
                               ),

@@ -37,6 +37,9 @@ class MargelleData {
   dynamic photoVideo;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic defenetre;
+  dynamic mesuredemargelle;
+
 
   MargelleData(
       {this.id,
@@ -47,7 +50,10 @@ class MargelleData {
         this.note,
         this.photoVideo,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.defenetre,
+        this.mesuredemargelle
+      });
 
   MargelleData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -59,6 +65,8 @@ class MargelleData {
     photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    defenetre = json['de_fenetre'];
+    mesuredemargelle = json['mesure_de_margelle'];
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +80,8 @@ class MargelleData {
     data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['de_fenetre'] = this.defenetre;
+    data['mesure_de_margelle'] = this.mesuredemargelle;
     return data;
   }
 }

@@ -43,6 +43,7 @@ class AsphalteData {
   dynamic photoVideo;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic piedslineairedepave;
 
   AsphalteData(
       {this.id,
@@ -59,7 +60,9 @@ class AsphalteData {
         this.polymerSandColor,
         this.photoVideo,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.piedslineairedepave
+      });
 
   AsphalteData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -78,6 +81,7 @@ class AsphalteData {
         ''];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    piedslineairedepave = json['pieds_lineaire_de_pave'];
   }
 
   Map<String, dynamic> toJson() {
@@ -97,6 +101,7 @@ class AsphalteData {
     data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['pieds_lineaire_de_pave'] = this.piedslineairedepave;
     return data;
   }
 }

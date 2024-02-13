@@ -40,6 +40,7 @@ class Data {
   dynamic  photoVideo;
   dynamic  createdAt;
   dynamic  updatedAt;
+  dynamic  accessalacour;
 
   Data(
       {this.id,
@@ -52,7 +53,9 @@ class Data {
         this.typeDeDechet,
         this.photoVideo,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.accessalacour
+      });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -66,6 +69,7 @@ class Data {
     photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    accessalacour = json['access_a_la_cour'];
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +85,7 @@ class Data {
     data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['access_a_la_cour'] = this.accessalacour;
     return data;
   }
 }

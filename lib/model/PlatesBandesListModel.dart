@@ -44,6 +44,7 @@ class PlatesBandesData {
   dynamic photoVideo;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic quantitedeplantation;
 
   PlatesBandesData(
       {this.id,
@@ -61,7 +62,9 @@ class PlatesBandesData {
         this.plantation,
         this.photoVideo,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.quantitedeplantation
+      });
 
   PlatesBandesData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -80,6 +83,7 @@ class PlatesBandesData {
     photoVideo = json['photo_video_url'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    quantitedeplantation = json['quantite_de_plantation'];
   }
 
   Map<String, dynamic> toJson() {
@@ -100,6 +104,7 @@ class PlatesBandesData {
     data['photo_video_url'] = this.photoVideo;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['quantite_de_plantation'] = this.quantitedeplantation;
     return data;
   }
 }

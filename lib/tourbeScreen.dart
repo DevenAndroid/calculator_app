@@ -32,6 +32,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
   PositionItem? DetourberselectedValue;
   PositionItem? TypededechetselectedValue;
   PositionItem? profondeurselectedValue;
+  PositionItem? AccessalacourselectedValue;
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
@@ -83,6 +84,13 @@ class _TourbeScreenState extends State<TourbeScreen> {
     PositionItem(id: 17, name: '17'),
     PositionItem(id: 18, name: '18'),
   ];
+
+  List<PositionItem> AccesslacourList = [
+    PositionItem(id: 1, name: '39’’ et moins'),
+    PositionItem(id: 2, name: '40’’ a 72’’'),
+    PositionItem(id: 3, name: '72’’ et plus'),
+    PositionItem(id: 4, name: 'N/A '),
+  ];
   @override
   void initState() {
     super.initState();
@@ -90,6 +98,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
     PositionnementselectedValue = yourModelList.first;
     DetourberselectedValue = DetourberList.first;
     TypededechetselectedValue = TypededechetList.first;
+    AccessalacourselectedValue = AccesslacourList.first;
 
     if (widget.tourbeData != null) {
       superficieController.text = widget.tourbeData!.superficie.toString();
@@ -108,6 +117,10 @@ class _TourbeScreenState extends State<TourbeScreen> {
       TypededechetselectedValue = TypededechetList.firstWhere(
         (item) => item.name == widget.tourbeData!.typeDeDechet,
         orElse: () => TypededechetList.first,
+      );
+      AccessalacourselectedValue = AccesslacourList.firstWhere(
+        (item) => item.name == widget.tourbeData!.accessalacour,
+        orElse: () => AccesslacourList.first,
       );
       // categoryFile.value = File(widget.data!.photoVideo);
     }
@@ -417,6 +430,64 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Access a la cour',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 55,
+                          width: Get.width,
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Colors.grey.shade400),
+                            ),
+                            child: Column(
+                              children: [
+                                DropdownButtonHideUnderline(
+                                  child: DropdownButton<PositionItem>(
+                                    value: AccessalacourselectedValue ??
+                                        AccesslacourList.first,
+                                    isExpanded: true,
+                                    onChanged: (PositionItem? newValue) {
+                                      setState(() {
+                                        AccessalacourselectedValue = newValue;
+                                      });
+                                    },
+                                    items: AccesslacourList.map(
+                                            (PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
@@ -533,7 +604,6 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         widget.tourbeData != null
                             ? CommonButtonBlue(
                                 onPressed: () async {
-
                                   Map<String, String> mapData = {
                                     "client": widget.clientId.toString(),
                                     'id': widget.tourbeData!.id.toString(),
@@ -544,6 +614,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     "detourber": DetourberselectedValue!.name,
                                     "type_de_dechet":
                                         TypededechetselectedValue!.name,
+                                    "access_a_la_cour":
+                                    AccessalacourselectedValue!.name,
                                   };
                                   print(mapData.toString());
                                   tourbeScreenRepo(
@@ -555,7 +627,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     log(value.toString());
 
                                     if (_formKey.currentState!.validate()) {
-                                      Get.to(() => TourbeListScreen(clientId: widget.clientId));
+                                      Get.to(() => TourbeListScreen(
+                                          clientId: widget.clientId));
                                     } else if (categoryFile.value.path == "") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -592,6 +665,10 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                         TypededechetselectedValue != null
                                             ? TypededechetselectedValue!.name
                                             : "",
+                                    "access_a_la_cour":
+                                        AccessalacourselectedValue != null
+                                            ? AccessalacourselectedValue!.name
+                                            : "",
                                   };
                                   print(mapData.toString());
                                   tourbeScreenRepo(
@@ -601,7 +678,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                           file1: categoryFile.value)
                                       .then((value) {
                                     if (_formKey.currentState!.validate()) {
-                                      Get.to(() => TourbeListScreen(clientId: widget.clientId));
+                                      Get.to(() => TourbeListScreen(
+                                          clientId: widget.clientId));
                                     } else if (categoryFile.value.path == "") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(

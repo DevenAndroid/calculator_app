@@ -7,8 +7,11 @@ import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:flutter_google_places_hoc081098/google_maps_webservice_places.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +27,10 @@ class InfoClientScreen extends StatefulWidget {
 }
 
 class _InfoClientScreenState extends State<InfoClientScreen> {
+
+  String? address = "";
+  String googleApikey = "AIzaSyDDl-_JOy_bj4MyQhYbKbGkZ0sfpbTZDNU";
+
   final _formKey = GlobalKey<FormState>();
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
@@ -45,6 +52,7 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
 
     });
   }
+
 
 
   @override
@@ -169,6 +177,41 @@ class _InfoClientScreenState extends State<InfoClientScreen> {
                     RegisterTextFieldWidget(
                       controller: addressController,
                       color: Colors.white,
+                      onTap: () async {
+                        var place = await PlacesAutocomplete.show(
+                            hint: "Location",
+                            context: context,
+                            apiKey: googleApikey,
+                            mode: Mode.overlay,
+                            types: [],
+                            strictbounds: false,
+                            onError: (err) {
+                              log("error.....   ${err.errorMessage}");
+                            });
+                        if (place != null) {
+                          setState(() {
+                            address = (place.description ?? "Location")
+                                .toString();
+                            addressController.text = address!;
+                          });
+                          final plist = GoogleMapsPlaces(
+                              apiKey: googleApikey,
+                              apiHeaders: await const GoogleApiHeaders()
+                              .getHeaders(),
+                        );
+                        print(plist);
+                        String placeid = place.placeId ?? "0";
+                        final detail =
+                        await plist.getDetailsByPlaceId(placeid);
+                        final geometry = detail.result.geometry!;
+                        final lat = geometry.location.lat;
+                        final lang = geometry.location.lng;
+                        setState(() {
+                        address = (place.description ?? "Location")
+                            .toString();
+                        });
+                      }
+                      },
                       // length: 10,
                       validator: RequiredValidator(errorText: 'Please enter your Address').call,
                       // keyboardType: TextInputType.none,

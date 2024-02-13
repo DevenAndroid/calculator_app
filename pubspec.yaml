@@ -44,9 +44,14 @@ dependencies:
   file_picker:
   intl: ^0.19.0
   fluttertoast: ^8.2.4
+  google_maps_flutter: ^2.5.3
   loading_animation_widget: ^1.2.0+4
   shared_preferences: ^2.2.2
   cached_network_image: ^3.3.1
+  geocoding: ^2.1.1
+  google_places_flutter: ^2.0.8
+  flutter_google_places_hoc081098:
+  google_api_headers:
 
 dev_dependencies:
   flutter_test:
