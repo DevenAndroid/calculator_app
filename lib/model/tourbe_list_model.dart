@@ -1,4 +1,3 @@
-
 class DetailsListModel {
   bool? status;
   String? message;
@@ -33,14 +32,16 @@ class Data {
   dynamic salesmanId;
   dynamic clientId;
   dynamic superficie;
-  dynamic  profondeur;
-  dynamic  positionnement;
-  dynamic  detourber;
-  dynamic  typeDeDechet;
-  dynamic  photoVideo;
-  dynamic  createdAt;
-  dynamic  updatedAt;
-  dynamic  accessalacour;
+  dynamic profondeur;
+  dynamic positionnement;
+  dynamic detourber;
+  dynamic typeDeDechet;
+  List<String>? photoVideo;
+  dynamic   accessALaCour;
+  dynamic   note;
+  dynamic createdAt;
+  dynamic updatedAt;
+  List<String>? photoVideoUrl;
 
   Data(
       {this.id,
@@ -52,10 +53,11 @@ class Data {
         this.detourber,
         this.typeDeDechet,
         this.photoVideo,
+        this.accessALaCour,
+        this.note,
         this.createdAt,
         this.updatedAt,
-        this.accessalacour
-      });
+        this.photoVideoUrl});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -66,10 +68,12 @@ class Data {
     positionnement = json['positionnement'];
     detourber = json['detourber'];
     typeDeDechet = json['type_de_dechet'];
-    photoVideo = json['photo_video_url'];
+    photoVideo = json['photo_video[]'] != null ? List<String>.from(json['photo_video[]']) : null;
+    accessALaCour = json['access_a_la_cour'];
+    note = json['note'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    accessalacour = json['access_a_la_cour'];
+    photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -82,11 +86,12 @@ class Data {
     data['positionnement'] = this.positionnement;
     data['detourber'] = this.detourber;
     data['type_de_dechet'] = this.typeDeDechet;
-    data['photo_video_url'] = this.photoVideo;
+    data['photo_video[]'] = this.photoVideo;
+    data['access_a_la_cour'] = this.accessALaCour;
+    data['note'] = this.note;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['access_a_la_cour'] = this.accessalacour;
+    data['photo_video_url'] = this.photoVideoUrl;
     return data;
   }
 }
-

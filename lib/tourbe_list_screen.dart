@@ -137,8 +137,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                     padding: const EdgeInsets.only(
                                         left: 10, right: 10, top: 20, bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: detailsListModel.value.data![index].photoVideo.toString(),
-                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
+                                      imageUrl: detailsListModel.value.data![index].photoVideoUrl!.first.toString(),
+                                      errorWidget: (_,__,___)=>Image.asset('assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -148,6 +148,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
+                                          print(detailsListModel.value.data![index].photoVideoUrl!.first.toString());
+                                          return;
                                           Get.to(TourbeScreen(
                                             tourbeData: detailsListModel.value.data![index],
                                               clientId: widget.clientId
@@ -202,7 +204,7 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                     buildDetailRow('Positionnement', detailsListModel.value.data![index].positionnement.toString()),
                                     buildDetailRow('Detourber', detailsListModel.value.data![index].detourber.toString()),
                                     buildDetailRow('Type de dechet', detailsListModel.value.data![index].typeDeDechet.toString()),
-                                    buildDetailRow('Access a la cour', detailsListModel.value.data![index].accessalacour.toString()),
+                                    buildDetailRow('Access a la cour', detailsListModel.value.data![index].accessALaCour.toString()),
                                   ],
                                 ),
                               ),

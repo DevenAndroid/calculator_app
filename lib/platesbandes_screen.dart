@@ -65,11 +65,13 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   ];
 
   List<PositionItem> BorduretList = [
+    PositionItem(id: 0, name: 'N/A'),
     PositionItem(id: 1, name: 'Bordure Citadin'),
     PositionItem(id: 2, name: 'Bordure Proma'),
     PositionItem(id: 3, name: 'Pas de Bordure'),
   ];
   List<PositionItem> PlantationList = [
+    PositionItem(id: 0, name: 'N/A'),
     PositionItem(id: 1, name: 'Hosta choix du paysagiste'),
     PositionItem(id: 2, name: 'Hemorocailles choix du paysagiste'),
     PositionItem(id: 3, name: 'Buxus cedre'),
@@ -77,6 +79,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     PositionItem(id: 5, name: 'Annuel choix du paysagiste'),
   ];
   List<PositionItem> CouleurfinitionList = [
+    PositionItem(id: 0, name: 'N/A'),
     PositionItem(id: 1, name: 'Rocher marbre blanc 3/4'),
     PositionItem(id: 2, name: 'Rocher marbre blanc 3/4'),
     PositionItem(id: 3, name: 'Pierre de riviere 3/4'),
@@ -84,6 +87,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     PositionItem(id: 5, name: 'terre de finition noir'),
   ];
   List<PositionItem> CouleurList = [
+    PositionItem(id: 0, name: 'N/A'),
     PositionItem(id: 1, name: 'Gris Charbon'),
     PositionItem(id: 2, name: 'Noir'),
   ];
@@ -350,6 +354,14 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         FinitionselectedValue = newValue;
+                                        if (FinitionselectedValue!.name == 'finition terre noir') {
+                                          CouleurfinitionselectedValue = CouleurfinitionList.firstWhere((item) => item.name == 'N/A');
+                                          BordureselectedValue = BorduretList.firstWhere((item) => item.name == 'N/A');
+                                          CouleurselectedValue = CouleurList.firstWhere((item) => item.name == 'N/A');
+                                          PlantationselectedValue = PlantationList.firstWhere((item) => item.name == 'N/A');
+                                        } else {
+                                          CouleurfinitionselectedValue = CouleurfinitionList.first;
+                                        }
                                       });
                                     },
                                     items: FinitionList.map((PositionItem model) {
@@ -406,31 +418,48 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                         children: [
                                           DropdownButtonHideUnderline(
                                             child: DropdownButton<PositionItem>(
-                                              value: CouleurfinitionselectedValue ?? CouleurfinitionList.first,
+                                              value: CouleurfinitionselectedValue,
                                               isExpanded: true,
                                               onChanged: (PositionItem? newValue) {
                                                 setState(() {
                                                   CouleurfinitionselectedValue = newValue;
                                                 });
                                               },
-                                              items: CouleurfinitionList.map((PositionItem model) {
-                                                return DropdownMenuItem<PositionItem>(
-                                                  value: model,
+                                              items: FinitionselectedValue!.name == 'finition terre noir'
+                                                  ? [
+                                                DropdownMenuItem<PositionItem>(
+                                                  value: CouleurfinitionList.firstWhere(
+                                                          (item) => item.name == 'N/A'),
                                                   child: Text(
-                                                    model.name,
+                                                    'N/A',
                                                     style: const TextStyle(
                                                       color: Colors.black,
                                                       fontWeight: FontWeight.w300,
                                                     ),
                                                   ),
-                                                );
-                                              }).toList(),
+                                                ),
+                                              ]
+                                                  : CouleurfinitionList
+                                                  .map<DropdownMenuItem<PositionItem>>(
+                                                      (PositionItem model) {
+                                                    return DropdownMenuItem<PositionItem>(
+                                                      value: model,
+                                                      child: Text(
+                                                        model.name,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight: FontWeight.w300,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
+
                                 ],
                               ),
                             ),
@@ -511,18 +540,34 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                         BordureselectedValue = newValue;
                                       });
                                     },
-                                    items: BorduretList.map((PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
+                                    items: FinitionselectedValue!.name == 'finition terre noir'
+                                        ? [
+                                      DropdownMenuItem<PositionItem>(
+                                        value: BorduretList.firstWhere(
+                                                (item) => item.name == 'N/A'),
                                         child: Text(
-                                          model.name,
+                                          'N/A',
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w300,
                                           ),
                                         ),
-                                      );
-                                    }).toList(),
+                                      ),
+                                    ]
+                                        : BorduretList
+                                        .map<DropdownMenuItem<PositionItem>>(
+                                            (PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
                                   ),
                                 ),
                               ],
@@ -567,18 +612,34 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                         CouleurselectedValue = newValue;
                                       });
                                     },
-                                    items: CouleurList.map((PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
+                                    items: FinitionselectedValue!.name == 'finition terre noir'
+                                        ? [
+                                      DropdownMenuItem<PositionItem>(
+                                        value: CouleurList.firstWhere(
+                                                (item) => item.name == 'N/A'),
                                         child: Text(
-                                          model.name,
+                                          'N/A',
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w300,
                                           ),
                                         ),
-                                      );
-                                    }).toList(),
+                                      ),
+                                    ]
+                                        : CouleurList
+                                        .map<DropdownMenuItem<PositionItem>>(
+                                            (PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
                                   ),
                                 ),
                               ],
@@ -623,18 +684,34 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                         PlantationselectedValue = newValue;
                                       });
                                     },
-                                    items: PlantationList.map((PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
+                                    items: FinitionselectedValue!.name == 'finition terre noir'
+                                        ? [
+                                      DropdownMenuItem<PositionItem>(
+                                        value: PlantationList.firstWhere(
+                                                (item) => item.name == 'N/A'),
                                         child: Text(
-                                          model.name,
+                                          'N/A',
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w300,
                                           ),
                                         ),
-                                      );
-                                    }).toList(),
+                                      ),
+                                    ]
+                                        : PlantationList
+                                        .map<DropdownMenuItem<PositionItem>>(
+                                            (PositionItem model) {
+                                          return DropdownMenuItem<PositionItem>(
+                                            value: model,
+                                            child: Text(
+                                              model.name,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
                                   ),
                                 ),
                               ],

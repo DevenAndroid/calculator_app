@@ -933,6 +933,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                             file1: categoryFile.value)
                                         .then((value) {
                                       if (value.status == true) {
+                                        log("ggggggggg${categoryFile.value.toString()}");
                                         Get.to(PaveuniListScreen(
                                             clientId: widget.clientId));
                                       }
@@ -999,6 +1000,8 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                             fieldName1: 'photo_video',
                                             file1: categoryFile.value)
                                         .then((value) {
+                                      log("ggggggggg${categoryFile.value.toString()}");
+
                                       if (value.status == true) {
                                         Get.to(PaveuniListScreen(
                                             clientId: widget.clientId));

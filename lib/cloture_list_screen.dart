@@ -36,8 +36,6 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
     detailsListRepoFunction();
   }
 
-
-
   Widget buildDetailRow(String label, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,8 +69,10 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer ${user.authToken}'
     };
-    http.Response response = await http.post(Uri.parse(ApiUrl.deletecouleurClient),
-        headers: headers, body: jsonEncode(map));
+    http.Response response = await http.post(
+        Uri.parse(ApiUrl.deletecouleurClient),
+        headers: headers,
+        body: jsonEncode(map));
     log(response.body.toString());
     if (response.statusCode == 200 || response.statusCode == 400) {
       Helper.hideLoader(loader);
@@ -84,9 +84,8 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
   }
 
   detailsListRepoFunction() async {
-
-
-    clotureListRepo(clientId: widget.clientId, serviceType: "couleur").then((value) {
+    clotureListRepo(clientId: widget.clientId, serviceType: "couleur")
+        .then((value) {
       clotureListModel.value = value;
       setState(() {});
     });
@@ -104,7 +103,9 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
+                Get.to(SelectPoolInfoScreen(
+                  clientId: widget.clientId,
+                ));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -115,165 +116,188 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                 height: 50,
               ),
               clotureListModel.value.data != null
-                  ?   ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: clotureListModel.value.data!.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(2),
-                          border: Border.all(color: Colors.grey)),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          // Left Column with Image and Icons
-                          Column(
+                  ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: clotureListModel.value.data!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          width: Get.width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(2),
+                              border: Border.all(color: Colors.grey)),
+                          child: Row(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 20, bottom: 10),
-                                child: CachedNetworkImage(
-                                  imageUrl: '',
-                                  errorWidget: (_, __, ___) =>
-                                      Image.asset('assets/images/noimage.png'),
-                                  width: 80,
-                                  height: 70,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                              Row(
+                              const SizedBox(width: 10),
+                              // Left Column with Image and Icons
+                              Column(
                                 children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(ClotureScreen(
-                                        clotureData: clotureListModel
-                                            .value.data![index],
-                                          clientId: widget.clientId
-                                      ));
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xff019444),
-                                          borderRadius: BorderRadius.circular(
-                                              5)),
-                                      child: const Icon(
-                                        Icons.edit,
-                                        color: Colors.white,
-                                      ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: '',
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/noimage.png'),
+                                      width: 80,
+                                      height: 70,
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
-                                  const SizedBox(width: 5),
-                                  GestureDetector(
-                                    onTap: () {
-                                      removeAddress(
-                                        context: context,
-                                        id: clotureListModel
-                                            .value.data![index].id,
-                                      ).then((value) =>
-                                      {detailsListRepoFunction()});
-                                    },
-                                    child: Container(
-                                      height: 30,
-                                      width: 40,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xff019444),
-                                          borderRadius: BorderRadius.circular(
-                                              5)),
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Colors.white,
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(ClotureScreen(
+                                              clotureData: clotureListModel
+                                                  .value.data![index],
+                                              clientId: widget.clientId));
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      const SizedBox(width: 5),
+                                      GestureDetector(
+                                        onTap: () {
+                                          removeAddress(
+                                            context: context,
+                                            id: clotureListModel
+                                                .value.data![index].id,
+                                          ).then((value) =>
+                                              {detailsListRepoFunction()});
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xff019444),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  const SizedBox(height: 10),
                                 ],
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(width: 10),
+                              // Right Column with Details
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    buildDetailRow(
+                                        'type De Cloture:',
+                                        clotureListModel
+                                            .value.data![index].typeDeCloture
+                                            .toString()),
+                                    buildDetailRow(
+                                        'couleur:',
+                                        clotureListModel
+                                            .value.data![index].couleur
+                                            .toString()),
+                                    clotureListModel
+                                                .value.data![index].lattes !=
+                                            null
+                                        ? buildDetailRow(
+                                            'Lattes:',
+                                            clotureListModel
+                                                .value.data![index].lattes
+                                                .toString())
+                                        : SizedBox(),
+                                    clotureListModel
+                                                .value.data![index].modele !=
+                                            null
+                                        ? buildDetailRow(
+                                            'Modele:',
+                                            clotureListModel
+                                                .value.data![index].modele
+                                                .toString())
+                                        : SizedBox(),
+                                    buildDetailRow(
+                                        'hauteur:',
+                                        clotureListModel
+                                            .value.data![index].hauteur
+                                            .toString()),
+                                    buildDetailRow(
+                                        'porte Double:',
+                                        clotureListModel
+                                            .value.data![index].porteDouble
+                                            .toString()),
+                                    buildDetailRow(
+                                        'porte Simple',
+                                        clotureListModel
+                                            .value.data![index].porteSimple
+                                            .toString()),
+                                    buildDetailRow(
+                                        'nombre De CoteauCarree',
+                                        clotureListModel.value.data![index]
+                                            .nombreDeCoteauCarree
+                                            .toString()),
+                                    buildDetailRow(
+                                        'nombre De Pied Lineaire',
+                                        clotureListModel.value.data![index]
+                                            .nombreDePiedLineaire
+                                            .toString()),
+                                    buildDetailRow(
+                                        'nombre De Poteau Frost Rond',
+                                        clotureListModel.value.data![index]
+                                            .nombreDePoteauFrostRond
+                                            .toString()),
+                                    buildDetailRow(
+                                        'nombre De Poteau Plaque Carree',
+                                        clotureListModel.value.data![index]
+                                            .nombreDePoteauPlaqueCarree
+                                            .toString()),
+                                    buildDetailRow(
+                                        'nombre De Poteau Plaque Rond',
+                                        clotureListModel.value.data![index]
+                                            .nombreDePoteauPlaqueRond
+                                            .toString()),
+                                    buildDetailRow(
+                                        'demolition',
+                                        clotureListModel
+                                            .value.data![index].demolition
+                                            .toString()),
+                                    buildDetailRow(
+                                        'type de dechets',
+                                        clotureListModel
+                                            .value.data![index].typededechets
+                                            .toString()),
+                                    buildDetailRow(
+                                        'kit de conversion orno',
+                                        clotureListModel.value.data![index]
+                                            .kitdeconversionorno
+                                            .toString()),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 10),
                             ],
                           ),
-                          const SizedBox(width: 10),
-                          // Right Column with Details
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                buildDetailRow(
-                                    'type De Cloture:',
-                                    clotureListModel
-                                        .value.data![index].typeDeCloture
-                                        .toString()),
-                                buildDetailRow(
-                                    'couleur:',
-                                    clotureListModel.value.data![index].couleur
-                                        .toString()),
-                                clotureListModel.value.data![index] != null ? buildDetailRow(
-                                    'Lattes:',
-                                    clotureListModel.value.data![index].modele
-                                        .toString()) :SizedBox(),
-                                clotureListModel.value.data![index] != null ? buildDetailRow(
-                                    'Modele:',
-                                    clotureListModel.value.data![index].lattes
-                                        .toString()) : SizedBox(),
-                                buildDetailRow(
-                                    'hauteur:',
-                                    clotureListModel.value.data![index].hauteur
-                                        .toString()),
-                                buildDetailRow(
-                                    'porte Double:',
-                                    clotureListModel
-                                        .value.data![index].porteDouble
-                                        .toString()),
-                                buildDetailRow(
-                                    'porte Simple',
-                                    clotureListModel
-                                        .value.data![index].porteSimple
-                                        .toString()),
-                                buildDetailRow(
-                                    'nombre De CoteauCarree',
-                                    clotureListModel
-                                        .value.data![index].nombreDeCoteauCarree
-                                        .toString()),
-                                buildDetailRow(
-                                    'nombre De Pied Lineaire',
-                                    clotureListModel
-                                        .value.data![index].nombreDePiedLineaire
-                                        .toString()),
-                                buildDetailRow(
-                                    'nombre De Poteau Frost Rond',
-                                    clotureListModel.value.data![index]
-                                        .nombreDePoteauFrostRond
-                                        .toString()),
-                                buildDetailRow(
-                                    'nombre De Poteau Plaque Carree',
-                                    clotureListModel.value.data![index]
-                                        .nombreDePoteauPlaqueCarree
-                                        .toString()),
-                                buildDetailRow(
-                                    'nombre De Poteau Plaque Rond',
-                                    clotureListModel.value.data![index]
-                                        .nombreDePoteauPlaqueRond
-                                        .toString()),
-                                buildDetailRow(
-                                    'note',
-                                    clotureListModel.value.data![index]
-                                        .note
-                                        .toString()),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                        ],
-                      ),
-                    );
-                  })
+                        );
+                      })
                   : const CircularProgressIndicator(),
-
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -281,7 +305,9 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
+                        Get.to(SelectPoolInfoScreen(
+                          clientId: widget.clientId,
+                        ));
                       },
                       title: 'Final Save',
                     ),
