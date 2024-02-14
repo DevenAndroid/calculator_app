@@ -85,7 +85,8 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
     // SharedPreferences pref = await SharedPreferences.getInstance();
     // var id = pref.getString("client_id");
 
-    detailsListRepo(clientId: widget.clientId, serviceType: "tourbe").then((value) {
+    detailsListRepo(clientId: widget.clientId, serviceType: "tourbe")
+        .then((value) {
       detailsListModel.value = value;
       setState(() {});
     });
@@ -103,7 +104,9 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
           ),
           leading: GestureDetector(
               onTap: () {
-                Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
+                Get.to(SelectPoolInfoScreen(
+                  clientId: widget.clientId,
+                ));
               },
               child: const Icon(Icons.arrow_back)),
         ),
@@ -135,10 +138,16 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 10, right: 10, top: 20, bottom: 10),
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: detailsListModel.value.data![index].photoVideoUrl!.first.toString(),
-                                      errorWidget: (_,__,___)=>Image.asset('assets/images/gallery.png'),
+                                      imageUrl: detailsListModel.value
+                                          .data![index].photoVideoUrl!.first
+                                          .toString(),
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -148,19 +157,18 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
-                                          print(detailsListModel.value.data![index].photoVideoUrl!.first.toString());
-                                          return;
                                           Get.to(TourbeScreen(
-                                            tourbeData: detailsListModel.value.data![index],
-                                              clientId: widget.clientId
-                                          ));
+                                              tourbeData: detailsListModel
+                                                  .value.data![index],
+                                              clientId: widget.clientId));
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
                                               color: const Color(0xff019444),
-                                              borderRadius: BorderRadius.circular(5)),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
@@ -172,15 +180,18 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                         onTap: () {
                                           removeAddress(
                                             context: context,
-                                            id: detailsListModel.value.data![index].id,
-                                          ).then((value) => {detailsListRepoFunction()});
+                                            id: detailsListModel
+                                                .value.data![index].id,
+                                          ).then((value) =>
+                                              {detailsListRepoFunction()});
                                         },
                                         child: Container(
                                           height: 30,
                                           width: 40,
                                           decoration: BoxDecoration(
                                               color: const Color(0xff019444),
-                                              borderRadius: BorderRadius.circular(5)),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
                                           child: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
@@ -199,21 +210,42 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // Each detail in a separate Row
-                                    buildDetailRow('Superficie', detailsListModel.value.data![index].superficie.toString()),
-                                    buildDetailRow('Profondeur', detailsListModel.value.data![index].profondeur.toString()),
-                                    buildDetailRow('Positionnement', detailsListModel.value.data![index].positionnement.toString()),
-                                    buildDetailRow('Detourber', detailsListModel.value.data![index].detourber.toString()),
-                                    buildDetailRow('Type de dechet', detailsListModel.value.data![index].typeDeDechet.toString()),
-                                    buildDetailRow('Access a la cour', detailsListModel.value.data![index].accessALaCour.toString()),
+                                    buildDetailRow(
+                                        'Superficie',
+                                        detailsListModel
+                                            .value.data![index].superficie
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Profondeur',
+                                        detailsListModel
+                                            .value.data![index].profondeur
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Positionnement',
+                                        detailsListModel
+                                            .value.data![index].positionnement
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Detourber',
+                                        detailsListModel
+                                            .value.data![index].detourber
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Type de dechet',
+                                        detailsListModel
+                                            .value.data![index].typeDeDechet
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Access a la cour',
+                                        detailsListModel
+                                            .value.data![index].accessALaCour
+                                            .toString()),
                                   ],
                                 ),
                               ),
                               const SizedBox(width: 10),
                             ],
                           ),
-
-
-
                         );
                       })
                   : const CircularProgressIndicator(),
@@ -224,7 +256,9 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
+                        Get.to(SelectPoolInfoScreen(
+                          clientId: widget.clientId,
+                        ));
                       },
                       title: 'Final Save',
                     ),
