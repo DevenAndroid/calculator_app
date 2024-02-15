@@ -759,7 +759,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                         Get.to(TourbeListScreen(
                                             clientId: widget.clientId));
                                       } else {
-                                        log(value.message.toString());
+                                        log("fffffff${value.message.toString()}");
                                       }
                                     });
                                   }
