@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:calculator_app/paveuni_list_screen.dart';
 import 'package:calculator_app/repo/pavaUniRepo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
@@ -159,10 +160,29 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
       );
       noteController.text = widget.paveUniData!.note.toString();
 
-      // categoryFile.value = File(widget.data!.photoVideo);
+      if (widget.paveUniData != null && widget.paveUniData!.photoVideoUrl != null) {
+        downloadImages(widget.paveUniData!.photoVideoUrl!);
+      }
     }
   }
 
+  Future<void> downloadImages(List<String> urls) async {
+    List<File> downloadedImages = [];
+    for (String url in urls) {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final appDir = await getApplicationDocumentsDirectory();
+        final localFile = File('${appDir.path}/${url.split('/').last}');
+        await localFile.writeAsBytes(response.bodyBytes);
+        downloadedImages.add(localFile);
+      } else {
+        print('Failed to download image from $url');
+      }
+    }
+    setState(() {
+      images.value = downloadedImages;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;

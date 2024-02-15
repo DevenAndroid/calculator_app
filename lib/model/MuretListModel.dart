@@ -44,6 +44,7 @@ class MuretData {
   List<String>? photoVideo;
   dynamic createdAt;
   dynamic updatedAt;
+  dynamic note;
   List<String>? photoVideoUrl;
 
   MuretData(
@@ -63,6 +64,7 @@ class MuretData {
         this.photoVideo,
         this.createdAt,
         this.updatedAt,
+        this.note,
         this.photoVideoUrl});
 
   MuretData.fromJson(Map<String, dynamic> json) {
@@ -83,6 +85,7 @@ class MuretData {
 
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    note = json['note'];
     photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
 
   }
@@ -103,7 +106,7 @@ class MuretData {
     data['couleur_du_couronnement'] = this.couleurDuCouronnement;
     data['infrastructure'] = this.infrastructure;
     data['photo_video[]'] = this.photoVideo;
-
+    data['note'] = this.note;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['photo_video_url'] = this.photoVideoUrl;

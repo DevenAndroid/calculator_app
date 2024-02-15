@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:calculator_app/MargelleListScreen.dart';
 import 'package:calculator_app/model/margelleListModel.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
@@ -33,7 +35,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
-  Rx<File> image = File("").obs;
+  Rx<List<File>> images = Rx<List<File>>([]);
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
   TextEditingController coping_quantityController = TextEditingController();
@@ -62,13 +64,33 @@ class _MargelleScreenState extends State<MargelleScreen> {
       coping_quantityController.text = widget.margelleData!.copingQuantity.toString();
       mesureController.text = widget.margelleData!.mesure.toString();
       noteController.text = widget.margelleData!.note;
-      defenetreController.text = widget.margelleData!.defenetre;
+      defenetreController.text = widget.margelleData!.deFenetre;
       mesuredemargelleselectedValue = mesuredemargelleList.firstWhere(
-            (item) => item.name == widget.margelleData!.mesuredemargelle,
+            (item) => item.name == widget.margelleData!.mesureDeMargelle,
         orElse: () => mesuredemargelleList.first,
       );
-      // categoryFile.value = File(widget.data!.photoVideo);
+      if (widget.margelleData != null && widget.margelleData!.photoVideoUrl != null) {
+        downloadImages(widget.margelleData!.photoVideoUrl!);
+      }
     }
+  }
+
+  Future<void> downloadImages(List<String> urls) async {
+    List<File> downloadedImages = [];
+    for (String url in urls) {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final appDir = await getApplicationDocumentsDirectory();
+        final localFile = File('${appDir.path}/${url.split('/').last}');
+        await localFile.writeAsBytes(response.bodyBytes);
+        downloadedImages.add(localFile);
+      } else {
+        print('Failed to download image from $url');
+      }
+    }
+    setState(() {
+      images.value = downloadedImages;
+    });
   }
 
   @override
@@ -282,63 +304,105 @@ class _MargelleScreenState extends State<MargelleScreen> {
                     DottedBorder(
                       borderType: BorderType.RRect,
                       radius: const Radius.circular(2),
-                      padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
-                      color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
+                      padding: const EdgeInsets.only(
+                          left: 40, right: 40, bottom: 10),
+                      color: showValidationImg == false
+                          ? const Color(0xFF019444)
+                          : Colors.red,
                       dashPattern: const [6],
                       strokeWidth: 1,
                       child: InkWell(
-                          onTap: () {
-                            showActionSheet(context);
-                          },
-                          child: categoryFile.value.path == ""
-                              ? widget.margelleData != null && widget.margelleData!.photoVideo != null
-                              ? Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                            ),
-                            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                            width: double.maxFinite,
-                            height: 180,
-                            alignment: Alignment.center,
-                            child: Image.network(widget.margelleData!.photoVideo,
-                                errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
-                                    errorBuilder: (_, __, ___) => const SizedBox())),
-                          )
-                              : Container(
-                            padding: const EdgeInsets.only(top: 8),
-                            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                            width: double.maxFinite,
-                            height: 150,
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/upload.png',
-                                  height: 60,
-                                  width: 50,
+                        onTap: () {
+                          showActionSheet(context);
+                        },
+                        child: Obx(() {
+                          if (categoryFile.value.path == "") {
+                            // Show selected images if available
+                            if (images.value.isNotEmpty) {
+                              return SizedBox(
+                                height: 180,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: images.value.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.file(
+                                        images.value[index],
+                                        width: 150,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  },
                                 ),
-                                const SizedBox(
-                                  height: 5,
+                              );
+                            } else {
+                              // Show default upload message
+                              return widget.margelleData != null &&
+                                  widget.margelleData!.photoVideo != null
+                                  ? Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(10),
+                                  color: Colors.white,
                                 ),
-                                const Text(
-                                  'upload Swimming Image And Videos',
-                                  style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                width: double.maxFinite,
+                                height: 180,
+                                alignment: Alignment.center,
+                                child: Image.network(
+                                  widget.margelleData!.photoVideo.toString(),
+                                  errorBuilder: (_, __, ___) =>
+                                      Image.network(
+                                        categoryFile.value.path,
+                                        errorBuilder: (_, __, ___) =>
+                                        const SizedBox(),
+                                      ),
                                 ),
-                                Text(
-                                  'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                  style: const TextStyle(fontSize: 12, color: Colors.black54),
-                                  textAlign: TextAlign.center,
+                              )
+                                  : Container(
+                                padding:
+                                const EdgeInsets.only(top: 8),
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 8),
+                                width: double.maxFinite,
+                                height: 150,
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/upload.png',
+                                      height: 60,
+                                      width: 50,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text(
+                                      'Upload Swimming Image And Videos',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight:
+                                          FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      'Accepted file types: JPEG, Doc, PDF, PNG'
+                                          .tr,
+                                      style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.black54),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
-                                // const SizedBox(
-                                //   height: 11,
-                                // ),
-                              ],
-                            ),
-                          )
-                              : Obx(() {
+                              );
+                            }
+                          } else {
+                            // Show selected image
                             return Stack(
                               children: [
                                 Container(
@@ -346,7 +410,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.white,
                                   ),
-                                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
                                   width: double.maxFinite,
                                   height: 180,
                                   alignment: Alignment.center,
@@ -356,7 +421,9 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                 ),
                               ],
                             );
-                          })),
+                          }
+                        }),
+                      ),
                     ),
                   ],
                 ),
@@ -372,70 +439,76 @@ class _MargelleScreenState extends State<MargelleScreen> {
                     widget.margelleData != null ?
                     CommonButtonBlue(
                       onPressed: () async {
-                        Map<String, String> mapData = {
-                          "client_id": widget.clientId.toString(),
-                          'id' : widget.margelleData!.id.toString(),
-                          "coping_quantity": coping_quantityController.text,
-                          "mesure": mesureController.text,
-                          "note": noteController.text,
-                          "de_fenetre": defenetreController.text,
-                          "mesure_de_margelle":
-                          mesuredemargelleselectedValue!.name,
-                        };
-                        print(mapData.toString());
-                        margelleScreenRepo(
-                                context: context,
-                            mapData: mapData,
-                            fieldName1: 'photo_video',
-                            file1: categoryFile.value)
-                            .then((value) {
-                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                            Get.to( MargelleListScreen(clientId: widget.clientId));
-
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please select an image.'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                        if (_formKey.currentState!.validate()) {
+                          if (images.value.isEmpty) {
+                            showToast("Please select image");
+                            return;
                           }
-                        });
+                          Map<String, String> mapData = {
+                            "client_id": widget.clientId.toString(),
+                            'id' : widget.margelleData!.id.toString(),
+                            "coping_quantity": coping_quantityController.text,
+                            "mesure": mesureController.text,
+                            "note": noteController.text,
+                            "de_fenetre": defenetreController.text,
+                            "mesure_de_margelle":
+                            mesuredemargelleselectedValue!.name,
+                          };
+                          print(mapData.toString());
+                          MargelleScreenRepo.margelleScreenRepo(
+                              context: context,
+                              mapData: mapData,
+                              fieldName1: 'photo_video[]',
+                              files: images.value)
+                              .then((value) {
+                            print("${images.value.toString()}");
+                            if (value.status == true) {
+                              Get.to(MargelleListScreen(
+                                  clientId: widget.clientId));
+                            } else {
+                              log(value.message.toString());
+                            }
+                          });
+                        }
+
                       },
                       title: 'Update',
                     ) :
                     CommonButtonBlue(
                       onPressed: () async {
-                        Map<String, String> mapData = {
-                          "client_id": widget.clientId.toString(),
-                          "coping_quantity": coping_quantityController.text,
-                          "mesure": mesureController.text,
-                          "note": noteController.text,
-                          "de_fenetre": defenetreController.text,
-                          "mesure_de_margelle":
-                          mesuredemargelleselectedValue != null
-                              ? mesuredemargelleselectedValue!.name
-                              : "",
-                        };
-                        print(mapData.toString());
-                        margelleScreenRepo(
-                            context: context,
-                            mapData: mapData,
-                            fieldName1: 'photo_video',
-                            file1: categoryFile.value)
-                            .then((value) {
-                          if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                            Get.to( MargelleListScreen(clientId: widget.clientId));
-
-                          }else{
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please select an image.'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                        if (_formKey.currentState!.validate()) {
+                          if (images.value.isEmpty) {
+                            showToast("Please select image");
+                            return;
                           }
-                        });
+                          Map<String, String> mapData = {
+                            "client_id": widget.clientId.toString(),
+                            "coping_quantity": coping_quantityController.text,
+                            "mesure": mesureController.text,
+                            "note": noteController.text,
+                            "de_fenetre": defenetreController.text,
+                            "mesure_de_margelle":
+                            mesuredemargelleselectedValue != null
+                                ? mesuredemargelleselectedValue!.name
+                                : "",
+                          };
+                          print(mapData.toString());
+                          MargelleScreenRepo.margelleScreenRepo(
+                              context: context,
+                              mapData: mapData,
+                              fieldName1: 'photo_video[]',
+                              files: images.value)
+                              .then((value) {
+                            print("${images.value.toString()}");
+                            if (value.status == true) {
+                              Get.to(MargelleListScreen(
+                                  clientId: widget.clientId));
+                            } else {
+                              log(value.message.toString());
+                            }
+                          });
+                        }
+
                       },
                       title: 'Save',
                     ),
@@ -630,63 +703,105 @@ class _MargelleScreenState extends State<MargelleScreen> {
                 DottedBorder(
                   borderType: BorderType.RRect,
                   radius: const Radius.circular(2),
-                  padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
-                  color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
+                  padding: const EdgeInsets.only(
+                      left: 40, right: 40, bottom: 10),
+                  color: showValidationImg == false
+                      ? const Color(0xFF019444)
+                      : Colors.red,
                   dashPattern: const [6],
                   strokeWidth: 1,
                   child: InkWell(
-                      onTap: () {
-                        showActionSheet(context);
-                      },
-                      child: categoryFile.value.path == ""
-                          ? widget.margelleData != null && widget.margelleData!.photoVideo != null
-                          ? Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white,
-                        ),
-                        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        width: double.maxFinite,
-                        height: 180,
-                        alignment: Alignment.center,
-                        child: Image.network(widget.margelleData!.photoVideo,
-                            errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
-                                errorBuilder: (_, __, ___) => const SizedBox())),
-                      )
-                          : Container(
-                        padding: const EdgeInsets.only(top: 8),
-                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                        width: double.maxFinite,
-                        height: 150,
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/upload.png',
-                              height: 60,
-                              width: 50,
+                    onTap: () {
+                      showActionSheet(context);
+                    },
+                    child: Obx(() {
+                      if (categoryFile.value.path == "") {
+                        // Show selected images if available
+                        if (images.value.isNotEmpty) {
+                          return SizedBox(
+                            height: 180,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: images.value.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.file(
+                                    images.value[index],
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              },
                             ),
-                            const SizedBox(
-                              height: 5,
+                          );
+                        } else {
+                          // Show default upload message
+                          return widget.margelleData != null &&
+                              widget.margelleData!.photoVideo != null
+                              ? Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.circular(10),
+                              color: Colors.white,
                             ),
-                            const Text(
-                              'upload Swimming Image And Videos',
-                              style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center,
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            width: double.maxFinite,
+                            height: 180,
+                            alignment: Alignment.center,
+                            child: Image.network(
+                              widget.margelleData!.photoVideo.toString(),
+                              errorBuilder: (_, __, ___) =>
+                                  Image.network(
+                                    categoryFile.value.path,
+                                    errorBuilder: (_, __, ___) =>
+                                    const SizedBox(),
+                                  ),
                             ),
-                            Text(
-                              'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                              style: const TextStyle(fontSize: 12, color: Colors.black54),
-                              textAlign: TextAlign.center,
+                          )
+                              : Container(
+                            padding:
+                            const EdgeInsets.only(top: 8),
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 8),
+                            width: double.maxFinite,
+                            height: 150,
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/upload.png',
+                                  height: 60,
+                                  width: 50,
+                                ),
+                                const SizedBox(height: 5),
+                                const Text(
+                                  'Upload Swimming Image And Videos',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight:
+                                      FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  'Accepted file types: JPEG, Doc, PDF, PNG'
+                                      .tr,
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black54),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
-                            // const SizedBox(
-                            //   height: 11,
-                            // ),
-                          ],
-                        ),
-                      )
-                          : Obx(() {
+                          );
+                        }
+                      } else {
+                        // Show selected image
                         return Stack(
                           children: [
                             Container(
@@ -694,7 +809,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                               ),
-                              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
                               width: double.maxFinite,
                               height: 180,
                               alignment: Alignment.center,
@@ -704,7 +820,9 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             ),
                           ],
                         );
-                      })),
+                      }
+                    }),
+                  ),
                 ),
               ],
             ),
@@ -731,11 +849,11 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       mesuredemargelleselectedValue!.name,
                     };
                     print(mapData.toString());
-                    margelleScreenRepo(
+                    MargelleScreenRepo.margelleScreenRepo(
                         context: context,
                         mapData: mapData,
-                        fieldName1: 'photo_video',
-                        file1: categoryFile.value)
+                        fieldName1: 'photo_video[]',
+                        files: images.value)
                         .then((value) {
                       if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                         Get.to( MargelleListScreen(clientId: widget.clientId));
@@ -766,11 +884,11 @@ class _MargelleScreenState extends State<MargelleScreen> {
                           : "",
                     };
                     print(mapData.toString());
-                    margelleScreenRepo(
+                    MargelleScreenRepo.margelleScreenRepo(
                         context: context,
                         mapData: mapData,
-                        fieldName1: 'photo_video',
-                        file1: categoryFile.value)
+                        fieldName1: 'photo_video[]',
+                        files: images.value)
                         .then((value) {
                       if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
                         Get.to( MargelleListScreen(clientId: widget.clientId));
@@ -810,49 +928,12 @@ class _MargelleScreenState extends State<MargelleScreen> {
     );
   }
 
-  void showActionSheet(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text(
-          'Select Picture from'.tr,
-          style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(imageSource: ImageSource.camera, imageQuality: 30).then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text("Camera".tr),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(imageSource: ImageSource.gallery, imageQuality: 30).then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text('Gallery'.tr),
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            onPressed: () {
-              Get.back();
-            },
-            child: Text('Cancel'.tr),
-          ),
-        ],
-      ),
-    );
+  void showActionSheet(BuildContext context) async {
+    List<File>? selectedImages = await Helper.addMultiImagePicker();
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      images.value = selectedImages.map((image) => File(image.path)).toList();
+      setState(() {});
+    }
   }
 }
 class PositionItem {

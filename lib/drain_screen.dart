@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:calculator_app/drainListScreen.dart';
 import 'package:calculator_app/model/DrainListModel.dart';
 import 'package:calculator_app/repo/drain_repo.dart';
@@ -33,6 +34,7 @@ class _DrainScreenState extends State<DrainScreen> {
   String? categoryValue;
   TextEditingController type_de_drainController = TextEditingController();
   TextEditingController longeurController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   PositionItem? TypededrainselectedValue;
 
@@ -54,11 +56,31 @@ class _DrainScreenState extends State<DrainScreen> {
         orElse: () => TypededrainList.first,
       );
       longeurController.text = widget.drainData!.longeur.toString();
+      noteController.text = widget.drainData!.note.toString();
       log(widget.drainData!.toJson().toString());
+      if (widget.drainData != null && widget.drainData!.photoVideoUrl != null) {
+        downloadImages(widget.drainData!.photoVideoUrl!);
+      }
     }
   }
 
-
+  Future<void> downloadImages(List<String> urls) async {
+    List<File> downloadedImages = [];
+    for (String url in urls) {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final appDir = await getApplicationDocumentsDirectory();
+        final localFile = File('${appDir.path}/${url.split('/').last}');
+        await localFile.writeAsBytes(response.bodyBytes);
+        downloadedImages.add(localFile);
+      } else {
+        print('Failed to download image from $url');
+      }
+    }
+    setState(() {
+      images.value = downloadedImages;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -189,6 +211,35 @@ class _DrainScreenState extends State<DrainScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Note',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: noteController,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: RequiredValidator(errorText: 'Please enter your Note').call,
+                          // keyboardType: TextInputType.none,
+                          // textInputAction: TextInputAction.next,
+                          // hint: 'Note...',
+                          maxLines: 3,
+                          minLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
@@ -205,7 +256,6 @@ class _DrainScreenState extends State<DrainScreen> {
                             },
                             child: Obx(() {
                               if (categoryFile.value.path == "") {
-                                // Show selected images if available
                                 if (images.value.isNotEmpty) {
                                   return SizedBox(
                                     height: 180,
@@ -338,6 +388,7 @@ class _DrainScreenState extends State<DrainScreen> {
                                       "type_de_drain":
                                       TypededrainselectedValue!.name,
                                       "longeur": longeurController.text,
+                                      "note": noteController.text,
                                     };
                                     print(mapData.toString());
                                     DrainScreenRepo.drainScreenRepo(
@@ -371,6 +422,7 @@ class _DrainScreenState extends State<DrainScreen> {
                                           ? TypededrainselectedValue!.name
                                           : "",
                                       "longeur": longeurController.text,
+                                      "note": noteController.text,
                                     };
 
                                     print(mapData.toString());

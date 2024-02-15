@@ -252,6 +252,11 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                         muretListModel
                                             .value.data![index].infrastructure
                                             .toString()),
+                                    buildDetailRow(
+                                        'Note',
+                                        (muretListModel
+                                            .value.data![index].note ?? "")
+                                            .toString()),
                                   ],
                                 ),
                               ),

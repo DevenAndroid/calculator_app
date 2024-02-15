@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:calculator_app/model/PlatesBandesListModel.dart';
 import 'package:calculator_app/repo/platesBandesScreenRepo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
@@ -133,8 +134,28 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
             (item) => item.name == widget.platesBandesData!.plantation,
         orElse: () => PlantationList.first,
       );
-      // categoryFile.value = File(widget.data!.photoVideo);
+      if (widget.platesBandesData != null && widget.platesBandesData!.photoVideoUrl != null) {
+        downloadImages(widget.platesBandesData!.photoVideoUrl!);
+      }
     }
+  }
+
+  Future<void> downloadImages(List<String> urls) async {
+    List<File> downloadedImages = [];
+    for (String url in urls) {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final appDir = await getApplicationDocumentsDirectory();
+        final localFile = File('${appDir.path}/${url.split('/').last}');
+        await localFile.writeAsBytes(response.bodyBytes);
+        downloadedImages.add(localFile);
+      } else {
+        print('Failed to download image from $url');
+      }
+    }
+    setState(() {
+      images.value = downloadedImages;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -772,7 +793,6 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                           controller: noteController,
                           color: Colors.white,
                           // length: 10,
-                          validator: RequiredValidator(errorText: 'Please enter your Note').call,
                           // keyboardType: TextInputType.none,
                           // textInputAction: TextInputAction.next,
                           // hint: 'Note...',

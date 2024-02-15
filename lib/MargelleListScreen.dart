@@ -132,11 +132,11 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                         top: 20,
                                         bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: margelleListModel
-                                          .value.data![index].photoVideo
+                                      imageUrl: margelleListModel.value
+                                          .data![index].photoVideoUrl!.first
                                           .toString(),
-                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
-
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -212,7 +212,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                     buildDetailRow(
                                         'De Fenetre:',
                                         margelleListModel
-                                            .value.data![index].defenetre
+                                            .value.data![index].deFenetre
                                             .toString()),
                                     buildDetailRow(
                                         'note:',
@@ -222,7 +222,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                     buildDetailRow(
                                         'mesure de margelle:',
                                         margelleListModel
-                                            .value.data![index].mesuredemargelle
+                                            .value.data![index].mesureDeMargelle
                                             .toString()),
                                   ],
                                 ),

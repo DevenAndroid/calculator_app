@@ -33,6 +33,7 @@ class DrainData {
   dynamic salesmanId;
   dynamic typeDeDrain;
   dynamic longeur;
+  dynamic note;
   List<String>? photoVideo;
   dynamic createdAt;
   dynamic updatedAt;
@@ -47,6 +48,7 @@ class DrainData {
         this.photoVideo,
         this.createdAt,
         this.updatedAt,
+        this.note,
         this.photoVideoUrl});
 
   DrainData.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,7 @@ class DrainData {
 
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    updatedAt = json['note'];
     photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
 
   }
@@ -74,6 +77,7 @@ class DrainData {
 
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['note'] = this.note;
     data['photo_video_url'] = this.photoVideoUrl;
 
     return data;

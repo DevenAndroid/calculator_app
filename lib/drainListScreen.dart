@@ -83,7 +83,8 @@ class _DrainListScreenState extends State<DrainListScreen> {
     // var id = pref.getString("client_id");
     // log("999999${id.toString()}");
 
-    drainListRepo(clientId: widget.clientId, serviceType: "drain").then((value) {
+    drainListRepo(clientId: widget.clientId, serviceType: "drain")
+        .then((value) {
       drainListModel.value = value;
       print("ppppppppppppp");
       log(value.toString());
@@ -156,10 +157,9 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                       GestureDetector(
                                         onTap: () {
                                           Get.to(DrainScreen(
-                                            drainData: drainListModel
-                                                .value.data![index],
-                                              clientId: widget.clientId
-                                          ));
+                                              drainData: drainListModel
+                                                  .value.data![index],
+                                              clientId: widget.clientId));
                                         },
                                         child: Container(
                                           height: 30,
@@ -218,6 +218,11 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                         drainListModel
                                             .value.data![index].longeur
                                             .toString()),
+                                    buildDetailRow(
+                                        'Note:',
+                                        (drainListModel
+                                            .value.data![index].note ?? "")
+                                            .toString()),
                                   ],
                                 ),
                               ),
@@ -234,7 +239,9 @@ class _DrainListScreenState extends State<DrainListScreen> {
                   children: [
                     CommonButtonBlue(
                       onPressed: () async {
-                        Get.to( SelectPoolInfoScreen(clientId: widget.clientId,));
+                        Get.to(SelectPoolInfoScreen(
+                          clientId: widget.clientId,
+                        ));
                       },
                       title: 'Final Save',
                     ),

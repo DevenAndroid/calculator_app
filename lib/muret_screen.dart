@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:calculator_app/model/MuretListModel.dart';
 import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/platesbandes_screen.dart';
@@ -45,6 +46,7 @@ class _MuretScreenState extends State<MuretScreen> {
   TextEditingController couronnementController = TextEditingController();
   TextEditingController couleur_du_couronnementController = TextEditingController();
   TextEditingController infrastructureController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   PositionItem? PositionnementselectedValue;
   PositionItem? TypedeMuretselectedValue;
@@ -101,6 +103,7 @@ class _MuretScreenState extends State<MuretScreen> {
       superficieController.text = widget.muretData!.superficie.toString();
       hauteurController.text = widget.muretData!.hauteur.toString();
       linear_feetController.text = widget.muretData!.linearFeet.toString();
+      noteController.text = widget.muretData!.note.toString();
       PositionnementselectedValue = yourModelList.firstWhere(
             (item) => item.name == widget.muretData!.positionnement,
         orElse: () => yourModelList.first,
@@ -131,8 +134,28 @@ class _MuretScreenState extends State<MuretScreen> {
         orElse: () => infrastructureList.first,
       );
 
-      // categoryFile.value = File(widget.data!.photoVideo);
+      if (widget.muretData != null && widget.muretData!.photoVideoUrl != null) {
+        downloadImages(widget.muretData!.photoVideoUrl!);
+      }
     }
+  }
+
+  Future<void> downloadImages(List<String> urls) async {
+    List<File> downloadedImages = [];
+    for (String url in urls) {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final appDir = await getApplicationDocumentsDirectory();
+        final localFile = File('${appDir.path}/${url.split('/').last}');
+        await localFile.writeAsBytes(response.bodyBytes);
+        downloadedImages.add(localFile);
+      } else {
+        print('Failed to download image from $url');
+      }
+    }
+    setState(() {
+      images.value = downloadedImages;
+    });
   }
 
   @override
@@ -663,6 +686,34 @@ class _MuretScreenState extends State<MuretScreen> {
                             const SizedBox(
                               height: 10,
                             ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Note',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  // fontFamily: 'poppins',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            RegisterTextFieldWidget(
+                              controller: noteController,
+                              color: Colors.white,
+                              // length: 10,
+                              // keyboardType: TextInputType.none,
+                              // textInputAction: TextInputAction.next,
+                              // hint: 'Note...',
+                              maxLines: 3,
+                              minLines: 3,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             DottedBorder(
                               borderType: BorderType.RRect,
                               radius: const Radius.circular(2),
@@ -818,6 +869,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                     "couronnement": CouronnementselectedValue!.name,
                                     "couleur_du_couronnement": CouleurducouronnementselectedValue!.name,
                                     "infrastructure": infrastructureselectedValue!.name,
+                                    "note": noteController.text
                                   };
                                   print(mapData.toString());
                                   MuretScreenRepo.muretScreenRepo(
@@ -870,6 +922,7 @@ class _MuretScreenState extends State<MuretScreen> {
                                     "infrastructure": infrastructureselectedValue != null
                                         ? infrastructureselectedValue!.name
                                         : "",
+                                    "note": noteController.text
                                   };
                                   print(mapData.toString());
                                   MuretScreenRepo.muretScreenRepo(
