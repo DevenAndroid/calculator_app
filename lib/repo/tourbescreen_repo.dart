@@ -50,8 +50,6 @@ class TourbeScreenRepo {
         showToast(e.toString());
       }
 
-      log("fffffffff${request.fields.toString()}");
-      log("ffffffff${request.files.map((e) => e.filename).toList().toString()}");
       final response = await request.send();
       if (response.statusCode == 200 || response.statusCode == 400) {
         return TourbeScreenModel.fromJson(

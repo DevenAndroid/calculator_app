@@ -32,7 +32,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
-  Rx<File> image = File("").obs;
+  Rx<List<File>> images = Rx<List<File>>([]);
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
   PositionItem? PositionnementselectedValue;
@@ -154,7 +154,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
         orElse: () => TypeofpavageList.first,
       );
       AccesslacourselectedValue = AccesslacourList.firstWhere(
-        (item) => item.name == widget.paveUniData!.accessalacour,
+        (item) => item.name == widget.paveUniData!.accessALaCour,
         orElse: () => AccesslacourList.first,
       );
       noteController.text = widget.paveUniData!.note.toString();
@@ -793,96 +793,118 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                           dashPattern: const [6],
                           strokeWidth: 1,
                           child: InkWell(
-                              onTap: () {
-                                showActionSheet(context);
-                              },
-                              child: categoryFile.value.path == ""
-                                  ? widget.paveUniData != null &&
-                                          widget.paveUniData!.photoVideo != null
+                            onTap: () {
+                              showActionSheet(context);
+                            },
+                            child: Obx(() {
+                              if (categoryFile.value.path == "") {
+                                // Show selected images if available
+                                if (images.value.isNotEmpty) {
+                                  return SizedBox(
+                                    height: 180,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: images.value.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.file(
+                                            images.value[index],
+                                            width: 150,
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  // Show default upload message
+                                  return widget.paveUniData != null &&
+                                      widget.paveUniData!.photoVideo != null
                                       ? Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Colors.white,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    width: double.maxFinite,
+                                    height: 180,
+                                    alignment: Alignment.center,
+                                    child: Image.network(
+                                      widget.paveUniData!.photoVideo.toString(),
+                                      errorBuilder: (_, __, ___) =>
+                                          Image.network(
+                                            categoryFile.value.path,
+                                            errorBuilder: (_, __, ___) =>
+                                            const SizedBox(),
                                           ),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                          width: double.maxFinite,
-                                          height: 180,
-                                          alignment: Alignment.center,
-                                          child: Image.network(
-                                              widget.paveUniData!.photoVideo,
-                                              errorBuilder: (_, __, ___) =>
-                                                  Image.network(
-                                                      categoryFile.value.path,
-                                                      errorBuilder: (_, __,
-                                                              ___) =>
-                                                          const SizedBox())),
-                                        )
+                                    ),
+                                  )
                                       : Container(
-                                          padding:
-                                              const EdgeInsets.only(top: 8),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 8),
-                                          width: double.maxFinite,
-                                          height: 150,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/upload.png',
-                                                height: 60,
-                                                width: 50,
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              const Text(
-                                                'upload Swimming Image And Videos',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              Text(
-                                                'Accepted file types: JPEG, Doc, PDF, PNG'
-                                                    .tr,
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black54),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              // const SizedBox(
-                                              //   height: 11,
-                                              // ),
-                                            ],
-                                          ),
-                                        )
-                                  : Obx(() {
-                                      return Stack(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.white,
-                                            ),
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 10),
-                                            width: double.maxFinite,
-                                            height: 180,
-                                            alignment: Alignment.center,
-                                            child: Image.file(
-                                              categoryFile.value,
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    })),
+                                    padding:
+                                    const EdgeInsets.only(top: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 8),
+                                    width: double.maxFinite,
+                                    height: 150,
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/upload.png',
+                                          height: 60,
+                                          width: 50,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        const Text(
+                                          'Upload Swimming Image And Videos',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight:
+                                              FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          'Accepted file types: JPEG, Doc, PDF, PNG'
+                                              .tr,
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black54),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              } else {
+                                // Show selected image
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
+                                      width: double.maxFinite,
+                                      height: 180,
+                                      alignment: Alignment.center,
+                                      child: Image.file(
+                                        categoryFile.value,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            }),
+                          ),
                         ),
                       ],
                     ),
@@ -899,7 +921,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                             ? CommonButtonBlue(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    if (categoryFile.value.path == "") {
+                                    if (images.value.isEmpty) {
                                       showToast("Please select image");
                                       return;
                                     }
@@ -926,11 +948,11 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                           AccesslacourselectedValue!.name,
                                       "note": noteController.text,
                                     };
-                                    pavauniScreenRepo(
+                                    PaveUniScreenRepo.pavauniScreenRepo(
                                             context: context,
                                             mapData: mapData,
-                                            fieldName1: 'photo_video',
-                                            file1: categoryFile.value)
+                                        fieldName1: 'photo_video[]',
+                                        files: images.value)
                                         .then((value) {
                                       if (value.status == true) {
                                         log("ggggggggg${categoryFile.value.toString()}");
@@ -948,7 +970,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                             : CommonButtonBlue(
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
-                                    if (categoryFile.value.path == "") {
+                                    if (images.value.isEmpty) {
                                       showToast("Please select image");
                                       return;
                                     }
@@ -994,11 +1016,11 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                       "note": noteController.text,
                                     };
                                     print(mapData.toString());
-                                    pavauniScreenRepo(
+                                    PaveUniScreenRepo.pavauniScreenRepo(
                                             context: context,
                                             mapData: mapData,
-                                            fieldName1: 'photo_video',
-                                            file1: categoryFile.value)
+                                        fieldName1: 'photo_video[]',
+                                        files: images.value)
                                         .then((value) {
                                       log("ggggggggg${categoryFile.value.toString()}");
 
@@ -1030,56 +1052,13 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
     );
   }
 
-  void showActionSheet(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text(
-          'Select Picture from'.tr,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                      imageSource: ImageSource.camera, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text("Camera".tr),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                      imageSource: ImageSource.gallery, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text('Gallery'.tr),
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            onPressed: () {
-              Get.back();
-            },
-            child: Text('Cancel'.tr),
-          ),
-        ],
-      ),
-    );
-  }
-}
+  void showActionSheet(BuildContext context) async {
+    List<File>? selectedImages = await Helper.addMultiImagePicker();
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      images.value = selectedImages.map((image) => File(image.path)).toList();
+      setState(() {});
+    }
+  }}
 
 class PositionItem {
   final int id;

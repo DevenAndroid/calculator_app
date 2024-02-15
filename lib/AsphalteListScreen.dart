@@ -132,11 +132,11 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                         top: 20,
                                         bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: asphalteListModel
-                                          .value.data![index].photoVideo
+                                      imageUrl: asphalteListModel.value
+                                          .data![index].photoVideoUrl!.first
                                           .toString(),
-                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
-
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -247,7 +247,12 @@ class _AsphalteListScreenState extends State<AsphalteListScreen> {
                                     buildDetailRow(
                                         'pieds lineaire de pave',
                                         (asphalteListModel
-                                            .value.data![index].piedslineairedepave ?? "")
+                                            .value.data![index].piedsLineaireDePave ?? "")
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Note',
+                                        (asphalteListModel
+                                            .value.data![index].note ?? "")
                                             .toString()),
                                   ],
                                 ),

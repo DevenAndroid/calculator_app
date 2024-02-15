@@ -141,11 +141,11 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                                         top: 20,
                                         bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: paveuniListModel
-                                          .value.data![index].photoVideo
+                                      imageUrl: paveuniListModel.value
+                                          .data![index].photoVideoUrl!.first
                                           .toString(),
-                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
-
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -256,7 +256,7 @@ class _PaveuniListScreenState extends State<PaveuniListScreen> {
                                     buildDetailRow(
                                         'Access a la cour',
                                         (paveuniListModel
-                                            .value.data![index].accessalacour ??"")
+                                            .value.data![index].accessALaCour ??"")
                                             .toString()),
                                     buildDetailRow(
                                         'Note',

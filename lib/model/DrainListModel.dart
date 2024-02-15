@@ -33,19 +33,21 @@ class DrainData {
   dynamic salesmanId;
   dynamic typeDeDrain;
   dynamic longeur;
-  dynamic photoVideo;
+  List<String>? photoVideo;
   dynamic createdAt;
   dynamic updatedAt;
+  List<String>? photoVideoUrl;
 
   DrainData(
       {this.id,
-      this.clientId,
-      this.salesmanId,
-      this.typeDeDrain,
-      this.longeur,
-      this.photoVideo,
-      this.createdAt,
-      this.updatedAt});
+        this.clientId,
+        this.salesmanId,
+        this.typeDeDrain,
+        this.longeur,
+        this.photoVideo,
+        this.createdAt,
+        this.updatedAt,
+        this.photoVideoUrl});
 
   DrainData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,9 +55,12 @@ class DrainData {
     salesmanId = json['salesman_id'];
     typeDeDrain = json['type_de_drain'];
     longeur = json['longeur'];
-    photoVideo = json['photo_video_url'];
+    photoVideo = json['photo_video[]'] != null ? List<String>.from(json['photo_video[]']) : null;
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
+
   }
 
   Map<String, dynamic> toJson() {
@@ -65,9 +70,12 @@ class DrainData {
     data['salesman_id'] = this.salesmanId;
     data['type_de_drain'] = this.typeDeDrain;
     data['longeur'] = this.longeur;
-    data['photo_video_url'] = this.photoVideo;
+    data['photo_video[]'] = this.photoVideo;
+
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['photo_video_url'] = this.photoVideoUrl;
+
     return data;
   }
 }

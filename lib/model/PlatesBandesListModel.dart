@@ -28,7 +28,7 @@ class plates_bandes_model {
 }
 
 class PlatesBandesData {
-  dynamic id;
+  dynamic  id;
   dynamic salesmanId;
   dynamic clientId;
   dynamic superficie;
@@ -41,10 +41,12 @@ class PlatesBandesData {
   dynamic bordure;
   dynamic couleur;
   dynamic plantation;
-  dynamic photoVideo;
+  List<String>? photoVideo;
+  dynamic quantiteDePlantation;
+  dynamic note;
   dynamic createdAt;
   dynamic updatedAt;
-  dynamic quantitedeplantation;
+  List<String>? photoVideoUrl;
 
   PlatesBandesData(
       {this.id,
@@ -61,10 +63,11 @@ class PlatesBandesData {
         this.couleur,
         this.plantation,
         this.photoVideo,
+        this.quantiteDePlantation,
+        this.note,
         this.createdAt,
         this.updatedAt,
-        this.quantitedeplantation
-      });
+        this.photoVideoUrl});
 
   PlatesBandesData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -80,10 +83,14 @@ class PlatesBandesData {
     bordure = json['bordure'];
     couleur = json['couleur'];
     plantation = json['plantation'];
-    photoVideo = json['photo_video_url'];
+    photoVideo = json['photo_video[]'] != null ? List<String>.from(json['photo_video[]']) : null;
+
+    quantiteDePlantation = json['quantite_de_plantation'];
+    note = json['note'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    quantitedeplantation = json['quantite_de_plantation'];
+    photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
+
   }
 
   Map<String, dynamic> toJson() {
@@ -101,10 +108,14 @@ class PlatesBandesData {
     data['bordure'] = this.bordure;
     data['couleur'] = this.couleur;
     data['plantation'] = this.plantation;
-    data['photo_video_url'] = this.photoVideo;
+    data['photo_video[]'] = this.photoVideo;
+
+    data['quantite_de_plantation'] = this.quantiteDePlantation;
+    data['note'] = this.note;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['quantite_de_plantation'] = this.quantitedeplantation;
+    data['photo_video_url'] = this.photoVideoUrl;
+
     return data;
   }
 }

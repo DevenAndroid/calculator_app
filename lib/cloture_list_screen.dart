@@ -289,6 +289,11 @@ class _ClotureListScreenState extends State<ClotureListScreen> {
                                         clotureListModel.value.data![index]
                                             .kitdeconversionorno
                                             .toString()),
+                                    buildDetailRow(
+                                        'Note',
+                                        (clotureListModel.value.data![index]
+                                            .note ?? "")
+                                            .toString()),
                                   ],
                                 ),
                               ),

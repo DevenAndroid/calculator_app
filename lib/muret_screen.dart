@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:calculator_app/model/MuretListModel.dart';
@@ -31,7 +32,7 @@ class _MuretScreenState extends State<MuretScreen> {
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
-  Rx<File> image = File("").obs;
+  Rx<List<File>> images = Rx<List<File>>([]);
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
 
@@ -109,7 +110,7 @@ class _MuretScreenState extends State<MuretScreen> {
         orElse: () => TypededechetList.first,
       );
       TypedeMuretselectedValue = TypedeMuretList.firstWhere(
-            (item) => item.name == widget.muretData!.typeOfMuret,
+            (item) => item.name == widget.muretData!.typeDeMuret,
         orElse: () => TypedeMuretList.first,
       );
       type_of_wasteController.text = widget.muretData!.typeOfWaste;
@@ -665,63 +666,105 @@ class _MuretScreenState extends State<MuretScreen> {
                             DottedBorder(
                               borderType: BorderType.RRect,
                               radius: const Radius.circular(2),
-                              padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
-                              color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
+                              padding: const EdgeInsets.only(
+                                  left: 40, right: 40, bottom: 10),
+                              color: showValidationImg == false
+                                  ? const Color(0xFF019444)
+                                  : Colors.red,
                               dashPattern: const [6],
                               strokeWidth: 1,
                               child: InkWell(
-                                  onTap: () {
-                                    showActionSheet(context);
-                                  },
-                                  child: categoryFile.value.path == ""
-                                      ? widget.muretData != null && widget.muretData!.photoVideo != null
-                                      ? Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.white,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                    width: double.maxFinite,
-                                    height: 180,
-                                    alignment: Alignment.center,
-                                    child: Image.network(widget.muretData!.photoVideo,
-                                        errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
-                                            errorBuilder: (_, __, ___) => const SizedBox())),
-                                  )
-                                      : Container(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                    width: double.maxFinite,
-                                    height: 150,
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/upload.png',
-                                          height: 60,
-                                          width: 50,
+                                onTap: () {
+                                  showActionSheet(context);
+                                },
+                                child: Obx(() {
+                                  if (categoryFile.value.path == "") {
+                                    // Show selected images if available
+                                    if (images.value.isNotEmpty) {
+                                      return SizedBox(
+                                        height: 180,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: images.value.length,
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Image.file(
+                                                images.value[index],
+                                                width: 150,
+                                                height: 150,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            );
+                                          },
                                         ),
-                                        const SizedBox(
-                                          height: 5,
+                                      );
+                                    } else {
+                                      // Show default upload message
+                                      return widget.muretData != null &&
+                                          widget.muretData!.photoVideo != null
+                                          ? Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          color: Colors.white,
                                         ),
-                                        const Text(
-                                          'upload Swimming Image And Videos',
-                                          style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        width: double.maxFinite,
+                                        height: 180,
+                                        alignment: Alignment.center,
+                                        child: Image.network(
+                                          widget.muretData!.photoVideo.toString(),
+                                          errorBuilder: (_, __, ___) =>
+                                              Image.network(
+                                                categoryFile.value.path,
+                                                errorBuilder: (_, __, ___) =>
+                                                const SizedBox(),
+                                              ),
                                         ),
-                                        Text(
-                                          'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                          style: const TextStyle(fontSize: 12, color: Colors.black54),
-                                          textAlign: TextAlign.center,
+                                      )
+                                          : Container(
+                                        padding:
+                                        const EdgeInsets.only(top: 8),
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 8),
+                                        width: double.maxFinite,
+                                        height: 150,
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/upload.png',
+                                              height: 60,
+                                              width: 50,
+                                            ),
+                                            const SizedBox(height: 5),
+                                            const Text(
+                                              'Upload Swimming Image And Videos',
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontWeight:
+                                                  FontWeight.bold),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Text(
+                                              'Accepted file types: JPEG, Doc, PDF, PNG'
+                                                  .tr,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.black54),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
                                         ),
-                                        // const SizedBox(
-                                        //   height: 11,
-                                        // ),
-                                      ],
-                                    ),
-                                  )
-                                      : Obx(() {
+                                      );
+                                    }
+                                  } else {
+                                    // Show selected image
                                     return Stack(
                                       children: [
                                         Container(
@@ -729,7 +772,8 @@ class _MuretScreenState extends State<MuretScreen> {
                                             borderRadius: BorderRadius.circular(10),
                                             color: Colors.white,
                                           ),
-                                          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
                                           width: double.maxFinite,
                                           height: 180,
                                           alignment: Alignment.center,
@@ -739,7 +783,9 @@ class _MuretScreenState extends State<MuretScreen> {
                                         ),
                                       ],
                                     );
-                                  })),
+                                  }
+                                }),
+                              ),
                             ),
                           ],
                         ),
@@ -755,90 +801,92 @@ class _MuretScreenState extends State<MuretScreen> {
                             widget.muretData != null ?
                             CommonButtonBlue(
                               onPressed: () async {
-                                Map<String, String> mapData = {
-                                  "client_id": widget.clientId.toString(),
-                                  "superficie": superficieController.text,
-                                  "hauteur": hauteurController.text,
-                                  "linear_feet": linear_feetController.text,
-                                  "positionnement": PositionnementselectedValue!.name,
-                                  "type_of_waste": TypededechetselectedValue!.name,
-                                  "type_de_muret": TypedeMuretselectedValue!.name,
-                                  "paver_color": CouleurdepaveselectedValue!.name,
-                                  "couronnement": CouronnementselectedValue!.name,
-                                  "couleur_du_couronnement": CouleurducouronnementselectedValue!.name,
-                                  "infrastructure": infrastructureselectedValue!.name,
-                                };
-                                print(mapData.toString());
-                                muretScreenRepo(
-                                    context: context,
-                                    mapData: mapData,
-                                    fieldName1: 'photo_video',
-                                    file1: categoryFile.value)
-                                    .then((value) {
-                                  if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                                    Get.to( MuretListScreen(clientId: widget.clientId));
-
-                                  }else{
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Please select an image.'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
+                                if (_formKey.currentState!.validate()) {
+                                  if (images.value.isEmpty) {
+                                    showToast("Please select image");
+                                    return;
                                   }
-                                });
+                                  Map<String, String> mapData = {
+                                    "client_id": widget.clientId.toString(),
+                                    "superficie": superficieController.text,
+                                    "hauteur": hauteurController.text,
+                                    "linear_feet": linear_feetController.text,
+                                    "positionnement": PositionnementselectedValue!.name,
+                                    "type_of_waste": TypededechetselectedValue!.name,
+                                    "type_de_muret": TypedeMuretselectedValue!.name,
+                                    "paver_color": CouleurdepaveselectedValue!.name,
+                                    "couronnement": CouronnementselectedValue!.name,
+                                    "couleur_du_couronnement": CouleurducouronnementselectedValue!.name,
+                                    "infrastructure": infrastructureselectedValue!.name,
+                                  };
+                                  print(mapData.toString());
+                                  MuretScreenRepo.muretScreenRepo(
+                                      context: context,
+                                      mapData: mapData,
+                                      fieldName1: 'photo_video[]',
+                                      files: images.value)
+                                      .then((value) {
+                                    if (value.status == true) {
+                                      Get.to(MuretListScreen(
+                                          clientId: widget.clientId));
+                                    } else {
+                                      log(value.message.toString());
+                                    }
+                                  });
+                                }
                               },
                               title: 'Update',
                             ) :
                             CommonButtonBlue(
                               onPressed: () async {
-                                Map<String, String> mapData = {
-                                  "client_id": widget.clientId.toString(),
-                                  "superficie": superficieController.text,
-                                  "hauteur": hauteurController.text,
-                                  "linear_feet": linear_feetController.text,
-                                  "positionnement": PositionnementselectedValue != null
-                                      ? PositionnementselectedValue!.name
-                                      : "",
-                                  "type_of_waste": TypededechetselectedValue != null
-                                      ? TypededechetselectedValue!.name
-                                      : "",
-                                  "type_de_muret":TypedeMuretselectedValue != null
-                                      ? TypedeMuretselectedValue!.name
-                                      : "",
-                                  "paver_color": CouleurdepaveselectedValue != null
-                                      ? CouleurdepaveselectedValue!.name
-                                      : "",
-                                  "couronnement": CouronnementselectedValue != null
-                                      ? CouronnementselectedValue!.name
-                                      : "",
-                                  "couleur_du_couronnement": CouleurducouronnementselectedValue != null
-                                      ? CouleurducouronnementselectedValue!.name
-                                      : "",
-                                  "infrastructure": infrastructureselectedValue != null
-                                      ? infrastructureselectedValue!.name
-                                      : "",
-                                };
-                                print(mapData.toString());
-                                muretScreenRepo(
-                                    context: context,
-                                    mapData: mapData,
-                                    fieldName1: 'photo_video',
-                                    file1: categoryFile.value)
-                                    .then((value) {
-                                  if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                                    Get.to( MuretListScreen(clientId: widget.clientId));
-
-                                  }else
-                                    {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Please select an image.'),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
+                                if (_formKey.currentState!.validate()) {
+                                  if (images.value.isEmpty) {
+                                    showToast("Please select image");
+                                    return;
+                                  }
+                                  Map<String, String> mapData = {
+                                    "client_id": widget.clientId.toString(),
+                                    "superficie": superficieController.text,
+                                    "hauteur": hauteurController.text,
+                                    "linear_feet": linear_feetController.text,
+                                    "positionnement": PositionnementselectedValue != null
+                                        ? PositionnementselectedValue!.name
+                                        : "",
+                                    "type_of_waste": TypededechetselectedValue != null
+                                        ? TypededechetselectedValue!.name
+                                        : "",
+                                    "type_de_muret":TypedeMuretselectedValue != null
+                                        ? TypedeMuretselectedValue!.name
+                                        : "",
+                                    "paver_color": CouleurdepaveselectedValue != null
+                                        ? CouleurdepaveselectedValue!.name
+                                        : "",
+                                    "couronnement": CouronnementselectedValue != null
+                                        ? CouronnementselectedValue!.name
+                                        : "",
+                                    "couleur_du_couronnement": CouleurducouronnementselectedValue != null
+                                        ? CouleurducouronnementselectedValue!.name
+                                        : "",
+                                    "infrastructure": infrastructureselectedValue != null
+                                        ? infrastructureselectedValue!.name
+                                        : "",
+                                  };
+                                  print(mapData.toString());
+                                  MuretScreenRepo.muretScreenRepo(
+                                      context: context,
+                                      mapData: mapData,
+                                      fieldName1: 'photo_video[]',
+                                      files: images.value)
+                                      .then((value) {
+                                    if (value.status == true) {
+                                      Get.to(MuretListScreen(
+                                          clientId: widget.clientId));
+                                    } else {
+                                      log(value.message.toString());
                                     }
-                                });
+                                  });
+                                }
+
                               },
                               title: 'Save',
                             ),
@@ -890,54 +938,12 @@ class _MuretScreenState extends State<MuretScreen> {
     );
   }
 
-  void showActionSheet(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text(
-          'Select Picture from'.tr,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                  imageSource: ImageSource.camera, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text("Camera".tr),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                  imageSource: ImageSource.gallery, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text('Gallery'.tr),
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            onPressed: () {
-              Get.back();
-            },
-            child: Text('Cancel'.tr),
-          ),
-        ],
-      ),
-    );
+  void showActionSheet(BuildContext context) async {
+    List<File>? selectedImages = await Helper.addMultiImagePicker();
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      images.value = selectedImages.map((image) => File(image.path)).toList();
+      setState(() {});
+    }
   }
 }
 class PositionItem {

@@ -141,11 +141,11 @@ class _DrainListScreenState extends State<DrainListScreen> {
                                         top: 20,
                                         bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: drainListModel
-                                          .value.data![index].photoVideo
+                                      imageUrl: drainListModel.value
+                                          .data![index].photoVideoUrl!.first
                                           .toString(),
                                       errorWidget: (_, __, ___) => Image.asset(
-                                          'assets/images/noimage.png'),
+                                          'assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,

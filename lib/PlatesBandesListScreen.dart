@@ -132,11 +132,11 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                         top: 20,
                                         bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: platesbandesListModel
-                                          .value.data![index].photoVideo
+                                      imageUrl: platesbandesListModel.value
+                                          .data![index].photoVideoUrl!.first
                                           .toString(),
-                                      errorWidget: (_,__,___)=>Image.asset('assets/images/noimage.png'),
-
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -252,7 +252,12 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
                                     buildDetailRow(
                                         'quantite de plantation',
                                         platesbandesListModel
-                                            .value.data![index].quantitedeplantation
+                                            .value.data![index].quantiteDePlantation
+                                            .toString()),
+                                    buildDetailRow(
+                                        'Note',
+                                        (platesbandesListModel
+                                            .value.data![index].note ?? "")
                                             .toString()),
                                   ],
                                 ),

@@ -45,6 +45,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
   TextEditingController positionnementController = TextEditingController();
   TextEditingController detourberController = TextEditingController();
   TextEditingController type_de_dechetController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   List<PositionItem> yourModelList = [
     PositionItem(id: 1, name: 'devant'),
@@ -102,6 +103,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
 
     if (widget.tourbeData != null) {
       superficieController.text = widget.tourbeData!.superficie.toString();
+      noteController.text = widget.tourbeData!.note.toString();
       profondeurselectedValue = profondeurList.firstWhere(
         (item) => item.name == widget.tourbeData!.profondeur,
         orElse: () => profondeurList.first,
@@ -488,6 +490,35 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Note',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: noteController,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: RequiredValidator(errorText: 'Please enter your Note').call,
+                          // keyboardType: TextInputType.none,
+                          // textInputAction: TextInputAction.next,
+                          // hint: 'Note...',
+                          maxLines: 3,
+                          minLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
@@ -644,6 +675,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                           TypededechetselectedValue!.name,
                                       "access_a_la_cour":
                                           AccessalacourselectedValue!.name,
+                                      "note" : noteController.text
                                     };
                                     print(mapData.toString());
                                     TourbeScreenRepo.tourbeScreenRepo(
@@ -695,6 +727,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                           AccessalacourselectedValue != null
                                               ? AccessalacourselectedValue!.name
                                               : "",
+                                      "note" : noteController.text
                                     };
                                     print(mapData.toString());
                                     TourbeScreenRepo.tourbeScreenRepo(

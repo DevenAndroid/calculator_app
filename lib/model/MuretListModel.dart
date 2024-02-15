@@ -36,14 +36,15 @@ class MuretData {
   dynamic linearFeet;
   dynamic positionnement;
   dynamic typeOfWaste;
-  dynamic typeOfMuret;
+  dynamic typeDeMuret;
   dynamic paverColor;
   dynamic couronnement;
   dynamic couleurDuCouronnement;
   dynamic infrastructure;
-  dynamic photoVideo;
+  List<String>? photoVideo;
   dynamic createdAt;
   dynamic updatedAt;
+  List<String>? photoVideoUrl;
 
   MuretData(
       {this.id,
@@ -54,14 +55,15 @@ class MuretData {
         this.linearFeet,
         this.positionnement,
         this.typeOfWaste,
-        this.typeOfMuret,
+        this.typeDeMuret,
         this.paverColor,
         this.couronnement,
         this.couleurDuCouronnement,
         this.infrastructure,
         this.photoVideo,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.photoVideoUrl});
 
   MuretData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -72,14 +74,17 @@ class MuretData {
     linearFeet = json['linear_feet'];
     positionnement = json['positionnement'];
     typeOfWaste = json['type_of_waste'];
-    typeOfMuret = json['type_de_muret'];
+    typeDeMuret = json['type_de_muret'];
     paverColor = json['paver_color'];
     couronnement = json['couronnement'];
     couleurDuCouronnement = json['couleur_du_couronnement'];
     infrastructure = json['infrastructure'];
-    photoVideo = json['photo_video_url'];
+    photoVideo = json['photo_video[]'] != null ? List<String>.from(json['photo_video[]']) : null;
+
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
+
   }
 
   Map<String, dynamic> toJson() {
@@ -90,16 +95,19 @@ class MuretData {
     data['superficie'] = this.superficie;
     data['hauteur'] = this.hauteur;
     data['linear_feet'] = this.linearFeet;
-    data['type_de_muret'] = this.typeOfMuret;
     data['positionnement'] = this.positionnement;
     data['type_of_waste'] = this.typeOfWaste;
+    data['type_de_muret'] = this.typeDeMuret;
     data['paver_color'] = this.paverColor;
     data['couronnement'] = this.couronnement;
     data['couleur_du_couronnement'] = this.couleurDuCouronnement;
     data['infrastructure'] = this.infrastructure;
-    data['photo_video_url'] = this.photoVideo;
+    data['photo_video[]'] = this.photoVideo;
+
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['photo_video_url'] = this.photoVideoUrl;
+
     return data;
   }
 }

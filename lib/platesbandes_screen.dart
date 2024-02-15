@@ -30,7 +30,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
-  Rx<File> image = File("").obs;
+  Rx<List<File>> images = Rx<List<File>>([]);
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
   TextEditingController superficieController = TextEditingController();
@@ -44,6 +44,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   TextEditingController couleurpolyController = TextEditingController();
   TextEditingController plantationpController = TextEditingController();
   TextEditingController quantitedeplantationController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
 
   PositionItem? PositionnementselectedValue;
   PositionItem? FinitionselectedValue;
@@ -102,7 +103,8 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     CouleurselectedValue = CouleurList.first;
     PlantationselectedValue = PlantationList.first;
     if (widget.platesBandesData != null) {
-      quantitedeplantationController.text = widget.platesBandesData!.quantitedeplantation.toString();
+      quantitedeplantationController.text = widget.platesBandesData!.quantiteDePlantation.toString();
+      noteController.text = widget.platesBandesData!.note.toString();
       superficieController.text = widget.platesBandesData!.superficie.toString();
       profondeurController.text = widget.platesBandesData!.profondeur.toString();
       perimeterController.text = widget.platesBandesData!.perimeter.toString();
@@ -751,66 +753,137 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Note',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: noteController,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: RequiredValidator(errorText: 'Please enter your Note').call,
+                          // keyboardType: TextInputType.none,
+                          // textInputAction: TextInputAction.next,
+                          // hint: 'Note...',
+                          maxLines: 3,
+                          minLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
-                          padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
-                          color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
+                          padding: const EdgeInsets.only(
+                              left: 40, right: 40, bottom: 10),
+                          color: showValidationImg == false
+                              ? const Color(0xFF019444)
+                              : Colors.red,
                           dashPattern: const [6],
                           strokeWidth: 1,
                           child: InkWell(
-                              onTap: () {
-                                showActionSheet(context);
-                              },
-                              child: categoryFile.value.path == ""
-                                  ? widget.platesBandesData != null && widget.platesBandesData!.photoVideo != null
-                                  ? Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
-                                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                width: double.maxFinite,
-                                height: 180,
-                                alignment: Alignment.center,
-                                child: Image.network(widget.platesBandesData!.photoVideo,
-                                    errorBuilder: (_, __, ___) => Image.network(categoryFile.value.path,
-                                        errorBuilder: (_, __, ___) => const SizedBox())),
-                              )
-                                  : Container(
-                                padding: const EdgeInsets.only(top: 8),
-                                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                                width: double.maxFinite,
-                                height: 150,
-                                alignment: Alignment.center,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/upload.png',
-                                      height: 60,
-                                      width: 50,
+                            onTap: () {
+                              showActionSheet(context);
+                            },
+                            child: Obx(() {
+                              if (categoryFile.value.path == "") {
+                                // Show selected images if available
+                                if (images.value.isNotEmpty) {
+                                  return SizedBox(
+                                    height: 180,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: images.value.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.file(
+                                            images.value[index],
+                                            width: 150,
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    const SizedBox(
-                                      height: 5,
+                                  );
+                                } else {
+                                  // Show default upload message
+                                  return widget.platesBandesData != null &&
+                                      widget.platesBandesData!.photoVideo != null
+                                      ? Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                      color: Colors.white,
                                     ),
-                                    const Text(
-                                      'upload Swimming Image And Videos',
-                                      style: TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    width: double.maxFinite,
+                                    height: 180,
+                                    alignment: Alignment.center,
+                                    child: Image.network(
+                                      widget.platesBandesData!.photoVideo.toString(),
+                                      errorBuilder: (_, __, ___) =>
+                                          Image.network(
+                                            categoryFile.value.path,
+                                            errorBuilder: (_, __, ___) =>
+                                            const SizedBox(),
+                                          ),
                                     ),
-                                    Text(
-                                      'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                      style: const TextStyle(fontSize: 12, color: Colors.black54),
-                                      textAlign: TextAlign.center,
+                                  )
+                                      : Container(
+                                    padding:
+                                    const EdgeInsets.only(top: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 8),
+                                    width: double.maxFinite,
+                                    height: 150,
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/upload.png',
+                                          height: 60,
+                                          width: 50,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        const Text(
+                                          'Upload Swimming Image And Videos',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight:
+                                              FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          'Accepted file types: JPEG, Doc, PDF, PNG'
+                                              .tr,
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black54),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
                                     ),
-                                    // const SizedBox(
-                                    //   height: 11,
-                                    // ),
-                                  ],
-                                ),
-                              )
-                                  : Obx(() {
+                                  );
+                                }
+                              } else {
+                                // Show selected image
                                 return Stack(
                                   children: [
                                     Container(
@@ -818,7 +891,8 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                         color: Colors.white,
                                       ),
-                                      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
                                       width: double.maxFinite,
                                       height: 180,
                                       alignment: Alignment.center,
@@ -828,7 +902,9 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                     ),
                                   ],
                                 );
-                              })),
+                              }
+                            }),
+                          ),
                         ),
                       ],
                     ),
@@ -859,15 +935,16 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               "bordure": BordureselectedValue!.name,
                               "couleur": CouleurselectedValue!.name,
                               "plantation": PlantationselectedValue!.name,
+                              "note": noteController.text,
                             };
                             if (kDebugMode) {
                               print(mapData.toString());
                             }
-                            platesBandesScreenRepo(
+                            PlatesBandesScreenRepo.platesBandesScreenRepo(
                                     context: context,
                                     mapData: mapData,
-                                    fieldName1: 'photo_video',
-                                    file1: categoryFile.value)
+                                fieldName1: 'photo_video[]',
+                                files: images.value)
                                 .then((value) {
                                   log(value.toJson().toString());
                                   if (_formKey.currentState!.validate()) {
@@ -914,15 +991,16 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               "plantation": PlantationselectedValue != null
                                   ? PlantationselectedValue!.name
                                   : "",
+                              "note": noteController.text
                             };
                             if (kDebugMode) {
                               print(mapData.toString());
                             }
-                            platesBandesScreenRepo(
+                            PlatesBandesScreenRepo.platesBandesScreenRepo(
                                 context: context,
                                 mapData: mapData,
-                                fieldName1: 'photo_video',
-                                file1: categoryFile.value)
+                                fieldName1: 'photo_video[]',
+                                files: images.value)
                                 .then((value) {
                               log(value.toJson().toString());
                               if (_formKey.currentState!.validate()) {
@@ -989,54 +1067,12 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     );
   }
 
-  void showActionSheet(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text(
-          'Select Picture from'.tr,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                      imageSource: ImageSource.camera, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text("Camera".tr),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                      imageSource: ImageSource.gallery, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text('Gallery'.tr),
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            onPressed: () {
-              Get.back();
-            },
-            child: Text('Cancel'.tr),
-          ),
-        ],
-      ),
-    );
+  void showActionSheet(BuildContext context) async {
+    List<File>? selectedImages = await Helper.addMultiImagePicker();
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      images.value = selectedImages.map((image) => File(image.path)).toList();
+      setState(() {});
+    }
   }
 }
 class PositionItem {

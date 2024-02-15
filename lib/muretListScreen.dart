@@ -135,11 +135,11 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                         top: 20,
                                         bottom: 10),
                                     child: CachedNetworkImage(
-                                      imageUrl: muretListModel
-                                          .value.data![index].photoVideo
+                                      imageUrl: muretListModel.value
+                                          .data![index].photoVideoUrl!.first
                                           .toString(),
                                       errorWidget: (_, __, ___) => Image.asset(
-                                          'assets/images/noimage.png'),
+                                          'assets/images/gallery.png'),
                                       width: 80,
                                       height: 70,
                                       fit: BoxFit.fill,
@@ -230,7 +230,7 @@ class _MuretListScreenState extends State<MuretListScreen> {
                                     buildDetailRow(
                                         'type de muret',
                                         muretListModel
-                                            .value.data![index].typeOfMuret
+                                            .value.data![index].typeDeMuret
                                             .toString()),
                                     buildDetailRow(
                                         'paver color',

@@ -28,7 +28,7 @@ class Asphalte_list_model {
 }
 
 class AsphalteData {
-  dynamic id;
+  dynamic  id;
   dynamic salesmanId;
   dynamic clientId;
   dynamic superficie;
@@ -40,10 +40,13 @@ class AsphalteData {
   dynamic typeOfPlainPavers;
   dynamic paverColor;
   dynamic polymerSandColor;
-  dynamic photoVideo;
+  List<String>? photoVideo;
+  dynamic pouceDAsphalte;
+  dynamic piedsLineaireDePave;
+  dynamic note;
   dynamic createdAt;
   dynamic updatedAt;
-  dynamic piedslineairedepave;
+  List<String>? photoVideoUrl;
 
   AsphalteData(
       {this.id,
@@ -59,10 +62,12 @@ class AsphalteData {
         this.paverColor,
         this.polymerSandColor,
         this.photoVideo,
+        this.pouceDAsphalte,
+        this.piedsLineaireDePave,
+        this.note,
         this.createdAt,
         this.updatedAt,
-        this.piedslineairedepave
-      });
+        this.photoVideoUrl});
 
   AsphalteData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -77,11 +82,14 @@ class AsphalteData {
     typeOfPlainPavers = json['type_of_plain_pavers'];
     paverColor = json['paver_color'];
     polymerSandColor = json['polymer_sand_color'];
-    photoVideo = json['photo_video_url'
-        ''];
+    photoVideo = json['photo_video[]'] != null ? List<String>.from(json['photo_video[]']) : null;
+    pouceDAsphalte = json['pouce_d_asphalte'];
+    piedsLineaireDePave = json['pieds_lineaire_de_pave'];
+    note = json['note'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    piedslineairedepave = json['pieds_lineaire_de_pave'];
+    photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
+
   }
 
   Map<String, dynamic> toJson() {
@@ -98,10 +106,15 @@ class AsphalteData {
     data['type_of_plain_pavers'] = this.typeOfPlainPavers;
     data['paver_color'] = this.paverColor;
     data['polymer_sand_color'] = this.polymerSandColor;
-    data['photo_video_url'] = this.photoVideo;
+    data['photo_video[]'] = this.photoVideo;
+
+    data['pouce_d_asphalte'] = this.pouceDAsphalte;
+    data['pieds_lineaire_de_pave'] = this.piedsLineaireDePave;
+    data['note'] = this.note;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['pieds_lineaire_de_pave'] = this.piedslineairedepave;
+    data['photo_video_url'] = this.photoVideoUrl;
+
     return data;
   }
 }

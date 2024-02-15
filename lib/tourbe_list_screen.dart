@@ -240,6 +240,11 @@ class _TourbeListScreenState extends State<TourbeListScreen> {
                                         detailsListModel
                                             .value.data![index].accessALaCour
                                             .toString()),
+                                    buildDetailRow(
+                                        'Note',
+                                        (detailsListModel
+                                            .value.data![index].note ?? "")
+                                            .toString()),
                                   ],
                                 ),
                               ),

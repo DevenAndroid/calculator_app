@@ -36,6 +36,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
   TextEditingController NombredePoteauPlaqueCarreeselectedValue =
       TextEditingController();
   TextEditingController kitdeconversionornocontroller = TextEditingController();
+  TextEditingController notecontroller = TextEditingController();
 
   PositionItem? TypedeclotureselectedValue;
   PositionItem? CouleurselectedValue;
@@ -191,6 +192,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
     if (widget.clotureData != null) {
       NombredepiedlineaireselectedValue.text =
           widget.clotureData!.nombreDePiedLineaire.toString();
+      notecontroller.text =
+          widget.clotureData!.note.toString();
       PorteSimpleselectedValue.text =
           widget.clotureData!.porteSimple.toString();
       PorteDoubleselectedValue.text =
@@ -944,9 +947,39 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Note',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              // fontFamily: 'poppins',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: notecontroller,
+                          color: Colors.white,
+                          // length: 10,
+                          validator: RequiredValidator(errorText: 'Please enter your Note').call,
+                          // keyboardType: TextInputType.none,
+                          // textInputAction: TextInputAction.next,
+                          // hint: 'Note...',
+                          maxLines: 3,
+                          minLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                       ],
                     ),
                   ),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -978,6 +1011,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
                                       demolitionselectedValue!.name,
                                       type_de_dechetsselectedValue!.name,
                                       kitdeconversionornocontroller.text,
+                                      notecontroller.text,
+
                                       context,
                                     ).then((value) async {
                                       log('fffffff');
@@ -1044,6 +1079,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                                           ? type_de_dechetsselectedValue!.name
                                           : "",
                                       kitdeconversionornocontroller.text,
+                                      notecontroller.text,
                                       context,
                                     ).then((value) {
                                       if (value.status == true) {

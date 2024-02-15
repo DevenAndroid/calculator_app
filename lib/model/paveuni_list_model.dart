@@ -1,7 +1,7 @@
 class PaveuniListModel {
   bool? status;
   String? message;
-  List<PaveUniData>? data=[];
+  List<PaveUniData>? data;
 
   PaveuniListModel({this.status, this.message, this.data});
 
@@ -40,12 +40,13 @@ class PaveUniData {
   dynamic couleurDePave;
   dynamic polymerSandColor;
   dynamic photo;
-  dynamic photoVideo;
+  List<String>? photoVideo;
   dynamic infrastructure;
+  dynamic   accessALaCour;
+  dynamic   note;
   dynamic createdAt;
   dynamic updatedAt;
-  dynamic accessalacour;
-  dynamic note;
+  List<String>? photoVideoUrl;
 
   PaveUniData(
       {this.id,
@@ -62,11 +63,11 @@ class PaveUniData {
         this.photo,
         this.photoVideo,
         this.infrastructure,
+        this.accessALaCour,
+        this.note,
         this.createdAt,
         this.updatedAt,
-        this.accessalacour,
-        this.note
-      });
+        this.photoVideoUrl});
 
   PaveUniData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -81,12 +82,13 @@ class PaveUniData {
     couleurDePave = json['couleur_de_pave'];
     polymerSandColor = json['polymer_sand_color'];
     photo = json['photo'];
-    photoVideo = json['photo_video_url'];
+    photoVideo = json['photo_video[]'] != null ? List<String>.from(json['photo_video[]']) : null;
     infrastructure = json['infrastructure'];
+    accessALaCour = json['access_a_la_cour'];
+    note = json['note'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    accessalacour = json['access_a_la_cour'];
-    note = json['note'];
+    photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -103,12 +105,13 @@ class PaveUniData {
     data['couleur_de_pave'] = this.couleurDePave;
     data['polymer_sand_color'] = this.polymerSandColor;
     data['photo'] = this.photo;
-    data['photo_video_url'] = this.photoVideo;
+    data['photo_video'] = this.photoVideo;
     data['infrastructure'] = this.infrastructure;
+    data['access_a_la_cour'] = this.accessALaCour;
+    data['note'] = this.note;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['access_a_la_cour'] = this.accessalacour;
-    data['note'] = this.note;
+    data['photo_video_url'] = this.photoVideoUrl;
     return data;
   }
 }

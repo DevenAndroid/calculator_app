@@ -28,7 +28,7 @@ class _DrainScreenState extends State<DrainScreen> {
   final _formKey = GlobalKey<FormState>();
   bool showValidation = false;
   bool showValidationImg = false;
-  Rx<File> image = File("").obs;
+  Rx<List<File>> images = Rx<List<File>>([]);
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
   TextEditingController type_de_drainController = TextEditingController();
@@ -200,97 +200,118 @@ class _DrainScreenState extends State<DrainScreen> {
                           dashPattern: const [6],
                           strokeWidth: 1,
                           child: InkWell(
-                              onTap: () {
-                                showActionSheet(context);
-                              },
-                              child: categoryFile.value.path == ""
-                                  ? widget.drainData != null &&
-                                          widget.drainData!.photoVideo != null
+                            onTap: () {
+                              showActionSheet(context);
+                            },
+                            child: Obx(() {
+                              if (categoryFile.value.path == "") {
+                                // Show selected images if available
+                                if (images.value.isNotEmpty) {
+                                  return SizedBox(
+                                    height: 180,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: images.value.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.file(
+                                            images.value[index],
+                                            width: 150,
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  // Show default upload message
+                                  return widget.drainData != null &&
+                                      widget.drainData!.photoVideo != null
                                       ? Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Colors.white,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    width: double.maxFinite,
+                                    height: 180,
+                                    alignment: Alignment.center,
+                                    child: Image.network(
+                                      widget.drainData!.photoVideo.toString(),
+                                      errorBuilder: (_, __, ___) =>
+                                          Image.network(
+                                            categoryFile.value.path,
+                                            errorBuilder: (_, __, ___) =>
+                                            const SizedBox(),
                                           ),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                          width: double.maxFinite,
-                                          height: 180,
-                                          alignment: Alignment.center,
-                                          child: Image.network(
-                                              widget.drainData!.photoVideo,
-                                              errorBuilder: (_, __, ___) =>
-                                                  Image.network(
-                                                      categoryFile.value.path,
-                                                      errorBuilder: (_, __,
-                                                              ___) =>
-                                                          const SizedBox())
-                                          ),
-                                        )
+                                    ),
+                                  )
                                       : Container(
-                                          padding:
-                                              const EdgeInsets.only(top: 8),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 8),
-                                          width: double.maxFinite,
-                                          height: 150,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/upload.png',
-                                                height: 60,
-                                                width: 50,
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              const Text(
-                                                'upload Swimming Image And Videos',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              Text(
-                                                'Accepted file types: JPEG, Doc, PDF, PNG'
-                                                    .tr,
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black54),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              // const SizedBox(
-                                              //   height: 11,
-                                              // ),
-                                            ],
-                                          ),
-                                        )
-                                  : Obx(() {
-                                      return Stack(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.white,
-                                            ),
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 10),
-                                            width: double.maxFinite,
-                                            height: 180,
-                                            alignment: Alignment.center,
-                                            child: Image.file(
-                                              categoryFile.value,
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    })),
+                                    padding:
+                                    const EdgeInsets.only(top: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 8),
+                                    width: double.maxFinite,
+                                    height: 150,
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/upload.png',
+                                          height: 60,
+                                          width: 50,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        const Text(
+                                          'Upload Swimming Image And Videos',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight:
+                                              FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          'Accepted file types: JPEG, Doc, PDF, PNG'
+                                              .tr,
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black54),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              } else {
+                                // Show selected image
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
+                                      width: double.maxFinite,
+                                      height: 180,
+                                      alignment: Alignment.center,
+                                      child: Image.file(
+                                        categoryFile.value,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            }),
+                          ),
                         ),
                       ],
                     ),
@@ -306,57 +327,67 @@ class _DrainScreenState extends State<DrainScreen> {
                         widget.drainData != null
                             ? CommonButtonBlue(
                                 onPressed: () async {
-                                  Map<String, String> mapData = {
-                                    "client_id": widget.clientId.toString(),
-                                    'id': widget.drainData!.id.toString(),
-                                    "type_de_drain":
-                                        TypededrainselectedValue!.name,
-                                    "longeur": longeurController.text,
-                                  };
-                                  print(mapData.toString());
-                                  drainScreenRepo(
-                                          context: context,
-                                          mapData: mapData,
-                                          fieldName1: 'photo_video',
-                                          file1: categoryFile.value)
-                                      .then((value) {
-                                    if (_formKey.currentState!.validate()) {
-                                      Get.to( DrainListScreen(clientId: widget.clientId));
+                                  if (_formKey.currentState!.validate()) {
+                                    if (images.value.isEmpty) {
+                                      showToast("Please select image");
+                                      return;
                                     }
-                                  });
+                                    Map<String, String> mapData = {
+                                      "client_id": widget.clientId.toString(),
+                                      'id': widget.drainData!.id.toString(),
+                                      "type_de_drain":
+                                      TypededrainselectedValue!.name,
+                                      "longeur": longeurController.text,
+                                    };
+                                    print(mapData.toString());
+                                    DrainScreenRepo.drainScreenRepo(
+                                        context: context,
+                                        mapData: mapData,
+                                        fieldName1: 'photo_video[]',
+                                        files: images.value)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.to(DrainListScreen(
+                                            clientId: widget.clientId));
+                                      } else {
+                                        log(value.message.toString());
+                                      }
+                                    });
+                                  }
                                 },
                                 title: 'update',
                               )
                             : CommonButtonBlue(
                                 onPressed: () async {
-                                  Map<String, String> mapData = {
-                                    "client_id": widget.clientId.toString(),
-                                    "type_de_drain":
-                                        TypededrainselectedValue != null
-                                            ? TypededrainselectedValue!.name
-                                            : "",
-                                    "longeur": longeurController.text,
-                                  };
-                                  print(mapData.toString());
-                                  drainScreenRepo(
-                                          context: context,
-                                          mapData: mapData,
-                                          fieldName1: 'photo_video',
-                                          file1: categoryFile.value)
-                                      .then((value) {
-                                    if (_formKey.currentState!.validate() && categoryFile.value.path != "") {
-                                      Get.to( DrainListScreen(
-                                          clientId: widget.clientId
-                                      ));
-                                    }else{
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Please select an image.'),
-                                          backgroundColor: Colors.red,
-                                        ),
-                                      );
+                                  if (_formKey.currentState!.validate()) {
+                                    if (images.value.isEmpty) {
+                                      showToast("Please select image");
+                                      return;
                                     }
-                                  });
+                                    Map<String, String> mapData = {
+                                      "client_id": widget.clientId.toString(),
+                                      "type_de_drain":
+                                      TypededrainselectedValue != null
+                                          ? TypededrainselectedValue!.name
+                                          : "",
+                                      "longeur": longeurController.text,
+                                    };
+
+                                    print(mapData.toString());
+                                    DrainScreenRepo.drainScreenRepo(
+                                        context: context,
+                                        mapData: mapData,
+                                        fieldName1: 'photo_video[]',
+                                        files: images.value)
+                                        .then((value) {
+                                      if (value.status == true) {
+                                        Get.to(DrainListScreen(
+                                            clientId: widget.clientId));
+                                      } else {
+                                        log(value.message.toString());
+                                      }
+                                    });
+                                  }
                                 },
                                 title: 'Save',
                               ),
@@ -376,54 +407,12 @@ class _DrainScreenState extends State<DrainScreen> {
     );
   }
 
-  void showActionSheet(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text(
-          'Select Picture from'.tr,
-          style: const TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                      imageSource: ImageSource.camera, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text("Camera".tr),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              Helper.addImagePicker(
-                      imageSource: ImageSource.gallery, imageQuality: 30)
-                  .then((value) async {
-                if (value != null) {
-                  categoryFile.value = File(value.path);
-                  setState(() {});
-                }
-                Get.back();
-              });
-            },
-            child: Text('Gallery'.tr),
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            onPressed: () {
-              Get.back();
-            },
-            child: Text('Cancel'.tr),
-          ),
-        ],
-      ),
-    );
+  void showActionSheet(BuildContext context) async {
+    List<File>? selectedImages = await Helper.addMultiImagePicker();
+    if (selectedImages != null && selectedImages.isNotEmpty) {
+      images.value = selectedImages.map((image) => File(image.path)).toList();
+      setState(() {});
+    }
   }
 }
 
