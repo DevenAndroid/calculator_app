@@ -6,6 +6,7 @@ import 'package:calculator_app/PlatesBandesListScreen.dart';
 import 'package:calculator_app/drainListScreen.dart';
 import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/paveuni_list_screen.dart';
+import 'package:calculator_app/piscine_Page_Screen.dart';
 import 'package:calculator_app/repo/MuretListRepo.dart';
 import 'package:calculator_app/repo/asphalte_list_repo.dart';
 import 'package:calculator_app/repo/clotureListRepo.dart';
@@ -20,6 +21,7 @@ import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -414,25 +416,31 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
                 ),
               ),
-              Container(
-                width: Get.width,
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(11),
-                    color: Colors.white,
-                    boxShadow: const [ BoxShadow(
-                                        color: Colors.black26,
-                                        offset: Offset(
-                                          0.2,
-                                          0.2,
-                                        ),
-                                        blurRadius: 1,
-                                      ),]),
-                child: const ListTile(
-                    title: Text(
-                  "Piscine",
-                  style: TextStyle(color: Colors.black, fontSize: 20),
-                )),
+              GestureDetector(
+                onTap: (){
+                  Get.to( PiscineScreen(clientId: widget.clientId));
+
+                },
+                child: Container(
+                  width: Get.width,
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.white,
+                      boxShadow: const [ BoxShadow(
+                                          color: Colors.black26,
+                                          offset: Offset(
+                                            0.2,
+                                            0.2,
+                                          ),
+                                          blurRadius: 1,
+                                        ),]),
+                  child: const ListTile(
+                      title: Text(
+                    "Piscine",
+                    style: TextStyle(color: Colors.black, fontSize: 20),
+                  )),
+                ),
               ),
               Container(
                 width: Get.width,
