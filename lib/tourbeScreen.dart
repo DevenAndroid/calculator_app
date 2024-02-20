@@ -48,6 +48,32 @@ class _TourbeScreenState extends State<TourbeScreen> {
   TextEditingController type_de_dechetController = TextEditingController();
   TextEditingController noteController = TextEditingController();
 
+  Widget _buildImageOrPlaceholder(File file) {
+    final isVideo = _isVideo(file);
+    if (isVideo) {
+      // Return a placeholder image for videos
+      return Image.asset(
+        'assets/images/video_placeholder.png',
+        width: 150,
+        height: 150,
+        fit: BoxFit.cover,
+      );
+    } else {
+      // Return the image widget for images
+      return Image.file(
+        file,
+        width: 150,
+        height: 150,
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  bool _isVideo(File file) {
+    final videoExtensions = ['mp4', 'mov', 'avi']; // Add more if needed
+    final extension = file.path.split('.').last;
+    return videoExtensions.contains(extension.toLowerCase());
+  }
   List<PositionItem> yourModelList = [
     PositionItem(id: 1, name: 'devant'),
     PositionItem(id: 2, name: 'derrière'),
@@ -541,11 +567,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
-                          padding: const EdgeInsets.only(
-                              left: 40, right: 40, bottom: 10),
-                          color: showValidationImg == false
-                              ? const Color(0xFF019444)
-                              : Colors.red,
+                          padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
+                          color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
                           dashPattern: const [6],
                           strokeWidth: 1,
                           child: InkWell(
@@ -554,7 +577,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                             },
                             child: Obx(() {
                               if (categoryFile.value.path == "") {
-                                // Show selected images if available
+                                // Show selected images or videos if available
                                 if (images.value.isNotEmpty) {
                                   return SizedBox(
                                     height: 180,
@@ -564,12 +587,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                       itemBuilder: (context, index) {
                                         return Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Image.file(
-                                            images.value[index],
-                                            width: 150,
-                                            height: 150,
-                                            fit: BoxFit.cover,
-                                          ),
+                                          child: _buildImageOrPlaceholder(images.value[index]),
                                         );
                                       },
                                     ),
@@ -580,8 +598,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                       widget.tourbeData!.photoVideo != null
                                       ? Container(
                                     decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(10),
                                       color: Colors.white,
                                     ),
                                     margin: const EdgeInsets.symmetric(
@@ -591,25 +608,21 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                     alignment: Alignment.center,
                                     child: Image.network(
                                       widget.tourbeData!.photoVideo.toString(),
-                                      errorBuilder: (_, __, ___) =>
-                                          Image.network(
-                                            categoryFile.value.path,
-                                            errorBuilder: (_, __, ___) =>
-                                            const SizedBox(),
-                                          ),
+                                      errorBuilder: (_, __, ___) => Image.network(
+                                        categoryFile.value.path,
+                                        errorBuilder: (_, __, ___) => const SizedBox(),
+                                      ),
                                     ),
                                   )
                                       : Container(
-                                    padding:
-                                    const EdgeInsets.only(top: 8),
+                                    padding: const EdgeInsets.only(top: 8),
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 8, horizontal: 8),
                                     width: double.maxFinite,
                                     height: 150,
                                     alignment: Alignment.center,
                                     child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           'assets/images/upload.png',
@@ -622,16 +635,13 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                           style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.black,
-                                              fontWeight:
-                                              FontWeight.bold),
+                                              fontWeight: FontWeight.bold),
                                           textAlign: TextAlign.center,
                                         ),
                                         Text(
-                                          'Accepted file types: JPEG, Doc, PDF, PNG'
-                                              .tr,
+                                          'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
                                           style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black54),
+                                              fontSize: 12, color: Colors.black54),
                                           textAlign: TextAlign.center,
                                         ),
                                       ],
@@ -639,7 +649,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                   );
                                 }
                               } else {
-                                // Show selected image
+                                // Show selected image or video
                                 return Stack(
                                   children: [
                                     Container(
@@ -652,16 +662,14 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                       width: double.maxFinite,
                                       height: 180,
                                       alignment: Alignment.center,
-                                      child: Image.file(
-                                        categoryFile.value,
-                                      ),
+                                      child: _buildImageOrPlaceholder(categoryFile.value),
                                     ),
                                   ],
                                 );
                               }
                             }),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),

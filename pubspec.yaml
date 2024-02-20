@@ -52,7 +52,8 @@ dependencies:
   google_places_flutter: ^2.0.8
   flutter_google_places_hoc081098:
   google_api_headers:
-
+  chewie: ^1.7.5
+  video_player: ^2.8.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
