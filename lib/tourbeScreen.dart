@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:calculator_app/repo/tourbescreen_repo.dart';
-import 'package:calculator_app/tourbe_list_screen.dart';
+
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -12,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/client_info_model.dart';
 import 'model/tourbe_list_model.dart';
@@ -70,10 +66,11 @@ class _TourbeScreenState extends State<TourbeScreen> {
   }
 
   bool _isVideo(File file) {
-    final videoExtensions = ['mp4', 'mov', 'avi']; // Add more if needed
+    final videoExtensions = ['mp4', 'mov', 'avi'];
     final extension = file.path.split('.').last;
     return videoExtensions.contains(extension.toLowerCase());
   }
+
   List<PositionItem> yourModelList = [
     PositionItem(id: 1, name: 'devant'),
     PositionItem(id: 2, name: 'derrière'),
@@ -151,7 +148,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
         (item) => item.name == widget.tourbeData!.accessALaCour,
         orElse: () => AccesslacourList.first,
       );
-      if (widget.tourbeData != null && widget.tourbeData!.photoVideoUrl != null) {
+      if (widget.tourbeData != null &&
+          widget.tourbeData!.photoVideoUrl != null) {
         downloadImages(widget.tourbeData!.photoVideoUrl!);
       }
     }
@@ -174,6 +172,7 @@ class _TourbeScreenState extends State<TourbeScreen> {
       images.value = downloadedImages;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -567,8 +566,11 @@ class _TourbeScreenState extends State<TourbeScreen> {
                         DottedBorder(
                           borderType: BorderType.RRect,
                           radius: const Radius.circular(2),
-                          padding: const EdgeInsets.only(left: 40, right: 40, bottom: 10),
-                          color: showValidationImg == false ? const Color(0xFF019444) : Colors.red,
+                          padding: const EdgeInsets.only(
+                              left: 40, right: 40, bottom: 10),
+                          color: showValidationImg == false
+                              ? const Color(0xFF019444)
+                              : Colors.red,
                           dashPattern: const [6],
                           strokeWidth: 1,
                           child: InkWell(
@@ -587,7 +589,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                       itemBuilder: (context, index) {
                                         return Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: _buildImageOrPlaceholder(images.value[index]),
+                                          child: _buildImageOrPlaceholder(
+                                              images.value[index]),
                                         );
                                       },
                                     ),
@@ -595,58 +598,67 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                 } else {
                                   // Show default upload message
                                   return widget.tourbeData != null &&
-                                      widget.tourbeData!.photoVideo != null
+                                          widget.tourbeData!.photoVideo != null
                                       ? Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.white,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 10),
-                                    width: double.maxFinite,
-                                    height: 180,
-                                    alignment: Alignment.center,
-                                    child: Image.network(
-                                      widget.tourbeData!.photoVideo.toString(),
-                                      errorBuilder: (_, __, ___) => Image.network(
-                                        categoryFile.value.path,
-                                        errorBuilder: (_, __, ___) => const SizedBox(),
-                                      ),
-                                    ),
-                                  )
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.white,
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          width: double.maxFinite,
+                                          height: 180,
+                                          alignment: Alignment.center,
+                                          child: Image.network(
+                                            widget.tourbeData!.photoVideo
+                                                .toString(),
+                                            errorBuilder: (_, __, ___) =>
+                                                Image.network(
+                                              categoryFile.value.path,
+                                              errorBuilder: (_, __, ___) =>
+                                                  const SizedBox(),
+                                            ),
+                                          ),
+                                        )
                                       : Container(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
-                                    width: double.maxFinite,
-                                    height: 150,
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/upload.png',
-                                          height: 60,
-                                          width: 50,
-                                        ),
-                                        const SizedBox(height: 5),
-                                        const Text(
-                                          'Upload Swimming Image And Videos',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Text(
-                                          'Accepted file types: JPEG, Doc, PDF, PNG'.tr,
-                                          style: const TextStyle(
-                                              fontSize: 12, color: Colors.black54),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                          padding:
+                                              const EdgeInsets.only(top: 8),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 8),
+                                          width: double.maxFinite,
+                                          height: 150,
+                                          alignment: Alignment.center,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/upload.png',
+                                                height: 60,
+                                                width: 50,
+                                              ),
+                                              const SizedBox(height: 5),
+                                              const Text(
+                                                'Upload Swimming Image And Videos',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                'Accepted file types: JPEG, Doc, PDF, PNG'
+                                                    .tr,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black54),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                 }
                               } else {
                                 // Show selected image or video
@@ -662,7 +674,8 @@ class _TourbeScreenState extends State<TourbeScreen> {
                                       width: double.maxFinite,
                                       height: 180,
                                       alignment: Alignment.center,
-                                      child: _buildImageOrPlaceholder(categoryFile.value),
+                                      child: _buildImageOrPlaceholder(
+                                          categoryFile.value),
                                     ),
                                   ],
                                 );
@@ -676,113 +689,6 @@ class _TourbeScreenState extends State<TourbeScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        widget.tourbeData != null
-                            ? CommonButtonBlue(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    if (images.value.isEmpty) {
-                                      showToast("Please select image");
-                                      return;
-                                    }
-                                    Map<String, String> mapData = {
-                                      "client": widget.clientId.toString(),
-                                      'id': widget.tourbeData!.id.toString(),
-                                      "superficie": superficieController.text,
-                                      "profondeur":
-                                          profondeurselectedValue!.name,
-                                      "positionnement":
-                                          PositionnementselectedValue!.name,
-                                      "detourber": DetourberselectedValue!.name,
-                                      "type_de_dechet":
-                                          TypededechetselectedValue!.name,
-                                      "access_a_la_cour":
-                                          AccessalacourselectedValue!.name,
-                                      "note" : noteController.text
-                                    };
-                                    print(mapData.toString());
-                                    TourbeScreenRepo.tourbeScreenRepo(
-                                            context: context,
-                                            mapData: mapData,
-                                            fieldName1: 'photo_video[]',
-                                            files: images.value)
-                                        .then((value) {
-                                          print("${images.value.toString()}");
-                                      if (value.status == true) {
-                                        Get.to(TourbeListScreen(
-                                            clientId: widget.clientId));
-                                      } else {
-                                        log(value.message.toString());
-                                      }
-                                    });
-                                  }
-                                },
-                                title: 'Update',
-                              )
-                            : CommonButtonBlue(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    if (images.value.isEmpty) {
-                                      showToast("Please select image");
-                                      return;
-                                    }
-                                    Map<String, String> mapData = {
-                                      "client": widget.clientId.toString(),
-                                      "superficie": superficieController.text,
-                                      "profondeur":
-                                          profondeurselectedValue != null
-                                              ? profondeurselectedValue!.name
-                                              : "",
-                                      "positionnement":
-                                          PositionnementselectedValue != null
-                                              ? PositionnementselectedValue!
-                                                  .name
-                                              : "",
-                                      "detourber":
-                                          DetourberselectedValue != null
-                                              ? DetourberselectedValue!.name
-                                              : "",
-                                      "type_de_dechet":
-                                          TypededechetselectedValue != null
-                                              ? TypededechetselectedValue!.name
-                                              : "",
-                                      "access_a_la_cour":
-                                          AccessalacourselectedValue != null
-                                              ? AccessalacourselectedValue!.name
-                                              : "",
-                                      "note" : noteController.text
-                                    };
-                                    print(mapData.toString());
-                                    TourbeScreenRepo.tourbeScreenRepo(
-                                            context: context,
-                                            mapData: mapData,
-                                            fieldName1: 'photo_video[]',
-                                            files: images.value)
-                                        .then((value) {
-                                      if (value.status == true) {
-                                        Get.to(TourbeListScreen(
-                                            clientId: widget.clientId));
-                                      } else {
-                                        log("fffffff${value.message.toString()}");
-                                      }
-                                    });
-                                  }
-                                },
-                                title: 'Save',
-                              ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  )
                 ]),
           ),
         ),
