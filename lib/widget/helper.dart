@@ -18,7 +18,7 @@ class Helper {
       final result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
         type: FileType.custom,
-        allowedExtensions: ['jpg', 'png', 'jpeg'],
+        allowedExtensions: ['jpg', 'png', 'jpeg', 'heic', 'mp4', 'mov', 'hevc'],
       );
 
       if (result == null) {
