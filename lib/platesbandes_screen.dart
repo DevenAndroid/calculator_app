@@ -21,7 +21,8 @@ import 'muret_screen.dart';
 class PlatesBandesScreen extends StatefulWidget {
   PlatesBandesData? platesBandesData;
   final String clientId;
-  PlatesBandesScreen({super.key,this.platesBandesData, required this.clientId});
+  PlatesBandesScreen(
+      {super.key, this.platesBandesData, required this.clientId});
 
   @override
   State<PlatesBandesScreen> createState() => _PlatesBandesScreenState();
@@ -34,6 +35,8 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   Rx<List<File>> images = Rx<List<File>>([]);
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
+  List<TextEditingController> additionalControllers = [];
+
   TextEditingController superficieController = TextEditingController();
   TextEditingController profondeurController = TextEditingController();
   TextEditingController perimeterController = TextEditingController();
@@ -44,7 +47,8 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   TextEditingController bordurepaveController = TextEditingController();
   TextEditingController couleurpolyController = TextEditingController();
   TextEditingController plantationpController = TextEditingController();
-  TextEditingController quantitedeplantationController = TextEditingController();
+  TextEditingController quantitedeplantationController =
+      TextEditingController();
   TextEditingController noteController = TextEditingController();
 
   PositionItem? PositionnementselectedValue;
@@ -54,6 +58,20 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   PositionItem? CouleurfinitionselectedValue;
   PositionItem? CouleurselectedValue;
 
+  void _addNewTextField() {
+    setState(() {
+      // Create a new controller for the new text form field
+      TextEditingController newController = TextEditingController();
+      additionalControllers.add(newController);
+    });
+  }
+
+// Method to handle remove button click and remove the respective text form field
+  void _removeTextField(int index) {
+    setState(() {
+      additionalControllers.removeAt(index);
+    });
+  }
   List<PositionItem> yourModelList = [
     PositionItem(id: 1, name: 'devant'),
     PositionItem(id: 2, name: 'derrière'),
@@ -104,37 +122,42 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     CouleurselectedValue = CouleurList.first;
     PlantationselectedValue = PlantationList.first;
     if (widget.platesBandesData != null) {
-      quantitedeplantationController.text = widget.platesBandesData!.quantiteDePlantation.toString();
+      quantitedeplantationController.text =
+          widget.platesBandesData!.quantiteDePlantation.toString();
       noteController.text = widget.platesBandesData!.note.toString();
-      superficieController.text = widget.platesBandesData!.superficie.toString();
-      profondeurController.text = widget.platesBandesData!.profondeur.toString();
+      superficieController.text =
+          widget.platesBandesData!.superficie.toString();
+      profondeurController.text =
+          widget.platesBandesData!.profondeur.toString();
       perimeterController.text = widget.platesBandesData!.perimeter.toString();
       PositionnementselectedValue = yourModelList.firstWhere(
-            (item) => item.name == widget.platesBandesData!.positionnement,
+        (item) => item.name == widget.platesBandesData!.positionnement,
         orElse: () => yourModelList.first,
       );
       FinitionselectedValue = FinitionList.firstWhere(
-            (item) => item.name == widget.platesBandesData!.finition,
+        (item) => item.name == widget.platesBandesData!.finition,
         orElse: () => FinitionList.first,
       );
       CouleurfinitionselectedValue = CouleurfinitionList.firstWhere(
-            (item) => item.name == widget.platesBandesData!.couleurFinition,
+        (item) => item.name == widget.platesBandesData!.couleurFinition,
         orElse: () => CouleurfinitionList.first,
       );
-      combien_de_pouController.text = widget.platesBandesData!.combienDePouces.toString();
+      combien_de_pouController.text =
+          widget.platesBandesData!.combienDePouces.toString();
       BordureselectedValue = BorduretList.firstWhere(
-            (item) => item.name == widget.platesBandesData!.bordure,
+        (item) => item.name == widget.platesBandesData!.bordure,
         orElse: () => BorduretList.first,
       );
       CouleurselectedValue = CouleurList.firstWhere(
-            (item) => item.name == widget.platesBandesData!.couleur,
+        (item) => item.name == widget.platesBandesData!.couleur,
         orElse: () => CouleurList.first,
       );
       PlantationselectedValue = PlantationList.firstWhere(
-            (item) => item.name == widget.platesBandesData!.plantation,
+        (item) => item.name == widget.platesBandesData!.plantation,
         orElse: () => PlantationList.first,
       );
-      if (widget.platesBandesData != null && widget.platesBandesData!.photoVideoUrl != null) {
+      if (widget.platesBandesData != null &&
+          widget.platesBandesData!.photoVideoUrl != null) {
         downloadImages(widget.platesBandesData!.photoVideoUrl!);
       }
     }
@@ -157,6 +180,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
       images.value = downloadedImages;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -173,12 +197,11 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
           ),
         ),
         leading: GestureDetector(
-            onTap: (){
+            onTap: () {
               Get.back();
             },
             child: Icon(Icons.arrow_back)),
       ),
-
       body: SingleChildScrollView(
           child: Padding(
         padding: MediaQuery.of(context).size.width > 800
@@ -252,7 +275,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                           validator: RequiredValidator(
                                   errorText: 'Please enter your Profondeur')
                               .call,
-                           keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           // hint: '6 Pouces',
                         ),
@@ -281,7 +304,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                           validator:
                               RequiredValidator(errorText: 'Enter Périmètre')
                                   .call,
-                           keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
                           // hint: '0 Pieds',
                         ),
@@ -316,14 +339,16 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: PositionnementselectedValue ?? yourModelList.first,
+                                    value: PositionnementselectedValue ??
+                                        yourModelList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         PositionnementselectedValue = newValue;
                                       });
                                     },
-                                    items: yourModelList.map((PositionItem model) {
+                                    items:
+                                        yourModelList.map((PositionItem model) {
                                       return DropdownMenuItem<PositionItem>(
                                         value: model,
                                         child: Text(
@@ -372,22 +397,18 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: FinitionselectedValue ?? FinitionList.first,
+                                    value: FinitionselectedValue ??
+                                        FinitionList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         FinitionselectedValue = newValue;
-                                        if (FinitionselectedValue!.name == 'finition terre noir') {
-                                          CouleurfinitionselectedValue = CouleurfinitionList.firstWhere((item) => item.name == 'N/A');
-                                          BordureselectedValue = BorduretList.firstWhere((item) => item.name == 'N/A');
-                                          CouleurselectedValue = CouleurList.firstWhere((item) => item.name == 'N/A');
-                                          PlantationselectedValue = PlantationList.firstWhere((item) => item.name == 'N/A');
-                                        } else {
-                                          CouleurfinitionselectedValue = CouleurfinitionList.first;
-                                        }
+                                        CouleurfinitionselectedValue =
+                                            CouleurfinitionList.first;
                                       });
                                     },
-                                    items: FinitionList.map((PositionItem model) {
+                                    items:
+                                        FinitionList.map((PositionItem model) {
                                       return DropdownMenuItem<PositionItem>(
                                         value: model,
                                         child: Text(
@@ -432,57 +453,51 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                     height: 55,
                                     width: Get.width,
                                     child: Container(
-                                      padding: const EdgeInsets.only(left: 10, right: 10),
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(color: Colors.grey.shade400),
+                                        border: Border.all(
+                                            color: Colors.grey.shade400),
                                       ),
                                       child: Column(
                                         children: [
                                           DropdownButtonHideUnderline(
                                             child: DropdownButton<PositionItem>(
-                                              value: CouleurfinitionselectedValue,
+                                              value:
+                                                  CouleurfinitionselectedValue,
                                               isExpanded: true,
-                                              onChanged: (PositionItem? newValue) {
+                                              onChanged:
+                                                  (PositionItem? newValue) {
                                                 setState(() {
-                                                  CouleurfinitionselectedValue = newValue;
+                                                  CouleurfinitionselectedValue =
+                                                      newValue;
                                                 });
                                               },
-                                              items: FinitionselectedValue!.name == 'finition terre noir'
-                                                  ? [
-                                                DropdownMenuItem<PositionItem>(
-                                                  value: CouleurfinitionList.firstWhere(
-                                                          (item) => item.name == 'N/A'),
-                                                  child: Text(
-                                                    'N/A',
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w300,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ]
-                                                  : CouleurfinitionList
-                                                  .map<DropdownMenuItem<PositionItem>>(
+                                              items:  CouleurfinitionList.map<
+                                                          DropdownMenuItem<
+                                                              PositionItem>>(
                                                       (PositionItem model) {
-                                                    return DropdownMenuItem<PositionItem>(
-                                                      value: model,
-                                                      child: Text(
-                                                        model.name,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontWeight: FontWeight.w300,
+                                                      return DropdownMenuItem<
+                                                          PositionItem>(
+                                                        value: model,
+                                                        child: Text(
+                                                          model.name,
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  }).toList(),
+                                                      );
+                                                    }).toList(),
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -556,41 +571,29 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: BordureselectedValue ?? BorduretList.first,
+                                    value: BordureselectedValue ??
+                                        BorduretList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         BordureselectedValue = newValue;
                                       });
                                     },
-                                    items: FinitionselectedValue!.name == 'finition terre noir'
-                                        ? [
-                                      DropdownMenuItem<PositionItem>(
-                                        value: BorduretList.firstWhere(
-                                                (item) => item.name == 'N/A'),
-                                        child: Text(
-                                          'N/A',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ),
-                                    ]
-                                        : BorduretList
-                                        .map<DropdownMenuItem<PositionItem>>(
+                                    items:  BorduretList.map<
+                                                DropdownMenuItem<PositionItem>>(
                                             (PositionItem model) {
-                                          return DropdownMenuItem<PositionItem>(
-                                            value: model,
-                                            child: Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
+                                            return DropdownMenuItem<
+                                                PositionItem>(
+                                              value: model,
+                                              child: Text(
+                                                model.name,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }).toList(),
+                                            );
+                                          }).toList(),
                                   ),
                                 ),
                               ],
@@ -628,41 +631,29 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: CouleurselectedValue ?? CouleurList.first,
+                                    value: CouleurselectedValue ??
+                                        CouleurList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         CouleurselectedValue = newValue;
                                       });
                                     },
-                                    items: FinitionselectedValue!.name == 'finition terre noir'
-                                        ? [
-                                      DropdownMenuItem<PositionItem>(
-                                        value: CouleurList.firstWhere(
-                                                (item) => item.name == 'N/A'),
-                                        child: Text(
-                                          'N/A',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ),
-                                    ]
-                                        : CouleurList
-                                        .map<DropdownMenuItem<PositionItem>>(
+                                    items:  CouleurList.map<
+                                                DropdownMenuItem<PositionItem>>(
                                             (PositionItem model) {
-                                          return DropdownMenuItem<PositionItem>(
-                                            value: model,
-                                            child: Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
+                                            return DropdownMenuItem<
+                                                PositionItem>(
+                                              value: model,
+                                              child: Text(
+                                                model.name,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }).toList(),
+                                            );
+                                          }).toList(),
                                   ),
                                 ),
                               ],
@@ -700,41 +691,29 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               children: [
                                 DropdownButtonHideUnderline(
                                   child: DropdownButton<PositionItem>(
-                                    value: PlantationselectedValue ?? PlantationList.first,
+                                    value: PlantationselectedValue ??
+                                        PlantationList.first,
                                     isExpanded: true,
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         PlantationselectedValue = newValue;
                                       });
                                     },
-                                    items: FinitionselectedValue!.name == 'finition terre noir'
-                                        ? [
-                                      DropdownMenuItem<PositionItem>(
-                                        value: PlantationList.firstWhere(
-                                                (item) => item.name == 'N/A'),
-                                        child: Text(
-                                          'N/A',
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ),
-                                    ]
-                                        : PlantationList
-                                        .map<DropdownMenuItem<PositionItem>>(
+                                    items:  PlantationList.map<
+                                                DropdownMenuItem<PositionItem>>(
                                             (PositionItem model) {
-                                          return DropdownMenuItem<PositionItem>(
-                                            value: model,
-                                            child: Text(
-                                              model.name,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w300,
+                                            return DropdownMenuItem<
+                                                PositionItem>(
+                                              value: model,
+                                              child: Text(
+                                                model.name,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w300,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }).toList(),
+                                            );
+                                          }).toList(),
                                   ),
                                 ),
                               ],
@@ -759,17 +738,61 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         const SizedBox(
                           height: 5,
                         ),
-                        RegisterTextFieldWidget(
-                          controller: quantitedeplantationController,
-                          color: Colors.white,
-                          // length: 10,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
-                          ]).call,
-                          keyboardType: TextInputType.number,
-                          // textInputAction: TextInputAction.next,
-                          // hint: '50 Pieds carré(s)',
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RegisterTextFieldWidget(
+                                controller: quantitedeplantationController,
+                                color: Colors.white,
+                                validator: MultiValidator([
+                                  RequiredValidator(errorText: 'Please enter your Superficie'),
+                                ]).call,
+                                keyboardType: TextInputType.number,
+                                // Add onChanged to handle changes in text field value
+                                onChanged: (value) {
+                                  // You can handle changes here if needed
+                                },
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: _addNewTextField, // Method to handle plus button click
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Column(
+                          children: List.generate(additionalControllers.length, (index) {
+                            return Row(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 10),
+                                    child: RegisterTextFieldWidget(
+                                      controller: additionalControllers[index],
+                                      color: Colors.white,
+                                      validator: MultiValidator([
+                                        RequiredValidator(errorText: 'Please enter your Superficie'),
+                                      ]).call,
+                                      keyboardType: TextInputType.number,
+                                      // Add onChanged to handle changes in text field value
+                                      onChanged: (value) {
+                                        // You can handle changes here if needed
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.remove),
+                                  onPressed: () {
+                                    _removeTextField(index); // Method to handle remove button click
+                                  },
+                                ),
+                              ],
+                            );
+                          }),
                         ),
                         const SizedBox(
                           height: 10,
@@ -841,66 +864,68 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                 } else {
                                   // Show default upload message
                                   return widget.platesBandesData != null &&
-                                      widget.platesBandesData!.photoVideo != null
+                                          widget.platesBandesData!.photoVideo !=
+                                              null
                                       ? Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(10),
-                                      color: Colors.white,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 10),
-                                    width: double.maxFinite,
-                                    height: 180,
-                                    alignment: Alignment.center,
-                                    child: Image.network(
-                                      widget.platesBandesData!.photoVideo.toString(),
-                                      errorBuilder: (_, __, ___) =>
-                                          Image.network(
-                                            categoryFile.value.path,
-                                            errorBuilder: (_, __, ___) =>
-                                            const SizedBox(),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.white,
                                           ),
-                                    ),
-                                  )
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          width: double.maxFinite,
+                                          height: 180,
+                                          alignment: Alignment.center,
+                                          child: Image.network(
+                                            widget.platesBandesData!.photoVideo
+                                                .toString(),
+                                            errorBuilder: (_, __, ___) =>
+                                                Image.network(
+                                              categoryFile.value.path,
+                                              errorBuilder: (_, __, ___) =>
+                                                  const SizedBox(),
+                                            ),
+                                          ),
+                                        )
                                       : Container(
-                                    padding:
-                                    const EdgeInsets.only(top: 8),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
-                                    width: double.maxFinite,
-                                    height: 150,
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/upload.png',
-                                          height: 60,
-                                          width: 50,
-                                        ),
-                                        const SizedBox(height: 5),
-                                        const Text(
-                                          'Upload Swimming Image And Videos',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight:
-                                              FontWeight.bold),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Text(
-                                          'Accepted file types: JPEG, Doc, PDF, PNG'
-                                              .tr,
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black54),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                          padding:
+                                              const EdgeInsets.only(top: 8),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 8),
+                                          width: double.maxFinite,
+                                          height: 150,
+                                          alignment: Alignment.center,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/upload.png',
+                                                height: 60,
+                                                width: 50,
+                                              ),
+                                              const SizedBox(height: 5),
+                                              const Text(
+                                                'Upload Swimming Image And Videos',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                'Accepted file types: JPEG, Doc, PDF, PNG'
+                                                    .tr,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black54),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                 }
                               } else {
                                 // Show selected image
@@ -937,108 +962,122 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        widget.platesBandesData != null ?
-                        CommonButtonBlue(
-                          onPressed: () async {
-
-                            Map<String, String> mapData = {
-                              "client_id": widget.clientId.toString(),
-                              'id' : widget.platesBandesData!.id.toString(),
-                              "superficie": superficieController.text,
-                              "quantite_de_plantation": quantitedeplantationController.text,
-                              "profondeur": profondeurController.text,
-                              "perimeter": perimeterController.text,
-                              "positionnement": PositionnementselectedValue!.name,
-                              "finition": FinitionselectedValue!.name,
-                              "couleur_finition": CouleurfinitionselectedValue!.name,
-                              "combien_de_pouces": combien_de_pouController.text,
-                              "bordure": BordureselectedValue!.name,
-                              "couleur": CouleurselectedValue!.name,
-                              "plantation": PlantationselectedValue!.name,
-                              "note": noteController.text,
-                            };
-                            if (kDebugMode) {
-                              print(mapData.toString());
-                            }
-                            PlatesBandesScreenRepo.platesBandesScreenRepo(
-                                    context: context,
-                                    mapData: mapData,
-                                fieldName1: 'photo_video[]',
-                                files: images.value)
-                                .then((value) {
-                                  log(value.toJson().toString());
-                                  if (_formKey.currentState!.validate()) {
-                                    Get.to( PlatesBandesListScreen(clientId: widget.clientId));
-                                  }else if(categoryFile.value.path == ""){
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Please select an image.'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }else{
-                                    showToast('Fill All Fields');
+                        widget.platesBandesData != null
+                            ? CommonButtonBlue(
+                                onPressed: () async {
+                                  Map<String, String> mapData = {
+                                    "client_id": widget.clientId.toString(),
+                                    'id':
+                                        widget.platesBandesData!.id.toString(),
+                                    "superficie": superficieController.text,
+                                    "quantite_de_plantation":
+                                        quantitedeplantationController.text,
+                                    "profondeur": profondeurController.text,
+                                    "perimeter": perimeterController.text,
+                                    "positionnement":
+                                        PositionnementselectedValue!.name,
+                                    "finition": FinitionselectedValue!.name,
+                                    "couleur_finition":
+                                        CouleurfinitionselectedValue!.name,
+                                    "combien_de_pouces":
+                                        combien_de_pouController.text,
+                                    "bordure": BordureselectedValue!.name,
+                                    "couleur": CouleurselectedValue!.name,
+                                    "plantation": PlantationselectedValue!.name,
+                                    "note": noteController.text,
+                                  };
+                                  if (kDebugMode) {
+                                    print(mapData.toString());
                                   }
-
-                            });
-                          },
-                          title: 'Update',
-                        ) :
-                        CommonButtonBlue(
-                          onPressed: () async {
-                            Map<String, String> mapData = {
-                              "client_id": widget.clientId.toString(),
-                              "superficie": superficieController.text,
-                              "quantite_de_plantation": quantitedeplantationController.text,
-                              "profondeur": profondeurController.text,
-                              "perimeter": perimeterController.text,
-                              "positionnement": PositionnementselectedValue != null
-                                  ? PositionnementselectedValue!.name
-                                  : "",
-                              "finition": FinitionselectedValue != null
-                                  ? FinitionselectedValue!.name
-                                  : "",
-                              "couleur_finition": CouleurfinitionselectedValue != null
-                                  ? CouleurfinitionselectedValue!.name
-                                  : "",
-                              "combien_de_pouces": combien_de_pouController.text,
-                              "bordure": BordureselectedValue != null
-                                  ? BordureselectedValue!.name
-                                  : "",
-                              "couleur": CouleurselectedValue != null
-                                  ? CouleurselectedValue!.name
-                                  : "",
-                              "plantation": PlantationselectedValue != null
-                                  ? PlantationselectedValue!.name
-                                  : "",
-                              "note": noteController.text
-                            };
-                            if (kDebugMode) {
-                              print(mapData.toString());
-                            }
-                            PlatesBandesScreenRepo.platesBandesScreenRepo(
-                                context: context,
-                                mapData: mapData,
-                                fieldName1: 'photo_video[]',
-                                files: images.value)
-                                .then((value) {
-                              log(value.toJson().toString());
-                              if (_formKey.currentState!.validate()) {
-                                Get.to( PlatesBandesListScreen(clientId: widget.clientId));
-                              }else if(categoryFile.value.path == ""){
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Please select an image.'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                              }else{
-                                showToast('Fill All Fields');
-                              }
-                            });
-                          },
-                          title: 'Save',
-                        ),
+                                  PlatesBandesScreenRepo.platesBandesScreenRepo(
+                                          context: context,
+                                          mapData: mapData,
+                                          fieldName1: 'photo_video[]',
+                                          files: images.value)
+                                      .then((value) {
+                                    log(value.toJson().toString());
+                                    if (_formKey.currentState!.validate()) {
+                                      Get.to(PlatesBandesListScreen(
+                                          clientId: widget.clientId));
+                                    } else if (categoryFile.value.path == "") {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Please select an image.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    } else {
+                                      showToast('Fill All Fields');
+                                    }
+                                  });
+                                },
+                                title: 'Update',
+                              )
+                            : CommonButtonBlue(
+                                onPressed: () async {
+                                  Map<String, String> mapData = {
+                                    "client_id": widget.clientId.toString(),
+                                    "superficie": superficieController.text,
+                                    "quantite_de_plantation":
+                                        quantitedeplantationController.text,
+                                    "profondeur": profondeurController.text,
+                                    "perimeter": perimeterController.text,
+                                    "positionnement":
+                                        PositionnementselectedValue != null
+                                            ? PositionnementselectedValue!.name
+                                            : "",
+                                    "finition": FinitionselectedValue != null
+                                        ? FinitionselectedValue!.name
+                                        : "",
+                                    "couleur_finition":
+                                        CouleurfinitionselectedValue != null
+                                            ? CouleurfinitionselectedValue!.name
+                                            : "",
+                                    "combien_de_pouces":
+                                        combien_de_pouController.text,
+                                    "bordure": BordureselectedValue != null
+                                        ? BordureselectedValue!.name
+                                        : "",
+                                    "couleur": CouleurselectedValue != null
+                                        ? CouleurselectedValue!.name
+                                        : "",
+                                    "plantation":
+                                        PlantationselectedValue != null
+                                            ? PlantationselectedValue!.name
+                                            : "",
+                                    "note": noteController.text
+                                  };
+                                  if (kDebugMode) {
+                                    print(mapData.toString());
+                                  }
+                                  PlatesBandesScreenRepo.platesBandesScreenRepo(
+                                          context: context,
+                                          mapData: mapData,
+                                          fieldName1: 'photo_video[]',
+                                          files: images.value)
+                                      .then((value) {
+                                    log(value.toJson().toString());
+                                    if (_formKey.currentState!.validate()) {
+                                      Get.to(PlatesBandesListScreen(
+                                          clientId: widget.clientId));
+                                    } else if (categoryFile.value.path == "") {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Please select an image.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    } else {
+                                      showToast('Fill All Fields');
+                                    }
+                                  });
+                                },
+                                title: 'Save',
+                              ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -1095,6 +1134,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
     }
   }
 }
+
 class PositionItem {
   final int id;
   final String name;

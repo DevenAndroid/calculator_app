@@ -536,7 +536,8 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        ContourenPaveselectedValue?.name == 'Oui' ?Column(
+                        ContourenPaveselectedValue?.name == 'Oui' ?
+                        Column(
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
