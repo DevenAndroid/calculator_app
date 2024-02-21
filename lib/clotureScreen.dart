@@ -375,7 +375,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
+                                errorText: 'Please enter your Nombre de pied lineaire'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -635,7 +635,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
+                                errorText: 'Please enter your porte double'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -668,7 +668,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
+                                errorText: 'Please enter your porte simple'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -698,7 +698,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
+                                errorText: 'Please enter your Nombre de poteau frost rond'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -728,7 +728,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
+                                errorText: 'Please enter your Nombre de poteau plaque rond'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -758,7 +758,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
+                                errorText: 'Please enter your Nombre de Poteau Carree'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -791,7 +791,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Superficie'),
+                                errorText: 'Please enter your nombre de poteau plaque carree'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -919,7 +919,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            'kit_de_conversion_orno',
+                            'kit de conversion orno',
                             style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.normal,
@@ -938,7 +938,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           validator: MultiValidator([
                             RequiredValidator(
                                 errorText:
-                                    'Please enter your kit_de_conversion_orno'),
+                                    'Please enter your kit de conversion orno'),
                           ]).call,
                           keyboardType: TextInputType.text,
                           // textInputAction: TextInputAction.next,

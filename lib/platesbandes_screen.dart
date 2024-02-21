@@ -745,7 +745,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                 controller: quantitedeplantationController,
                                 color: Colors.white,
                                 validator: MultiValidator([
-                                  RequiredValidator(errorText: 'Please enter your Superficie'),
+                                  RequiredValidator(errorText: 'Please enter your Quantite de plantation'),
                                 ]).call,
                                 keyboardType: TextInputType.number,
                                 // Add onChanged to handle changes in text field value
@@ -774,7 +774,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                       controller: additionalControllers[index],
                                       color: Colors.white,
                                       validator: MultiValidator([
-                                        RequiredValidator(errorText: 'Please enter your Superficie'),
+                                        RequiredValidator(errorText: 'Please enter your Quantite de plantation'),
                                       ]).call,
                                       keyboardType: TextInputType.number,
                                       // Add onChanged to handle changes in text field value

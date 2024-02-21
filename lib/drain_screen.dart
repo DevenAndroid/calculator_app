@@ -230,7 +230,7 @@ class _DrainScreenState extends State<DrainScreen> {
                           controller: noteController,
                           color: Colors.white,
                           // length: 10,
-                          validator: RequiredValidator(errorText: 'Please enter your Note').call,
+                          // validator: RequiredValidator(errorText: 'Please enter your Note').call,
                           // keyboardType: TextInputType.none,
                           // textInputAction: TextInputAction.next,
                           // hint: 'Note...',

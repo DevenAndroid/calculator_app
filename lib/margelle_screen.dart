@@ -60,7 +60,6 @@ class _MargelleScreenState extends State<MargelleScreen> {
   ];
   List<PositionItem?> selectedValues = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -75,7 +74,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
       noteController.text = widget.margelleData!.note;
       defenetreController.text = widget.margelleData!.deFenetre;
       mesuredemargelleselectedValue = mesuredemargelleList.firstWhere(
-            (item) => item.name == widget.margelleData!.mesureDeMargelle,
+        (item) => item.name == widget.margelleData!.mesureDeMargelle,
         orElse: () => mesuredemargelleList.first,
       );
       if (widget.margelleData != null &&
@@ -125,28 +124,384 @@ class _MargelleScreenState extends State<MargelleScreen> {
             onTap: () {
               Get.back();
             },
-            child: Icon(Icons.arrow_back)),
+            child: const Icon(Icons.arrow_back)),
       ),
       body: SingleChildScrollView(
           child: Padding(
-            padding: MediaQuery.of(context).size.width > 800
-                ? EdgeInsets.symmetric(
+        padding: MediaQuery.of(context).size.width > 800
+            ? EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width / 3)
-                : MediaQuery.of(context).size.width > 600
+            : MediaQuery.of(context).size.width > 600
                 ? EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 7)
+                    horizontal: MediaQuery.of(context).size.width / 7)
                 : const EdgeInsets.only(
-                left: 10, right: 10, top: 20, bottom: 20),
-            child: Form(
-              key: _formKey,
-              child: Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
+                    left: 10, right: 10, top: 20, bottom: 20),
+        child: Form(
+          key: _formKey,
+          child: Container(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Nombre de fenetre',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: coping_quantityController,
+                          color: Colors.white,
+                          validator: MultiValidator([
+                            RequiredValidator(
+                              errorText: 'Please enter your Nombre de fenetre',
+                            ),
+                          ]).call,
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            setState(() {
+                              _textList.clear();
+                              if (value.isNotEmpty) {
+                                int? number = int.tryParse(value);
+                                if (number != null) {
+                                  for (int i = 1; i <= number; i++) {
+                                    _textList.add(i.toString());
+                                  }
+                                  // Ensure selectedValues list has enough items for dropdowns
+                                  if (selectedValues.length <
+                                      _textList.length) {
+                                    int diff = _textList.length -
+                                        selectedValues.length;
+                                    for (int i = 0; i < diff; i++) {
+                                      selectedValues.add(null);
+                                    }
+                                  }
+                                }
+                              }
+                            });
+                          },
+                        ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        // Align(
+                        //   alignment: Alignment.topLeft,
+                        //   child: Text(
+                        //     'Mesure',
+                        //     style: GoogleFonts.poppins(
+                        //       color: Colors.black,
+                        //       fontWeight: FontWeight.normal,
+                        //       fontSize: 15,
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 5,
+                        // ),
+                        // RegisterTextFieldWidget(
+                        //   controller: mesureController,
+                        //   color: Colors.white,
+                        //   validator: RequiredValidator(
+                        //           errorText: 'Please enter your Mesure')
+                        //       .call,
+                        //   keyboardType: TextInputType.number,
+                        // ),
+                        // const SizedBox(
+                        //   height: 10,
+                        // ),
+                        // Align(
+                        //   alignment: Alignment.topLeft,
+                        //   child: Text(
+                        //     '# De fenetre',
+                        //     style: GoogleFonts.poppins(
+                        //       color: Colors.black,
+                        //       fontWeight: FontWeight.normal,
+                        //       fontSize: 15,
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 5,
+                        // ),
+                        // RegisterTextFieldWidget(
+                        //   controller: defenetreController,
+                        //   color: Colors.white,
+                        //   validator: RequiredValidator(
+                        //           errorText: 'Please enter your de fenetre')
+                        //       .call,
+                        //   keyboardType: TextInputType.number,
+                        // ),
+                        // const SizedBox(
+                        //   height: 10,
+                        // ),
+                        buildDropdowns(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Note',
+                            style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        RegisterTextFieldWidget(
+                          controller: noteController,
+                          color: Colors.white,
+                          // validator: RequiredValidator(
+                          //         errorText: 'Please enter your Note')
+                          //     .call,
+                          maxLines: 3,
+                          minLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        DottedBorder(
+                          borderType: BorderType.RRect,
+                          radius: const Radius.circular(2),
+                          padding: const EdgeInsets.only(
+                              left: 40, right: 40, bottom: 10),
+                          color: showValidationImg == false
+                              ? const Color(0xFF019444)
+                              : Colors.red,
+                          dashPattern: const [6],
+                          strokeWidth: 1,
+                          child: InkWell(
+                            onTap: () {
+                              showActionSheet(context);
+                            },
+                            child: Obx(() {
+                              if (categoryFile.value.path == "") {
+                                if (images.value.isNotEmpty) {
+                                  return SizedBox(
+                                    height: 180,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: images.value.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.file(
+                                            images.value[index],
+                                            width: 150,
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  return widget.margelleData != null &&
+                                          widget.margelleData!.photoVideo !=
+                                              null
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.white,
+                                          ),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          width: double.maxFinite,
+                                          height: 180,
+                                          alignment: Alignment.center,
+                                          child: Image.network(
+                                            widget.margelleData!.photoVideo
+                                                .toString(),
+                                            errorBuilder: (_, __, ___) =>
+                                                Image.network(
+                                              categoryFile.value.path,
+                                              errorBuilder: (_, __, ___) =>
+                                                  const SizedBox(),
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 8),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 8),
+                                          width: double.maxFinite,
+                                          height: 150,
+                                          alignment: Alignment.center,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/upload.png',
+                                                height: 60,
+                                                width: 50,
+                                              ),
+                                              const SizedBox(height: 5),
+                                              const Text(
+                                                'Upload Swimming Image And Videos',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                'Accepted file types: JPEG, Doc, PDF, PNG'
+                                                    .tr,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black54),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                }
+                              } else {
+                                return Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
+                                      width: double.maxFinite,
+                                      height: 180,
+                                      alignment: Alignment.center,
+                                      child: Image.file(
+                                        categoryFile.value,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                            }),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        widget.margelleData != null
+                            ? CommonButtonBlue(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    if (images.value.isEmpty) {
+                                      showToast("Please select image");
+                                      return;
+                                    }
+                                    Map<String, String> mapData = {
+                                      "client_id": widget.clientId.toString(),
+                                      'id': widget.margelleData!.id.toString(),
+                                      "coping_quantity":
+                                          coping_quantityController.text,
+                                      "mesure": mesureController.text,
+                                      "note": noteController.text,
+                                      "de_fenetre": defenetreController.text,
+                                      "mesure_de_margelle":
+                                          mesuredemargelleselectedValue!.name,
+                                    };
+                                    print(mapData.toString());
+                                    MargelleScreenRepo.margelleScreenRepo(
+                                            context: context,
+                                            mapData: mapData,
+                                            fieldName1: 'photo_video[]',
+                                            files: images.value)
+                                        .then((value) {
+                                      print("${images.value.toString()}");
+                                      if (value.status == true) {
+                                        Get.to(MargelleListScreen(
+                                            clientId: widget.clientId));
+                                      } else {
+                                        log(value.message.toString());
+                                      }
+                                    });
+                                  }
+                                },
+                                title: 'Update',
+                              )
+                            : CommonButtonBlue(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    if (images.value.isEmpty) {
+                                      showToast("Please select image");
+                                      return;
+                                    }
+                                    Map<String, String> mapData = {
+                                      "client_id": widget.clientId.toString(),
+                                      "coping_quantity":
+                                          coping_quantityController.text,
+                                      "mesure": mesureController.text,
+                                      "note": noteController.text,
+                                      "de_fenetre": defenetreController.text,
+                                      "mesure_de_margelle":
+                                          mesuredemargelleselectedValue != null
+                                              ? mesuredemargelleselectedValue!
+                                                  .name
+                                              : "",
+                                    };
+                                    print(mapData.toString());
+                                    MargelleScreenRepo.margelleScreenRepo(
+                                            context: context,
+                                            mapData: mapData,
+                                            fieldName1: 'photo_video[]',
+                                            files: images.value)
+                                        .then((value) {
+                                      print("${images.value.toString()}");
+                                      if (value.status == true) {
+                                        Get.to(MargelleListScreen(
+                                            clientId: widget.clientId));
+                                      } else {
+                                        log(value.message.toString());
+                                      }
+                                    });
+                                  }
+                                },
+                                title: 'Save',
+                              ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CommonButtonBlue(
+                          onPressed: () {
+                            _buildColumnWithWidgets();
+                          },
+                          title: 'Add',
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        _showWidgets
+                            ? Column(
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
@@ -167,7 +522,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                               color: Colors.white,
                               validator: MultiValidator([
                                 RequiredValidator(
-                                  errorText: 'Please enter your Quantité de margelle',
+                                  errorText: 'Please enter your Nombre de fenetre',
                                 ),
                               ]).call,
                               keyboardType: TextInputType.number,
@@ -181,8 +536,10 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                         _textList.add(i.toString());
                                       }
                                       // Ensure selectedValues list has enough items for dropdowns
-                                      if (selectedValues.length < _textList.length) {
-                                        int diff = _textList.length - selectedValues.length;
+                                      if (selectedValues.length <
+                                          _textList.length) {
+                                        int diff = _textList.length -
+                                            selectedValues.length;
                                         for (int i = 0; i < diff; i++) {
                                           selectedValues.add(null);
                                         }
@@ -267,9 +624,9 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             RegisterTextFieldWidget(
                               controller: noteController,
                               color: Colors.white,
-                              validator: RequiredValidator(
-                                  errorText: 'Please enter your Note')
-                                  .call,
+                              // validator: RequiredValidator(
+                              //         errorText: 'Please enter your Note')
+                              //     .call,
                               maxLines: 3,
                               minLines: 3,
                             ),
@@ -400,112 +757,15 @@ class _MargelleScreenState extends State<MargelleScreen> {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            widget.margelleData != null
-                                ? CommonButtonBlue(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  if (images.value.isEmpty) {
-                                    showToast("Please select image");
-                                    return;
-                                  }
-                                  Map<String, String> mapData = {
-                                    "client_id": widget.clientId.toString(),
-                                    'id': widget.margelleData!.id.toString(),
-                                    "coping_quantity":
-                                    coping_quantityController.text,
-                                    "mesure": mesureController.text,
-                                    "note": noteController.text,
-                                    "de_fenetre": defenetreController.text,
-                                    "mesure_de_margelle":
-                                    mesuredemargelleselectedValue!.name,
-                                  };
-                                  print(mapData.toString());
-                                  MargelleScreenRepo.margelleScreenRepo(
-                                      context: context,
-                                      mapData: mapData,
-                                      fieldName1: 'photo_video[]',
-                                      files: images.value)
-                                      .then((value) {
-                                    print("${images.value.toString()}");
-                                    if (value.status == true) {
-                                      Get.to(MargelleListScreen(
-                                          clientId: widget.clientId));
-                                    } else {
-                                      log(value.message.toString());
-                                    }
-                                  });
-                                }
-                              },
-                              title: 'Update',
-                            )
-                                : CommonButtonBlue(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  if (images.value.isEmpty) {
-                                    showToast("Please select image");
-                                    return;
-                                  }
-                                  Map<String, String> mapData = {
-                                    "client_id": widget.clientId.toString(),
-                                    "coping_quantity":
-                                    coping_quantityController.text,
-                                    "mesure": mesureController.text,
-                                    "note": noteController.text,
-                                    "de_fenetre": defenetreController.text,
-                                    "mesure_de_margelle":
-                                    mesuredemargelleselectedValue != null
-                                        ? mesuredemargelleselectedValue!
-                                        .name
-                                        : "",
-                                  };
-                                  print(mapData.toString());
-                                  MargelleScreenRepo.margelleScreenRepo(
-                                      context: context,
-                                      mapData: mapData,
-                                      fieldName1: 'photo_video[]',
-                                      files: images.value)
-                                      .then((value) {
-                                    print("${images.value.toString()}");
-                                    if (value.status == true) {
-                                      Get.to(MargelleListScreen(
-                                          clientId: widget.clientId));
-                                    } else {
-                                      log(value.message.toString());
-                                    }
-                                  });
-                                }
-                              },
-                              title: 'Save',
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            CommonButtonBlue(
-                              onPressed: () {
-                                _buildColumnWithWidgets();
-                              },
-                              title: 'Add',
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
-                      )
-                    ]),
-              ),
-            ),
-          )),
+                        )
+                            : SizedBox()
+                      ],
+                    ),
+                  )
+                ]),
+          ),
+        ),
+      )),
     );
   }
 
@@ -520,7 +780,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
   }
 
   Widget buildDropdown(int index, String value) {
-    if (index >= selectedValues.length) return SizedBox(); // Add this check
+    if (index >= selectedValues.length)
+      return const SizedBox(); // Add this check
 
     return Column(
       children: [
@@ -551,7 +812,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
               children: [
                 DropdownButtonHideUnderline(
                   child: DropdownButton<PositionItem>(
-                    value: selectedValues[index],
+                    value: selectedValues[index] ?? mesuredemargelleList.first,
                     isExpanded: true,
                     onChanged: (PositionItem? newValue) {
                       setState(() {
@@ -576,43 +837,42 @@ class _MargelleScreenState extends State<MargelleScreen> {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         selectedValues[index]?.name == 'Autre (svp indiquer dans les notes)'
             ? Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Autre (svp indiquer dans les notes)',
-                style: GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            RegisterTextFieldWidget(
-              controller: autreController,
-              color: Colors.white,
-              validator: MultiValidator([
-                RequiredValidator(
-                    errorText:
-                    'Please enter your pieds_lineaire_de_pave'),
-              ]).call,
-              keyboardType: TextInputType.number,
-            ),
-          ],
-        )
-            : SizedBox(),
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Autre (svp indiquer dans les notes)',
+                      style: GoogleFonts.poppins(
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  RegisterTextFieldWidget(
+                    controller: autreController,
+                    color: Colors.white,
+                    validator: MultiValidator([
+                      RequiredValidator(
+                          errorText:
+                              'Please enter your pieds_lineaire_de_pave'),
+                    ]).call,
+                    keyboardType: TextInputType.number,
+                  ),
+                ],
+              )
+            : const SizedBox(),
       ],
     );
   }
-
 
   void showActionSheet(BuildContext context) async {
     List<File>? selectedImages = await Helper.addMultiImagePicker();
