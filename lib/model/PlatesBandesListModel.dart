@@ -90,7 +90,6 @@ class PlatesBandesData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     photoVideoUrl = json['photo_video_url'] != null ? List<String>.from(json['photo_video_url']) : null;
-
   }
 
   Map<String, dynamic> toJson() {
@@ -110,7 +109,7 @@ class PlatesBandesData {
     data['plantation'] = this.plantation;
     data['photo_video[]'] = this.photoVideo;
 
-    data['quantite_de_plantation'] = this.quantiteDePlantation;
+    data['quantite_de_plantation[]'] = this.quantiteDePlantation;
     data['note'] = this.note;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;

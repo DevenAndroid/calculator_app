@@ -6,6 +6,7 @@ import 'package:calculator_app/PlatesBandesListScreen.dart';
 import 'package:calculator_app/drainListScreen.dart';
 import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/paveuni_list_screen.dart';
+import 'package:calculator_app/piscine_List_screen.dart';
 import 'package:calculator_app/piscine_Page_Screen.dart';
 import 'package:calculator_app/repo/MuretListRepo.dart';
 import 'package:calculator_app/repo/asphalte_list_repo.dart';
@@ -418,7 +419,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
               ),
               GestureDetector(
                 onTap: (){
-                  Get.to( PiscineScreen(clientId: widget.clientId));
+                  Get.to( PiscineListScreen(clientId: widget.clientId));
 
                 },
                 child: Container(

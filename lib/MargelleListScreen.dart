@@ -32,7 +32,7 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
     super.initState();
     margelleListRepoFunction();
   }
-  Widget buildDetailRow(String label, String value) {
+  Widget buildDetailRow(String label, dynamic value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -43,13 +43,14 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
         const SizedBox(width: 5),
         Flexible(
           child: Text(
-            value,
+            value != null ? value.toString() : 'N/A',
             style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
           ),
         ),
       ],
     );
   }
+
   Future<MargelleListModel> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;
@@ -200,19 +201,9 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     buildDetailRow(
-                                        'coping_quantity:',
+                                        'Nombre de fenetre:',
                                         margelleListModel
-                                            .value.data![index].copingQuantity
-                                            .toString()),
-                                    buildDetailRow(
-                                        'mesure:',
-                                        margelleListModel
-                                            .value.data![index].mesure
-                                            .toString()),
-                                    buildDetailRow(
-                                        'De Fenetre:',
-                                        margelleListModel
-                                            .value.data![index].deFenetre
+                                            .value.data![index].nombre_de_fenetre
                                             .toString()),
                                     buildDetailRow(
                                         'note:',
@@ -220,10 +211,9 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                             .value.data![index].note
                                             .toString()),
                                     buildDetailRow(
-                                        'mesure de margelle:',
-                                        margelleListModel
-                                            .value.data![index].mesureDeMargelle
-                                            .toString()),
+                                      'mesure de margelle:',
+                                      margelleListModel.value.data![index].mesureDeMargelle,
+                                    ),
                                   ],
                                 ),
                               ),

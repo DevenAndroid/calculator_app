@@ -60,13 +60,11 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
 
   void _addNewTextField() {
     setState(() {
-      // Create a new controller for the new text form field
       TextEditingController newController = TextEditingController();
       additionalControllers.add(newController);
     });
   }
 
-// Method to handle remove button click and remove the respective text form field
   void _removeTextField(int index) {
     setState(() {
       additionalControllers.removeAt(index);
@@ -1017,6 +1015,13 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               )
                             : CommonButtonBlue(
                                 onPressed: () async {
+                                  List<Map<String, String>> formattedList = [];
+                                  for (int i = 0; i < additionalControllers.length; i++) {
+                                    String value = additionalControllers[i].text;
+                                    formattedList.add({"value": value});
+                                  }
+                                  additionalControllers.insert(0, quantitedeplantationController);
+                                  log(additionalControllers.map((e) => e).toList().toString());
                                   Map<String, String> mapData = {
                                     "client_id": widget.clientId.toString(),
                                     "superficie": superficieController.text,
@@ -1047,8 +1052,14 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                         PlantationselectedValue != null
                                             ? PlantationselectedValue!.name
                                             : "",
-                                    "note": noteController.text
+                                    "note": noteController.text,
+                                    // "quantite_de_plantation[]":formattedList
                                   };
+
+                                  for (int i = 0; i < formattedList.length; i++) {
+                                    mapData["quantite_de_plantation[${i + 1}]"] = formattedList[i]["value"] ?? "";
+                                  }
+
                                   if (kDebugMode) {
                                     print(mapData.toString());
                                   }
@@ -1081,38 +1092,6 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        // SizedBox(
-                        //   height: 50,
-                        //   width: Get.width,
-                        //   child: ElevatedButton.icon(
-                        //     onPressed: () {
-                        //       Get.to( MuretScreen());
-                        //     },
-                        //     style: ElevatedButton.styleFrom(
-                        //       backgroundColor: Colors.white,
-                        //       surfaceTintColor: Colors.white,
-                        //       shape: RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(5),
-                        //         side: const BorderSide(
-                        //           color: Color(0xff019444),
-                        //         ),
-                        //       ),
-                        //       textStyle: const TextStyle(
-                        //           fontSize: 18, fontWeight: FontWeight.w500),
-                        //     ),
-                        //     icon: const Icon(
-                        //       Icons.add_circle_outline,
-                        //       color: Color(0xff019444),
-                        //     ),
-                        //     label: Text(
-                        //       "Add New".tr.toUpperCase(),
-                        //       style: GoogleFonts.poppins(
-                        //           fontSize: 15,
-                        //           fontWeight: FontWeight.w600,
-                        //           color: const Color(0xff019444)),
-                        //     ),
-                        //   ),
-                        // ),
                         const SizedBox(
                           height: 20,
                         ),

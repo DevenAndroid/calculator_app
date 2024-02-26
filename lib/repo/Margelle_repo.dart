@@ -38,8 +38,6 @@ class MargelleScreenRepo {
       request.headers.addAll(headers);
       request.fields.addAll(mapData);
 
-
-
       try {
         List<http.MultipartFile> imageFiles = [];
         for (int i = 0; i < files.length; i++) {

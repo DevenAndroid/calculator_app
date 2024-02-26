@@ -536,8 +536,8 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        ContourenPaveselectedValue?.name == 'Oui' ?
-                        Column(
+                        ContourenPaveselectedValue?.name == 'Oui'
+                            ? Column(
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
@@ -566,186 +566,187 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
                               // textInputAction: TextInputAction.next,
                               // hint: '400 Pieds carré(s)',
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Type de pavé uni',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  // fontFamily: 'poppins',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: TypedepaveuniselectedValue ??
+                                            TypedepaveuniList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            TypedepaveuniselectedValue = newValue;
+                                          });
+                                        },
+                                        items: TypedepaveuniList.map(
+                                                (PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Couleur de pavé',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  // fontFamily: 'poppins',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: CouleurdepaveselectedValue ??
+                                            CouleurdepaveList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            CouleurdepaveselectedValue = newValue;
+                                          });
+                                        },
+                                        items: CouleurdepaveList.map(
+                                                (PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Couleur de sable polymère',
+                                style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  // fontFamily: 'poppins',
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              height: 55,
+                              width: Get.width,
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Column(
+                                  children: [
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<PositionItem>(
+                                        value: CouleurdesableselectedValue ??
+                                            CouleurdesablePaveList.first,
+                                        isExpanded: true,
+                                        onChanged: (PositionItem? newValue) {
+                                          setState(() {
+                                            CouleurdesableselectedValue = newValue;
+                                          });
+                                        },
+                                        items: CouleurdesablePaveList.map(
+                                                (PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                           ],
-                        ) : SizedBox(),
+                        )
+                            : SizedBox(),
 
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Type de pavé uni',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                              // fontFamily: 'poppins',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: TypedepaveuniselectedValue ??
-                                        TypedepaveuniList.first,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        TypedepaveuniselectedValue = newValue;
-                                      });
-                                    },
-                                    items: TypedepaveuniList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Couleur de pavé',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                              // fontFamily: 'poppins',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: CouleurdepaveselectedValue ??
-                                        CouleurdepaveList.first,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        CouleurdepaveselectedValue = newValue;
-                                      });
-                                    },
-                                    items: CouleurdepaveList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Couleur de sable polymère',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                              // fontFamily: 'poppins',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: CouleurdesableselectedValue ??
-                                        CouleurdesablePaveList.first,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        CouleurdesableselectedValue = newValue;
-                                      });
-                                    },
-                                    items: CouleurdesablePaveList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(

@@ -32,7 +32,7 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
     super.initState();
     platesbandesListRepoFunction();
   }
-  Widget buildDetailRow(String label, String value) {
+  Widget buildDetailRow(String label, String? value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -43,13 +43,14 @@ class _PlatesBandesListScreenState extends State<PlatesBandesListScreen> {
         const SizedBox(width: 5),
         Flexible(
           child: Text(
-            value,
+            value ?? 'N/A',
             style: const TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
           ),
         ),
       ],
     );
   }
+
   Future<plates_bandes_model> removeAddress({required id, required BuildContext context}) async {
     var map = <String, dynamic>{};
     map['id'] = id;

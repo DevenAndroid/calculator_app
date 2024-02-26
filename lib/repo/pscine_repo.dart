@@ -9,12 +9,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/clotureModel.dart';
+import '../model/piscineModel.dart';
 import '../widget/apiUrl.dart';
 
 
-Future<ClotureScreenModel> cloture_Repo({id,clientID,type_de_cloture, nombre_de_pied_lineaire,couleur,
-    hauteur,porte_simple,porte_double,nombre_de_poteau_frost_rond,nombre_de_poteau_plaque_rond,nombre_de_coteau_carree,
-    nombre_de_poteau_plaque_carree,modele,lattes,demolition,type_de_dechets,kit_de_conversion_orno,note,context}) async {
+Future<PiscineModel> piscine_Repo({id,clientID,modele, accessibilite_a_la_cour,couleur,
+    option_sel,thermopompe,led_lumiere_supplementaire,controlleur_bt_lumiere,panneau_accroche_service,lame_deau,
+    context}) async {
   OverlayEntry loader = Helper.overlayLoader(context);
   Overlay.of(context)?.insert(loader);
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -22,23 +23,15 @@ Future<ClotureScreenModel> cloture_Repo({id,clientID,type_de_cloture, nombre_de_
   var map = <String, dynamic>{};
   map['id'] = id;
   map['client_id'] = clientID;
-  map['type_de_cloture'] = type_de_cloture;
-  map['nombre_de_pied_lineaire'] = nombre_de_pied_lineaire;
-  map['couleur'] = couleur;
-  map['hauteur'] = hauteur;
-  map['porte_simple'] = porte_simple;
-  map['porte_double'] = porte_double;
-  map['nombre_de_poteau_frost_rond'] = nombre_de_poteau_frost_rond;
-  map['nombre_de_poteau_plaque_rond'] = nombre_de_poteau_plaque_rond;
-  map['nombre_de_coteau_carree'] = nombre_de_coteau_carree;
-  map['nombre_de_poteau_plaque_carree'] = nombre_de_poteau_plaque_carree;
   map['modele'] = modele;
-  map['lattes'] = lattes;
-  map['demolition'] = demolition;
-  map['type_de_dechets'] = type_de_dechets;
-  map['kit_de_conversion_orno'] = kit_de_conversion_orno;
-  map['note'] = note;
-  log("fffffffff${map.toString()}");
+  map['accessibilite_a_la_cour'] = accessibilite_a_la_cour;
+  map['couleur'] = couleur;
+  map['option_sel'] = option_sel;
+  map['thermopompe'] = thermopompe;
+  map['led_lumiere_supplementaire'] = led_lumiere_supplementaire;
+  map['controlleur_bt_lumiere'] = controlleur_bt_lumiere;
+  map['panneau_accroche_service'] = panneau_accroche_service;
+  map['lame_deau'] = lame_deau;
   var header = {
     HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.acceptHeader: "application/json",
@@ -46,7 +39,7 @@ Future<ClotureScreenModel> cloture_Repo({id,clientID,type_de_cloture, nombre_de_
 
   };
   log(map.toString());
-  final response = await http.post(Uri.parse(ApiUrl.couleurClient),
+  final response = await http.post(Uri.parse(ApiUrl.piscineScreen),
       body: jsonEncode(map), headers: header);
   Helper.hideLoader(loader);
 
@@ -56,7 +49,7 @@ Future<ClotureScreenModel> cloture_Repo({id,clientID,type_de_cloture, nombre_de_
   if (response.statusCode == 200 || response.statusCode == 400 )  {
     print(response.body);
 
-    return ClotureScreenModel.fromJson(jsonDecode(response.body));
+    return PiscineModel.fromJson(jsonDecode(response.body));
   } else {
     Helper.hideLoader(loader);
     throw Exception('Failed to load data');

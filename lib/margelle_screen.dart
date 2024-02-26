@@ -4,9 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:calculator_app/MargelleListScreen.dart';
 import 'package:calculator_app/model/margelleListModel.dart';
-import 'package:calculator_app/platesbandes_screen.dart';
 import 'package:calculator_app/repo/Margelle_repo.dart';
-import 'package:calculator_app/widget/apptheme.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -15,12 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'downloadthequote_screen.dart';
-import 'drain_screen.dart';
-import 'margelle_screen.dart';
 
 class MargelleScreen extends StatefulWidget {
   MargelleData? margelleData;
@@ -38,16 +30,15 @@ class _MargelleScreenState extends State<MargelleScreen> {
   Rx<List<File>> images = Rx<List<File>>([]);
   Rx<File> categoryFile = File("").obs;
   String? categoryValue;
-  TextEditingController coping_quantityController = TextEditingController();
-  TextEditingController mesureController = TextEditingController();
+  TextEditingController nombredefenetreController = TextEditingController();
   TextEditingController noteController = TextEditingController();
-  TextEditingController defenetreController = TextEditingController();
-  TextEditingController autreController = TextEditingController();
+  // TextEditingController autreController = TextEditingController();
+  List<TextEditingController> autreController = [];
+
   PositionItem? mesuredemargelleselectedValue;
   List<String> _textList = [];
   bool _showWidgets = false;
   void _buildColumnWithWidgets() {
-    // Set state to show the column with widgets
     setState(() {
       _showWidgets = true;
     });
@@ -68,11 +59,6 @@ class _MargelleScreenState extends State<MargelleScreen> {
       selectedValues.add(null);
     });
     if (widget.margelleData != null) {
-      coping_quantityController.text =
-          widget.margelleData!.copingQuantity.toString();
-      mesureController.text = widget.margelleData!.mesure.toString();
-      noteController.text = widget.margelleData!.note;
-      defenetreController.text = widget.margelleData!.deFenetre;
       mesuredemargelleselectedValue = mesuredemargelleList.firstWhere(
         (item) => item.name == widget.margelleData!.mesureDeMargelle,
         orElse: () => mesuredemargelleList.first,
@@ -82,8 +68,6 @@ class _MargelleScreenState extends State<MargelleScreen> {
         downloadImages(widget.margelleData!.photoVideoUrl!);
       }
     }
-
-    // Initialize selectedValues list with null values for dropdowns
     selectedValues =
         List.generate(mesuredemargelleList.length, (index) => null);
   }
@@ -162,7 +146,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                           height: 5,
                         ),
                         RegisterTextFieldWidget(
-                          controller: coping_quantityController,
+                          controller: nombredefenetreController,
                           color: Colors.white,
                           validator: MultiValidator([
                             RequiredValidator(
@@ -178,6 +162,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                 if (number != null) {
                                   for (int i = 1; i <= number; i++) {
                                     _textList.add(i.toString());
+                                    autreController
+                                        .add(TextEditingController());
                                   }
                                   // Ensure selectedValues list has enough items for dropdowns
                                   if (selectedValues.length <
@@ -193,60 +179,9 @@ class _MargelleScreenState extends State<MargelleScreen> {
                             });
                           },
                         ),
-
                         const SizedBox(
                           height: 10,
                         ),
-                        // Align(
-                        //   alignment: Alignment.topLeft,
-                        //   child: Text(
-                        //     'Mesure',
-                        //     style: GoogleFonts.poppins(
-                        //       color: Colors.black,
-                        //       fontWeight: FontWeight.normal,
-                        //       fontSize: 15,
-                        //     ),
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   height: 5,
-                        // ),
-                        // RegisterTextFieldWidget(
-                        //   controller: mesureController,
-                        //   color: Colors.white,
-                        //   validator: RequiredValidator(
-                        //           errorText: 'Please enter your Mesure')
-                        //       .call,
-                        //   keyboardType: TextInputType.number,
-                        // ),
-                        // const SizedBox(
-                        //   height: 10,
-                        // ),
-                        // Align(
-                        //   alignment: Alignment.topLeft,
-                        //   child: Text(
-                        //     '# De fenetre',
-                        //     style: GoogleFonts.poppins(
-                        //       color: Colors.black,
-                        //       fontWeight: FontWeight.normal,
-                        //       fontSize: 15,
-                        //     ),
-                        //   ),
-                        // ),
-                        // const SizedBox(
-                        //   height: 5,
-                        // ),
-                        // RegisterTextFieldWidget(
-                        //   controller: defenetreController,
-                        //   color: Colors.white,
-                        //   validator: RequiredValidator(
-                        //           errorText: 'Please enter your de fenetre')
-                        //       .call,
-                        //   keyboardType: TextInputType.number,
-                        // ),
-                        // const SizedBox(
-                        //   height: 10,
-                        // ),
                         buildDropdowns(),
                         const SizedBox(
                           height: 10,
@@ -268,9 +203,6 @@ class _MargelleScreenState extends State<MargelleScreen> {
                         RegisterTextFieldWidget(
                           controller: noteController,
                           color: Colors.white,
-                          // validator: RequiredValidator(
-                          //         errorText: 'Please enter your Note')
-                          //     .call,
                           maxLines: 3,
                           minLines: 3,
                         ),
@@ -422,12 +354,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                     Map<String, String> mapData = {
                                       "client_id": widget.clientId.toString(),
                                       'id': widget.margelleData!.id.toString(),
-                                      "coping_quantity":
-                                          coping_quantityController.text,
-                                      "mesure": mesureController.text,
                                       "note": noteController.text,
-                                      "de_fenetre": defenetreController.text,
-                                      "mesure_de_margelle":
+                                      "mesure_de_margelle[]":
                                           mesuredemargelleselectedValue!.name,
                                     };
                                     print(mapData.toString());
@@ -456,32 +384,44 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                       showToast("Please select image");
                                       return;
                                     }
-                                    Map<String, String> mapData = {
+                                    List<Map<String, String>> formattedList =
+                                        [];
+                                    for (int i = 0;
+                                        i < selectedItemsList.length;
+                                        i++) {
+                                      String key =
+                                          "Mesure de margelle ${i + 1}";
+                                      String value = selectedItemsList[i].name; // Assuming your PositionItem has a name property
+                                      formattedList.add({key: value});
+                                    }
+                                    Map<String, dynamic> mapData = {
                                       "client_id": widget.clientId.toString(),
-                                      "coping_quantity":
-                                          coping_quantityController.text,
-                                      "mesure": mesureController.text,
+                                      'nombre_de_fenetre':
+                                          nombredefenetreController.text,
                                       "note": noteController.text,
-                                      "de_fenetre": defenetreController.text,
-                                      "mesure_de_margelle":
-                                          mesuredemargelleselectedValue != null
-                                              ? mesuredemargelleselectedValue!
-                                                  .name
-                                              : "",
                                     };
-                                    print(mapData.toString());
+                                    for (int i = 0;
+                                        i < formattedList.length;
+                                        i++) {
+                                      mapData["mesure_de_margelle[${i + 1}]"] = selectedValues[i]?.name ?? "";
+                                    }
+
+                                    log(mapData.toString());
                                     MargelleScreenRepo.margelleScreenRepo(
                                             context: context,
-                                            mapData: mapData,
+                                            mapData: mapData.map((key, value) =>
+                                                MapEntry(
+                                                    key, value.toString())),
                                             fieldName1: 'photo_video[]',
                                             files: images.value)
                                         .then((value) {
-                                      print("${images.value.toString()}");
+                                      log(value.status.toString());
                                       if (value.status == true) {
+                                        // Redirect to another screen if status is true
                                         Get.to(MargelleListScreen(
                                             clientId: widget.clientId));
                                       } else {
-                                        log(value.message.toString());
+                                        print(value.message.toString());
                                       }
                                     });
                                   }
@@ -500,265 +440,6 @@ class _MargelleScreenState extends State<MargelleScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        _showWidgets
-                            ? Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Nombre de fenetre',
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            RegisterTextFieldWidget(
-                              controller: coping_quantityController,
-                              color: Colors.white,
-                              validator: MultiValidator([
-                                RequiredValidator(
-                                  errorText: 'Please enter your Nombre de fenetre',
-                                ),
-                              ]).call,
-                              keyboardType: TextInputType.number,
-                              onChanged: (value) {
-                                setState(() {
-                                  _textList.clear();
-                                  if (value.isNotEmpty) {
-                                    int? number = int.tryParse(value);
-                                    if (number != null) {
-                                      for (int i = 1; i <= number; i++) {
-                                        _textList.add(i.toString());
-                                      }
-                                      // Ensure selectedValues list has enough items for dropdowns
-                                      if (selectedValues.length <
-                                          _textList.length) {
-                                        int diff = _textList.length -
-                                            selectedValues.length;
-                                        for (int i = 0; i < diff; i++) {
-                                          selectedValues.add(null);
-                                        }
-                                      }
-                                    }
-                                  }
-                                });
-                              },
-                            ),
-
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            // Align(
-                            //   alignment: Alignment.topLeft,
-                            //   child: Text(
-                            //     'Mesure',
-                            //     style: GoogleFonts.poppins(
-                            //       color: Colors.black,
-                            //       fontWeight: FontWeight.normal,
-                            //       fontSize: 15,
-                            //     ),
-                            //   ),
-                            // ),
-                            // const SizedBox(
-                            //   height: 5,
-                            // ),
-                            // RegisterTextFieldWidget(
-                            //   controller: mesureController,
-                            //   color: Colors.white,
-                            //   validator: RequiredValidator(
-                            //           errorText: 'Please enter your Mesure')
-                            //       .call,
-                            //   keyboardType: TextInputType.number,
-                            // ),
-                            // const SizedBox(
-                            //   height: 10,
-                            // ),
-                            // Align(
-                            //   alignment: Alignment.topLeft,
-                            //   child: Text(
-                            //     '# De fenetre',
-                            //     style: GoogleFonts.poppins(
-                            //       color: Colors.black,
-                            //       fontWeight: FontWeight.normal,
-                            //       fontSize: 15,
-                            //     ),
-                            //   ),
-                            // ),
-                            // const SizedBox(
-                            //   height: 5,
-                            // ),
-                            // RegisterTextFieldWidget(
-                            //   controller: defenetreController,
-                            //   color: Colors.white,
-                            //   validator: RequiredValidator(
-                            //           errorText: 'Please enter your de fenetre')
-                            //       .call,
-                            //   keyboardType: TextInputType.number,
-                            // ),
-                            // const SizedBox(
-                            //   height: 10,
-                            // ),
-                            buildDropdowns(),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Note',
-                                style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            RegisterTextFieldWidget(
-                              controller: noteController,
-                              color: Colors.white,
-                              // validator: RequiredValidator(
-                              //         errorText: 'Please enter your Note')
-                              //     .call,
-                              maxLines: 3,
-                              minLines: 3,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            DottedBorder(
-                              borderType: BorderType.RRect,
-                              radius: const Radius.circular(2),
-                              padding: const EdgeInsets.only(
-                                  left: 40, right: 40, bottom: 10),
-                              color: showValidationImg == false
-                                  ? const Color(0xFF019444)
-                                  : Colors.red,
-                              dashPattern: const [6],
-                              strokeWidth: 1,
-                              child: InkWell(
-                                onTap: () {
-                                  showActionSheet(context);
-                                },
-                                child: Obx(() {
-                                  if (categoryFile.value.path == "") {
-                                    if (images.value.isNotEmpty) {
-                                      return SizedBox(
-                                        height: 180,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: images.value.length,
-                                          itemBuilder: (context, index) {
-                                            return Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Image.file(
-                                                images.value[index],
-                                                width: 150,
-                                                height: 150,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    } else {
-                                      return widget.margelleData != null &&
-                                          widget.margelleData!.photoVideo !=
-                                              null
-                                          ? Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          color: Colors.white,
-                                        ),
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
-                                        width: double.maxFinite,
-                                        height: 180,
-                                        alignment: Alignment.center,
-                                        child: Image.network(
-                                          widget.margelleData!.photoVideo
-                                              .toString(),
-                                          errorBuilder: (_, __, ___) =>
-                                              Image.network(
-                                                categoryFile.value.path,
-                                                errorBuilder: (_, __, ___) =>
-                                                const SizedBox(),
-                                              ),
-                                        ),
-                                      )
-                                          : Container(
-                                        padding:
-                                        const EdgeInsets.only(top: 8),
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 8),
-                                        width: double.maxFinite,
-                                        height: 150,
-                                        alignment: Alignment.center,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: [
-                                            Image.asset(
-                                              'assets/images/upload.png',
-                                              height: 60,
-                                              width: 50,
-                                            ),
-                                            const SizedBox(height: 5),
-                                            const Text(
-                                              'Upload Swimming Image And Videos',
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                  fontWeight:
-                                                  FontWeight.bold),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Text(
-                                              'Accepted file types: JPEG, Doc, PDF, PNG'
-                                                  .tr,
-                                              style: const TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black54),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                  } else {
-                                    return Stack(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Colors.white,
-                                          ),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                          width: double.maxFinite,
-                                          height: 180,
-                                          alignment: Alignment.center,
-                                          child: Image.file(
-                                            categoryFile.value,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  }
-                                }),
-                              ),
-                            ),
-                          ],
-                        )
-                            : SizedBox()
                       ],
                     ),
                   )
@@ -779,9 +460,12 @@ class _MargelleScreenState extends State<MargelleScreen> {
     );
   }
 
+  List<PositionItem> selectedItemsList = [];
+
   Widget buildDropdown(int index, String value) {
-    if (index >= selectedValues.length)
+    if (index >= selectedValues.length) {
       return const SizedBox(); // Add this check
+    }
 
     return Column(
       children: [
@@ -817,6 +501,16 @@ class _MargelleScreenState extends State<MargelleScreen> {
                     onChanged: (PositionItem? newValue) {
                       setState(() {
                         selectedValues[index] = newValue;
+                        selectedItemsList.clear();
+                        for (var i = 0; i < selectedValues.length; i++) {
+                          if (selectedValues[i] != null) {
+                            selectedItemsList.add(selectedValues[i]!);
+                          }
+                        }
+                        log(selectedItemsList
+                            .map((e) => e.name)
+                            .toList()
+                            .toString());
                       });
                     },
                     items: mesuredemargelleList.map((PositionItem model) {
@@ -858,7 +552,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
                     height: 5,
                   ),
                   RegisterTextFieldWidget(
-                    controller: autreController,
+                    controller: autreController[index],
                     color: Colors.white,
                     validator: MultiValidator([
                       RequiredValidator(

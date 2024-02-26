@@ -31,7 +31,7 @@ class MargelleData {
   dynamic id;
   dynamic clientId;
   dynamic salesmanId;
-  dynamic copingQuantity;
+  dynamic nombre_de_fenetre;
   dynamic mesure;
   dynamic note;
   List<String>?    photoVideo;
@@ -45,7 +45,7 @@ class MargelleData {
       {this.id,
         this.clientId,
         this.salesmanId,
-        this.copingQuantity,
+        this.nombre_de_fenetre,
         this.mesure,
         this.note,
         this.photoVideo,
@@ -59,7 +59,7 @@ class MargelleData {
     id = json['id'];
     clientId = json['client_id'];
     salesmanId = json['salesman_id'];
-    copingQuantity = json['coping_quantity'];
+    nombre_de_fenetre = json['nombre_de_fenetre'];
     mesure = json['mesure'];
     note = json['note'];
     photoVideo = json['photo_video[]'] != null ? List<String>.from(json['photo_video[]']) : null;
@@ -76,7 +76,7 @@ class MargelleData {
     data['id'] = this.id;
     data['client_id'] = this.clientId;
     data['salesman_id'] = this.salesmanId;
-    data['coping_quantity'] = this.copingQuantity;
+    data['nombre_de_fenetre'] = this.nombre_de_fenetre;
     data['mesure'] = this.mesure;
     data['note'] = this.note;
     data['photo_video[]'] = this.photoVideo;

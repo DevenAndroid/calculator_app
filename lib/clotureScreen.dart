@@ -192,8 +192,7 @@ class _ClotureScreenState extends State<ClotureScreen> {
     if (widget.clotureData != null) {
       NombredepiedlineaireselectedValue.text =
           widget.clotureData!.nombreDePiedLineaire.toString();
-      notecontroller.text =
-          widget.clotureData!.note.toString();
+      notecontroller.text = widget.clotureData!.note.toString();
       PorteSimpleselectedValue.text =
           widget.clotureData!.porteSimple.toString();
       PorteDoubleselectedValue.text =
@@ -375,7 +374,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Nombre de pied lineaire'),
+                                errorText:
+                                    'Please enter your Nombre de pied lineaire'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -698,7 +698,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Nombre de poteau frost rond'),
+                                errorText:
+                                    'Please enter your Nombre de poteau frost rond'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -728,7 +729,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Nombre de poteau plaque rond'),
+                                errorText:
+                                    'Please enter your Nombre de poteau plaque rond'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -758,7 +760,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your Nombre de Poteau Carree'),
+                                errorText:
+                                    'Please enter your Nombre de Poteau Carree'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -791,7 +794,8 @@ class _ClotureScreenState extends State<ClotureScreen> {
                           // length: 10,
                           validator: MultiValidator([
                             RequiredValidator(
-                                errorText: 'Please enter your nombre de poteau plaque carree'),
+                                errorText:
+                                    'Please enter your nombre de poteau plaque carree'),
                           ]).call,
                           keyboardType: TextInputType.number,
                           // textInputAction: TextInputAction.next,
@@ -978,7 +982,6 @@ class _ClotureScreenState extends State<ClotureScreen> {
                       ],
                     ),
                   ),
-
                   const SizedBox(
                     height: 20,
                   ),
@@ -992,27 +995,40 @@ class _ClotureScreenState extends State<ClotureScreen> {
                                 onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     cloture_Repo(
-                                      widget.clientId.toString(),
-                                      TypedeclotureselectedValue!.name,
-                                      NombredepiedlineaireselectedValue.text,
-                                      CouleurselectedValue!.name,
-                                      HauteurselectedValue!.name,
-                                      PorteSimpleselectedValue.text,
-                                      PorteDoubleselectedValue.text,
-                                      NombredepoteauFrostRondselectedValue.text,
-                                      NombredePoteauPlaqueRondselectedValue
-                                          .text,
-                                      NombredePoteauCarreeselectedValue.text,
-                                      NombredePoteauPlaqueCarreeselectedValue
-                                          .text,
-                                      ModeleselectedValue!.name,
-                                      LattesselectedValue!.name,
-                                      demolitionselectedValue!.name,
-                                      type_de_dechetsselectedValue!.name,
-                                      kitdeconversionornocontroller.text,
-                                      notecontroller.text,
-
-                                      context,
+                                      id: widget.clotureData!.id.toString(),
+                                      clientID: widget.clientId.toString(),
+                                      type_de_cloture:
+                                          TypedeclotureselectedValue!.name,
+                                      nombre_de_pied_lineaire:
+                                          NombredepiedlineaireselectedValue
+                                              .text,
+                                      couleur: CouleurselectedValue!.name,
+                                      hauteur: HauteurselectedValue!.name,
+                                      porte_simple:
+                                          PorteSimpleselectedValue.text,
+                                      porte_double:
+                                          PorteDoubleselectedValue.text,
+                                      nombre_de_poteau_frost_rond:
+                                          NombredepoteauFrostRondselectedValue
+                                              .text,
+                                      nombre_de_poteau_plaque_rond:
+                                          NombredePoteauPlaqueRondselectedValue
+                                              .text,
+                                      nombre_de_coteau_carree:
+                                          NombredePoteauCarreeselectedValue
+                                              .text,
+                                      nombre_de_poteau_plaque_carree:
+                                          NombredePoteauPlaqueCarreeselectedValue
+                                              .text,
+                                      modele: ModeleselectedValue!.name,
+                                      lattes: LattesselectedValue!.name,
+                                      demolition: demolitionselectedValue!.name,
+                                      type_de_dechets:
+                                          type_de_dechetsselectedValue!.name,
+                                      kit_de_conversion_orno:
+                                          kitdeconversionornocontroller.text,
+                                      note: notecontroller.text,
+                                      context: context,
                                     ).then((value) async {
                                       log('fffffff');
 
@@ -1052,34 +1068,48 @@ class _ClotureScreenState extends State<ClotureScreen> {
                                   }
                                   if (_formKey.currentState!.validate()) {
                                     cloture_Repo(
-                                      widget.clientId.toString(),
-                                      selectedType ?? '',
-                                      NombredepiedlineaireselectedValue.text,
-                                      CouleurselectedValue != null
+                                      clientID: widget.clientId.toString(),
+                                      type_de_cloture: selectedType ?? '',
+                                      nombre_de_pied_lineaire:
+                                          NombredepiedlineaireselectedValue
+                                              .text,
+                                      couleur: CouleurselectedValue != null
                                           ? CouleurselectedValue!.name
                                           : "",
-                                      HauteurselectedValue != null
+                                      hauteur: HauteurselectedValue != null
                                           ? HauteurselectedValue!.name
                                           : "",
-                                      PorteSimpleselectedValue.text,
-                                      PorteDoubleselectedValue.text,
-                                      NombredepoteauFrostRondselectedValue.text,
-                                      NombredePoteauPlaqueRondselectedValue
-                                          .text,
-                                      NombredePoteauCarreeselectedValue.text,
-                                      NombredePoteauPlaqueCarreeselectedValue
-                                          .text,
-                                      selectedModele ?? '',
-                                      selectedLattes ?? '',
-                                      demolitionselectedValue != null
-                                          ? demolitionselectedValue!.name
-                                          : "",
-                                      type_de_dechetsselectedValue != null
-                                          ? type_de_dechetsselectedValue!.name
-                                          : "",
-                                      kitdeconversionornocontroller.text,
-                                      notecontroller.text,
-                                      context,
+                                      porte_simple:
+                                          PorteSimpleselectedValue.text,
+                                      porte_double:
+                                          PorteDoubleselectedValue.text,
+                                      nombre_de_poteau_frost_rond:
+                                          NombredepoteauFrostRondselectedValue
+                                              .text,
+                                      nombre_de_poteau_plaque_rond:
+                                          NombredePoteauPlaqueRondselectedValue
+                                              .text,
+                                      nombre_de_coteau_carree:
+                                          NombredePoteauCarreeselectedValue
+                                              .text,
+                                      nombre_de_poteau_plaque_carree:
+                                          NombredePoteauPlaqueCarreeselectedValue
+                                              .text,
+                                      modele: selectedModele ?? '',
+                                      lattes: selectedLattes ?? '',
+                                      demolition:
+                                          demolitionselectedValue != null
+                                              ? demolitionselectedValue!.name
+                                              : "",
+                                      type_de_dechets:
+                                          type_de_dechetsselectedValue != null
+                                              ? type_de_dechetsselectedValue!
+                                                  .name
+                                              : "",
+                                      kit_de_conversion_orno:
+                                          kitdeconversionornocontroller.text,
+                                      note: notecontroller.text,
+                                      context: context,
                                     ).then((value) {
                                       if (value.status == true) {
                                         print('message');
