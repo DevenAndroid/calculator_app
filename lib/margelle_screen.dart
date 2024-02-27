@@ -57,13 +57,15 @@ class _MargelleScreenState extends State<MargelleScreen> {
     _textList.forEach((_) {
       selectedValues.add(null);
     });
-    nombredefenetreController.text = widget.margelleData!.nombre_de_fenetre.toString();
-    noteController.text = widget.margelleData!.note.toString();
 
     if (widget.margelleData != null) {
+      nombredefenetreController.text = widget.margelleData!.nombre_de_fenetre.toString();
+      noteController.text = widget.margelleData!.note.toString();
+
       mesuredemargelleselectedValue = mesuredemargelleList.firstWhere(
             (item) => item.name == widget.margelleData!.mesureDeMargelle,
         orElse: () => mesuredemargelleList.first,
+
       );
       if (widget.margelleData != null &&
           widget.margelleData!.photoVideoUrl != null) {

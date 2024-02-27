@@ -16,6 +16,7 @@ import 'package:calculator_app/repo/cloture_Repo.dart';
 import 'package:calculator_app/repo/drainList_repo.dart';
 import 'package:calculator_app/repo/margelleListRepo.dart';
 import 'package:calculator_app/repo/paveuni_list_repo.dart';
+import 'package:calculator_app/repo/piscineList_repo.dart';
 import 'package:calculator_app/repo/plates_bandeslist_repo.dart';
 import 'package:calculator_app/repo/tourbe_list_repo.dart';
 import 'package:calculator_app/tourbe_list_screen.dart';
@@ -70,6 +71,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
     drainListRepoFunction();
     margelleListRepoFunction();
     clotureListRepoFunction();
+    piscineListRepoFunction();
   }
 
   detailsListRepoFunction() async {
@@ -154,6 +156,16 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
 
     clotureListRepo(clientId: id, serviceType: "couleur").then((value) {
       cloturelistScreenModel.value = value;
+      log(value.toString());
+      setState(() {});
+    });
+  }
+  piscineListRepoFunction() async {
+    var id = widget.clientId;
+    log("999999${id.toString()}");
+
+    piscineListRepo(clientId: id, serviceType: "piscine_page").then((value) {
+      piscineListModel.value = value;
       log(value.toString());
       setState(() {});
     });
