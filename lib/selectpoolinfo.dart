@@ -4,6 +4,7 @@ import 'package:calculator_app/AsphalteListScreen.dart';
 import 'package:calculator_app/MargelleListScreen.dart';
 import 'package:calculator_app/PlatesBandesListScreen.dart';
 import 'package:calculator_app/drainListScreen.dart';
+import 'package:calculator_app/model/piscineListModel.dart';
 import 'package:calculator_app/muretListScreen.dart';
 import 'package:calculator_app/paveuni_list_screen.dart';
 import 'package:calculator_app/piscine_List_screen.dart';
@@ -56,6 +57,7 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
   Rx<DrainListModel> drainListModel = DrainListModel().obs;
   Rx<MargelleListModel> margelleListModel = MargelleListModel().obs;
   Rx<CloturelistScreenModel> cloturelistScreenModel = CloturelistScreenModel().obs;
+  Rx<PiscineListModel> piscineListModel = PiscineListModel().obs;
 
   @override
   initState() {
@@ -436,11 +438,15 @@ class _SelectPoolInfoScreenState extends State<SelectPoolInfoScreen> {
                                           ),
                                           blurRadius: 1,
                                         ),]),
-                  child: const ListTile(
-                      title: Text(
+                  child: ListTile(
+                      title: const Text(
                     "Piscine",
                     style: TextStyle(color: Colors.black, fontSize: 20),
-                  )),
+                  ),
+                    trailing: piscineListModel.value.data != null && piscineListModel.value.data!.isNotEmpty
+                        ? const Text('checked', style: TextStyle(color: Colors.black))
+                        : const SizedBox(),
+                  ),
                 ),
               ),
               Container(

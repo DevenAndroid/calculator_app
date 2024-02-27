@@ -32,12 +32,11 @@ class _MargelleScreenState extends State<MargelleScreen> {
   String? categoryValue;
   TextEditingController nombredefenetreController = TextEditingController();
   TextEditingController noteController = TextEditingController();
-  // TextEditingController autreController = TextEditingController();
   List<TextEditingController> autreController = [];
-
   PositionItem? mesuredemargelleselectedValue;
   List<String> _textList = [];
   bool _showWidgets = false;
+
   void _buildColumnWithWidgets() {
     setState(() {
       _showWidgets = true;
@@ -47,7 +46,7 @@ class _MargelleScreenState extends State<MargelleScreen> {
   List<PositionItem> mesuredemargelleList = [
     PositionItem(id: 1, name: '49’’ x 22’’ x 22’’'),
     PositionItem(id: 2, name: '54’’ x 22’’ x 22’’'),
-    PositionItem(id: 3, name: 'Autre (svp indiquer dans les notes)'),
+    PositionItem(id: 3, name: 'Autre'),
   ];
   List<PositionItem?> selectedValues = [];
 
@@ -58,9 +57,12 @@ class _MargelleScreenState extends State<MargelleScreen> {
     _textList.forEach((_) {
       selectedValues.add(null);
     });
+    nombredefenetreController.text = widget.margelleData!.nombre_de_fenetre.toString();
+    noteController.text = widget.margelleData!.note.toString();
+
     if (widget.margelleData != null) {
       mesuredemargelleselectedValue = mesuredemargelleList.firstWhere(
-        (item) => item.name == widget.margelleData!.mesureDeMargelle,
+            (item) => item.name == widget.margelleData!.mesureDeMargelle,
         orElse: () => mesuredemargelleList.first,
       );
       if (widget.margelleData != null &&
@@ -111,19 +113,19 @@ class _MargelleScreenState extends State<MargelleScreen> {
             child: const Icon(Icons.arrow_back)),
       ),
       body: SingleChildScrollView(
-          child: Padding(
-        padding: MediaQuery.of(context).size.width > 800
-            ? EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 3)
-            : MediaQuery.of(context).size.width > 600
-                ? EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 7)
-                : const EdgeInsets.only(
-                    left: 10, right: 10, top: 20, bottom: 20),
-        child: Form(
-          key: _formKey,
-          child: Container(
-            child: Column(
+        child: Padding(
+          padding: MediaQuery.of(context).size.width > 800
+              ? EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 3)
+              : MediaQuery.of(context).size.width > 600
+              ? EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 7)
+              : const EdgeInsets.only(
+              left: 10, right: 10, top: 20, bottom: 20),
+          child: Form(
+            key: _formKey,
+            child: Container(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -150,7 +152,8 @@ class _MargelleScreenState extends State<MargelleScreen> {
                           color: Colors.white,
                           validator: MultiValidator([
                             RequiredValidator(
-                              errorText: 'Please enter your Nombre de fenetre',
+                              errorText:
+                              'Please enter your Nombre de fenetre',
                             ),
                           ]).call,
                           keyboardType: TextInputType.number,
@@ -246,68 +249,68 @@ class _MargelleScreenState extends State<MargelleScreen> {
                                   );
                                 } else {
                                   return widget.margelleData != null &&
-                                          widget.margelleData!.photoVideo !=
-                                              null
+                                      widget.margelleData!.photoVideo !=
+                                          null
                                       ? Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Colors.white,
-                                          ),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10, horizontal: 10),
-                                          width: double.maxFinite,
-                                          height: 180,
-                                          alignment: Alignment.center,
-                                          child: Image.network(
-                                            widget.margelleData!.photoVideo
-                                                .toString(),
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    width: double.maxFinite,
+                                    height: 180,
+                                    alignment: Alignment.center,
+                                    child: Image.network(
+                                      widget.margelleData!.photoVideo
+                                          .toString(),
+                                      errorBuilder: (_, __, ___) =>
+                                          Image.network(
+                                            categoryFile.value.path,
                                             errorBuilder: (_, __, ___) =>
-                                                Image.network(
-                                              categoryFile.value.path,
-                                              errorBuilder: (_, __, ___) =>
-                                                  const SizedBox(),
-                                            ),
+                                            const SizedBox(),
                                           ),
-                                        )
+                                    ),
+                                  )
                                       : Container(
-                                          padding:
-                                              const EdgeInsets.only(top: 8),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 8),
-                                          width: double.maxFinite,
-                                          height: 150,
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                'assets/images/upload.png',
-                                                height: 60,
-                                                width: 50,
-                                              ),
-                                              const SizedBox(height: 5),
-                                              const Text(
-                                                'Upload Swimming Image And Videos',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              Text(
-                                                'Accepted file types: JPEG, Doc, PDF, PNG'
-                                                    .tr,
-                                                style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black54),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ],
-                                          ),
-                                        );
+                                    padding:
+                                    const EdgeInsets.only(top: 8),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8, horizontal: 8),
+                                    width: double.maxFinite,
+                                    height: 150,
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/upload.png',
+                                          height: 60,
+                                          width: 50,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        const Text(
+                                          'Upload Swimming Image And Videos',
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight:
+                                              FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          'Accepted file types: JPEG, Doc, PDF, PNG'
+                                              .tr,
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black54),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }
                               } else {
                                 return Stack(
@@ -345,89 +348,97 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       children: [
                         widget.margelleData != null
                             ? CommonButtonBlue(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    if (images.value.isEmpty) {
-                                      showToast("Please select image");
-                                      return;
-                                    }
-                                    Map<String, String> mapData = {
-                                      "client_id": widget.clientId.toString(),
-                                      'id': widget.margelleData!.id.toString(),
-                                      "note": noteController.text,
-                                      "mesure_de_margelle[]":
-                                          mesuredemargelleselectedValue!.name,
-                                    };
-                                    print(mapData.toString());
-                                    MargelleScreenRepo.margelleScreenRepo(
-                                            context: context,
-                                            mapData: mapData,
-                                            fieldName1: 'photo_video[]',
-                                            files: images.value)
-                                        .then((value) {
-                                      print("${images.value.toString()}");
-                                      if (value.status == true) {
-                                        Get.to(MargelleListScreen(
-                                            clientId: widget.clientId));
-                                      } else {
-                                        log(value.message.toString());
-                                      }
-                                    });
-                                  }
-                                },
-                                title: 'Update',
-                              )
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              if (images.value.isEmpty) {
+                                showToast("Please select image");
+                                return;
+                              }
+                              Map<String, String> mapData = {
+                                "client_id": widget.clientId.toString(),
+                                'id': widget.margelleData!.id.toString(),
+                                "note": noteController.text,
+                                "mesure_de_margelle[]":
+                                mesuredemargelleselectedValue!.name,
+                              };
+                              print(mapData.toString());
+                              MargelleScreenRepo.margelleScreenRepo(
+                                  context: context,
+                                  mapData: mapData,
+                                  fieldName1: 'photo_video[]',
+                                  files: images.value)
+                                  .then((value) {
+                                print("${images.value.toString()}");
+                                if (value.status == true) {
+                                  Get.to(MargelleListScreen(
+                                      clientId: widget.clientId));
+                                } else {
+                                  log(value.message.toString());
+                                }
+                              });
+                            }
+                          },
+                          title: 'Update',
+                        )
                             : CommonButtonBlue(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    if (images.value.isEmpty) {
-                                      showToast("Please select image");
-                                      return;
-                                    }
-                                    List<Map<String, String>> formattedList =
-                                        [];
-                                    for (int i = 0;
-                                        i < selectedItemsList.length;
-                                        i++) {
-                                      String key =
-                                          "Mesure de margelle ${i + 1}";
-                                      String value = selectedItemsList[i].name; // Assuming your PositionItem has a name property
-                                      formattedList.add({key: value});
-                                    }
-                                    Map<String, dynamic> mapData = {
-                                      "client_id": widget.clientId.toString(),
-                                      'nombre_de_fenetre':
-                                          nombredefenetreController.text,
-                                      "note": noteController.text,
-                                    };
-                                    for (int i = 0;
-                                        i < formattedList.length;
-                                        i++) {
-                                      mapData["mesure_de_margelle[${i + 1}]"] = selectedValues[i]?.name ?? "";
-                                    }
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              if (images.value.isEmpty) {
+                                showToast("Please select image");
+                                return;
+                              }
+                              List<Map<String, String>> formattedList =
+                              [];
+                              for (int i = 0;
+                              i < selectedItemsList.length;
+                              i++) {
+                                String key =
+                                    "Mesure de margelle ${i + 1}";
+                                String value = selectedItemsList[i]
+                                    ?.name ??
+                                    "";
+                                formattedList.add({key: value});
+                              }
+                              Map<String, dynamic> mapData = {
+                                "client_id": widget.clientId.toString(),
+                                'nombre_de_fenetre':
+                                nombredefenetreController.text,
+                                "note": noteController.text,
+                              };
+                              for (int i = 0;
+                              i < formattedList.length;
+                              i++) {
+                                mapData["mesure_de_margelle[${i + 1}]"] =
+                                    selectedValues[i]?.name ?? "";
+                                if (selectedValues[i]?.name ==
+                                    'Autre') {
+                                  mapData["mesure_de_margelle[${i + 1}]"] =
+                                      autreController[i].text;
+                                }
+                              }
 
-                                    log(mapData.toString());
-                                    MargelleScreenRepo.margelleScreenRepo(
-                                            context: context,
-                                            mapData: mapData.map((key, value) =>
-                                                MapEntry(
-                                                    key, value.toString())),
-                                            fieldName1: 'photo_video[]',
-                                            files: images.value)
-                                        .then((value) {
-                                      log(value.status.toString());
-                                      if (value.status == true) {
-                                        // Redirect to another screen if status is true
-                                        Get.to(MargelleListScreen(
-                                            clientId: widget.clientId));
-                                      } else {
-                                        print(value.message.toString());
-                                      }
-                                    });
-                                  }
-                                },
-                                title: 'Save',
-                              ),
+                              log(mapData.toString());
+                              MargelleScreenRepo.margelleScreenRepo(
+                                  context: context,
+                                  mapData: mapData.map((key, value) =>
+                                      MapEntry(
+                                          key, value.toString())),
+                                  fieldName1: 'photo_video[]',
+                                  files: images.value)
+                                  .then((value) {
+                                log(value.status.toString());
+                                if (value.status == true) {
+                                  // Redirect to another screen if status is true
+                                  Get.to(MargelleListScreen(
+                                      clientId: widget.clientId));
+                                } else {
+                                  print(value.message.toString());
+                                }
+                              });
+                            }
+                          },
+                          title: 'Save',
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -443,10 +454,12 @@ class _MargelleScreenState extends State<MargelleScreen> {
                       ],
                     ),
                   )
-                ]),
+                ],
+              ),
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -534,35 +547,35 @@ class _MargelleScreenState extends State<MargelleScreen> {
         const SizedBox(
           height: 10,
         ),
-        selectedValues[index]?.name == 'Autre (svp indiquer dans les notes)'
+        selectedValues[index]?.name == 'Autre'
             ? Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Autre (svp indiquer dans les notes)',
-                      style: GoogleFonts.poppins(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  RegisterTextFieldWidget(
-                    controller: autreController[index],
-                    color: Colors.white,
-                    validator: MultiValidator([
-                      RequiredValidator(
-                          errorText:
-                              'Please enter your pieds_lineaire_de_pave'),
-                    ]).call,
-                    keyboardType: TextInputType.number,
-                  ),
-                ],
-              )
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Autre',
+                style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            RegisterTextFieldWidget(
+              controller: autreController[index],
+              color: Colors.white,
+              validator: MultiValidator([
+                RequiredValidator(
+                    errorText:
+                    'Please enter your pieds_lineaire_de_pave'),
+              ]).call,
+              keyboardType: TextInputType.number,
+            ),
+          ],
+        )
             : const SizedBox(),
       ],
     );

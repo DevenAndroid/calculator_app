@@ -70,6 +70,7 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
       additionalControllers.removeAt(index);
     });
   }
+
   List<PositionItem> yourModelList = [
     PositionItem(id: 1, name: 'devant'),
     PositionItem(id: 2, name: 'derrière'),
@@ -1015,18 +1016,22 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                               )
                             : CommonButtonBlue(
                                 onPressed: () async {
+
                                   List<Map<String, String>> formattedList = [];
                                   for (int i = 0; i < additionalControllers.length; i++) {
                                     String value = additionalControllers[i].text;
                                     formattedList.add({"value": value});
                                   }
+                                  Map<String, String> controllerValueMap = {
+                                    "value": quantitedeplantationController.text,
+                                  };
                                   additionalControllers.insert(0, quantitedeplantationController);
                                   log(additionalControllers.map((e) => e).toList().toString());
                                   Map<String, String> mapData = {
                                     "client_id": widget.clientId.toString(),
                                     "superficie": superficieController.text,
-                                    "quantite_de_plantation":
-                                        quantitedeplantationController.text,
+                                    // "quantite_de_plantation":
+                                    //     quantitedeplantationController.text,
                                     "profondeur": profondeurController.text,
                                     "perimeter": perimeterController.text,
                                     "positionnement":
@@ -1055,10 +1060,12 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
                                     "note": noteController.text,
                                     // "quantite_de_plantation[]":formattedList
                                   };
+                                  formattedList.insert(0, controllerValueMap);
 
                                   for (int i = 0; i < formattedList.length; i++) {
                                     mapData["quantite_de_plantation[${i + 1}]"] = formattedList[i]["value"] ?? "";
                                   }
+
 
                                   if (kDebugMode) {
                                     print(mapData.toString());

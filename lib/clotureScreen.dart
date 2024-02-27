@@ -557,93 +557,95 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'hauteur',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                              // fontFamily: 'poppins',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
+                        Column(
+                          children: [
+                            Row(
                               children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: HauteurselectedValue,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        HauteurselectedValue = newValue;
-                                      });
-                                    },
-                                    items:
-                                        HauteurList.map((PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'hauteur',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        height: 55,
+                                        padding: const EdgeInsets.only(left: 10, right: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: Colors.grey.shade400),
+                                        ),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton<PositionItem>(
+                                            value: HauteurselectedValue,
+                                            isExpanded: true,
+                                            onChanged: (PositionItem? newValue) {
+                                              setState(() {
+                                                HauteurselectedValue = newValue;
+                                              });
+                                            },
+                                            items: HauteurList.map((PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
                                           ),
                                         ),
-                                      );
-                                    }).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 10), // Spacer between dropdown and text field
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'porte double',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      RegisterTextFieldWidget(
+                                        controller: PorteDoubleselectedValue,
+                                        color: Colors.white,
+                                        validator: MultiValidator([
+                                          RequiredValidator(
+                                            errorText: 'Please enter your porte double',
+                                          ),
+                                        ]).call,
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                            const SizedBox(height: 10), // Spacer between rows
+                            // Add other widgets as needed...
+                          ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'porte double',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                              // fontFamily: 'poppins',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        RegisterTextFieldWidget(
-                          controller: PorteDoubleselectedValue,
-                          color: Colors.white,
-                          // length: 10,
-                          validator: MultiValidator([
-                            RequiredValidator(
-                                errorText: 'Please enter your porte double'),
-                          ]).call,
-                          keyboardType: TextInputType.number,
-                          // textInputAction: TextInputAction.next,
-                          // hint: '1000 Pieds carré(s)',
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+
                         const SizedBox(
                           height: 10,
                         ),
@@ -804,119 +806,116 @@ class _ClotureScreenState extends State<ClotureScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'demolition',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                              // fontFamily: 'poppins',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
+                        Column(
+                          children: [
+                            Row(
                               children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: demolitionselectedValue ??
-                                        demolitionList.first,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        demolitionselectedValue = newValue;
-                                      });
-                                    },
-                                    items: demolitionList
-                                        .map((PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'demolition',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        height: 55,
+                                        padding: const EdgeInsets.only(left: 10, right: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: Colors.grey.shade400),
+                                        ),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton<PositionItem>(
+                                            value: demolitionselectedValue ?? demolitionList.first,
+                                            isExpanded: true,
+                                            onChanged: (PositionItem? newValue) {
+                                              setState(() {
+                                                demolitionselectedValue = newValue;
+                                              });
+                                            },
+                                            items: demolitionList.map((PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
                                           ),
                                         ),
-                                      );
-                                    }).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 10), // Spacer between dropdowns
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'type de dechets',
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        height: 55,
+                                        padding: const EdgeInsets.only(left: 10, right: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: Colors.grey.shade400),
+                                        ),
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton<PositionItem>(
+                                            value: type_de_dechetsselectedValue ?? type_de_dechetsList.first,
+                                            isExpanded: true,
+                                            onChanged: (PositionItem? newValue) {
+                                              setState(() {
+                                                type_de_dechetsselectedValue = newValue;
+                                              });
+                                            },
+                                            items: type_de_dechetsList.map((PositionItem model) {
+                                              return DropdownMenuItem<PositionItem>(
+                                                value: model,
+                                                child: Text(
+                                                  model.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                            const SizedBox(height: 10), // Spacer between rows
+                            // Add other widgets as needed...
+                          ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'type de dechets',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15,
-                              // fontFamily: 'poppins',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        SizedBox(
-                          height: 55,
-                          width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
-                            ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: type_de_dechetsselectedValue ??
-                                        type_de_dechetsList.first,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        type_de_dechetsselectedValue = newValue;
-                                      });
-                                    },
-                                    items: type_de_dechetsList
-                                        .map((PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+
                         const SizedBox(
                           height: 10,
                         ),
