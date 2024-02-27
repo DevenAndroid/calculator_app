@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'cloture_list_screen.dart';
 import 'model/cloturelistScreenModel.dart';
+import 'tourbeScreen.dart';
 
 class ClotureScreen extends StatefulWidget {
   ClotureData? clotureData;
@@ -1141,9 +1142,9 @@ class _ClotureScreenState extends State<ClotureScreen> {
   }
 }
 
-class PositionItem {
-  final int id;
-  final String name;
-
-  PositionItem({required this.id, required this.name});
-}
+// class PositionItem {
+//   final int id;
+//   final String name;
+//
+//   PositionItem({required this.id, required this.name});
+// }

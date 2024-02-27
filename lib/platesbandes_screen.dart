@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PlatesBandesListScreen.dart';
 import 'muret_screen.dart';
+import 'tourbeScreen.dart';
 
 class PlatesBandesScreen extends StatefulWidget {
   PlatesBandesData? platesBandesData;
@@ -1121,9 +1122,9 @@ class _PlatesBandesScreenState extends State<PlatesBandesScreen> {
   }
 }
 
-class PositionItem {
-  final int id;
-  final String name;
-
-  PositionItem({required this.id, required this.name});
-}
+// class PositionItem {
+//   final int id;
+//   final String name;
+//
+//   PositionItem({required this.id, required this.name});
+// }

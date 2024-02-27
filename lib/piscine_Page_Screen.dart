@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'cloture_list_screen.dart';
 import 'model/cloturelistScreenModel.dart';
 import 'model/piscineListModel.dart';
+import 'tourbeScreen.dart';
 
 class PiscineScreen extends StatefulWidget {
   PiscineData? piscineData;
@@ -820,9 +821,9 @@ class _PiscineScreenState extends State<PiscineScreen> {
   }
 }
 
-class PositionItem {
-  final int id;
-  final String name;
-
-  PositionItem({required this.id, required this.name});
-}
+// class PositionItem {
+//   final int id;
+//   final String name;
+//
+//   PositionItem({required this.id, required this.name});
+// }

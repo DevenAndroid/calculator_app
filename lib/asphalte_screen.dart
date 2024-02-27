@@ -16,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'model/asphalte_list_model.dart';
+import 'tourbeScreen.dart';
 
 class AsphalteScreen extends StatefulWidget {
   AsphalteData? asphalteData;
@@ -1076,9 +1077,9 @@ class _AsphalteScreenState extends State<AsphalteScreen> {
   }
 }
 
-class PositionItem {
-  final int id;
-  final String name;
-
-  PositionItem({required this.id, required this.name});
-}
+// class PositionItem {
+//   final int id;
+//   final String name;
+//
+//   PositionItem({required this.id, required this.name});
+// }

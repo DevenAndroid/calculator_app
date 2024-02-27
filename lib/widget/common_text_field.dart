@@ -25,6 +25,7 @@ class RegisterTextFieldWidget extends StatelessWidget {
   final dynamic value = 0;
   final dynamic minLines;
   final dynamic maxLines;
+  final List<TextInputFormatter>? inputFormatters;
   final bool? obscureText;
   final VoidCallback? onTap;
   final length;
@@ -51,7 +52,7 @@ class RegisterTextFieldWidget extends StatelessWidget {
     this.onTap,
     this.length,
     this.digitValue,
-    this.color,
+    this.color, this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -72,6 +73,7 @@ class RegisterTextFieldWidget extends StatelessWidget {
       maxLines: maxLines,
       cursorColor: AppTheme.primaryColor,
       inputFormatters: [
+        ...inputFormatters ?? [],
         LengthLimitingTextInputFormatter(length),
         if(digitValue !=null) digitValue!
       ],

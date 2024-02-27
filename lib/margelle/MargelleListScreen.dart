@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:calculator_app/margelle_screen.dart';
+import 'package:calculator_app/margelle/margelle_screen.dart';
 import 'package:calculator_app/repo/margelleListRepo.dart';
 import 'package:calculator_app/selectpoolinfo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'model/login_mode.dart';
-import 'model/margelleListModel.dart';
+import '../model/login_mode.dart';
+import '../model/margelleListModel.dart';
 import 'dart:convert';
 import 'package:calculator_app/widget/apiUrl.dart';
 import 'package:calculator_app/widget/helper.dart';
@@ -147,6 +147,8 @@ class _MargelleListScreenState extends State<MargelleListScreen> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
+                                          print(margelleListModel
+                                              .value.data![index].toString());
                                           Get.to(MargelleScreen(
                                             margelleData: margelleListModel
                                                 .value.data![index],

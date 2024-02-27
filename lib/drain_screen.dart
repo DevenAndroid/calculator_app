@@ -16,6 +16,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'tourbeScreen.dart';
+
 class DrainScreen extends StatefulWidget {
   DrainData? drainData;
   final String clientId;
@@ -468,9 +470,9 @@ class _DrainScreenState extends State<DrainScreen> {
   }
 }
 
-class PositionItem {
-  final int id;
-  late final String name;
-
-  PositionItem({required this.id, required this.name});
-}
+// class PositionItem {
+//   final int id;
+//   late final String name;
+//
+//   PositionItem({required this.id, required this.name});
+// }
