@@ -1,23 +1,23 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
+
+import 'package:calculator_app/model/brand_color_model.dart';
+import 'package:calculator_app/model/color_list_model.dart';
 import 'package:calculator_app/paveuni_list_screen.dart';
+import 'package:calculator_app/repo/brand_color_repo.dart';
+import 'package:calculator_app/repo/color_list_repo.dart';
 import 'package:calculator_app/repo/pavaUniRepo.dart';
 import 'package:calculator_app/widget/common_text_field.dart';
 import 'package:calculator_app/widget/helper.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
-import 'asphalte_screen.dart';
 import 'model/common_modal.dart';
-import 'model/login_mode.dart';
 import 'model/paveuni_list_model.dart';
 import 'tourbeScreen.dart';
 
@@ -111,10 +111,47 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
     PositionItem(id: 7, name: 'Gris et Charbon'),
     PositionItem(id: 8, name: 'Gris'),
   ];
+  Rx<RxStatus> statusOfGet = RxStatus.empty().obs;
+  Rx<BrandColorModel> getBrandColor = BrandColorModel().obs;
+  RxString value = "".obs;
+  RxString id = "".obs;
+  getBrand() {
+    getBrandColorRepo(type: PositionnementselectedValue!.name.toUpperCase())
+        .then((value) {
+      getBrandColor.value = value;
+      if (value.status!) {
+        statusOfGet.value = RxStatus.success();
+        showToast(value.message.toString());
+      } else {
+        statusOfGet.value = RxStatus.error();
+        showToast(value.message.toString());
+      }
+    });
+  }
 
+  Rx<RxStatus> statusOfGetColor = RxStatus.empty().obs;
+  Rx<ColorListModel> getColor = ColorListModel().obs;
+  getColors() {
+    getColorRepo(id: id.toString()).then((value) {
+      getColor.value = value;
+      if (value.status!) {
+        statusOfGetColor.value = RxStatus.success();
+        showToast(value.message.toString());
+      } else {
+        statusOfGetColor.value = RxStatus.error();
+        showToast(value.message.toString());
+      }
+    });
+  }
+
+  RxInt refreshInt = 0.obs;
+  RxString dropDownValue2 = ''.obs;
+  RxString dropDownValue3 = ''.obs;
   @override
   void initState() {
     super.initState();
+    // getColors();
+    // getBrand();
     TypedeBordureselectedValue = TypedeBordureList.first;
     PositionnementselectedValue = yourModelList.first;
     CouleurdepaveselectedValue = CouleurdepaveList.first;
@@ -161,7 +198,8 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
       );
       noteController.text = widget.paveUniData!.note.toString();
 
-      if (widget.paveUniData != null && widget.paveUniData!.photoVideoUrl != null) {
+      if (widget.paveUniData != null &&
+          widget.paveUniData!.photoVideoUrl != null) {
         downloadImages(widget.paveUniData!.photoVideoUrl!);
       }
     }
@@ -184,6 +222,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
       images.value = downloadedImages;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -203,7 +242,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
             onTap: () {
               Get.back();
             },
-            child: Icon(Icons.arrow_back)),
+            child: const Icon(Icons.arrow_back)),
       ),
       body: SingleChildScrollView(
           child: Padding(
@@ -402,6 +441,13 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                     onChanged: (PositionItem? newValue) {
                                       setState(() {
                                         PositionnementselectedValue = newValue;
+                                        value.value =
+                                            PositionnementselectedValue
+                                                .toString();
+                                        print(PositionnementselectedValue!.name
+                                            .toUpperCase());
+                                        print(value.value);
+                                        getBrand();
                                       });
                                     },
                                     items:
@@ -409,7 +455,7 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                       return DropdownMenuItem<PositionItem>(
                                         value: model,
                                         child: Text(
-                                          model.name,
+                                          model.name.toUpperCase(),
                                           style: const TextStyle(
                                             color: Colors.black,
                                             fontWeight: FontWeight.w300,
@@ -560,43 +606,158 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                         SizedBox(
                           height: 55,
                           width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
+                          child: PopupMenuButton<int>(
+                            constraints: BoxConstraints(
+                              maxHeight: 600,
+                              minWidth: MediaQuery.of(context).size.width,
+                              maxWidth: MediaQuery.of(context).size.width,
                             ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: CouleurdepaveselectedValue ??
-                                        CouleurdepaveList.first,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        CouleurdepaveselectedValue = newValue;
-                                      });
+
+                            position: PopupMenuPosition.under,
+                            offset: Offset.fromDirection(30, 70),
+                            onSelected: (value) {
+                              setState(() {
+                                dropDownValue2.value = getBrandColor
+                                    .value.data![value].brandName
+                                    .toString();
+                              });
+                            },
+                            // icon: Icon(Icons.keyboard_arrow_down),
+                            itemBuilder: (context) => List.generate(
+                              getBrandColor.value.data!.length,
+                              (index) => PopupMenuItem(
+                                  child: Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      dropDownValue2.value = getBrandColor
+                                          .value.data![index].brandName
+                                          .toString();
+                                      id.value = getBrandColor
+                                          .value.data![index].id
+                                          .toString();
+                                      statusOfGet.value = RxStatus.empty();
+                                      refreshInt.value =
+                                          DateTime.now().millisecondsSinceEpoch;
+                                      setState(() {});
+                                      getColors();
+                                      Get.back();
                                     },
-                                    items: CouleurdepaveList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 12.0, right: 12),
+                                      child: Expanded(
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  getBrandColor.value
+                                                      .data![index].brandName
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                            ),
+
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.grey.shade400),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(() {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            dropDownValue2.value
+                                                    .toString()
+                                                    .isEmpty
+                                                ? "Beige Ivoire"
+                                                : dropDownValue2.value
+                                                    .toString(),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w300,
+                                            ),
                                           ),
                                         ),
-                                      );
-                                    }).toList(),
+                                      ],
+                                    );
+                                  }),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
-                                ),
-                              ],
+                                  const Spacer(),
+                                  const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black54,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
+                        // SizedBox(
+                        //   height: 55,
+                        //   width: Get.width,
+                        //   child: Container(
+                        //     padding: const EdgeInsets.only(left: 10, right: 10),
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(5),
+                        //       border: Border.all(color: Colors.grey.shade400),
+                        //     ),
+                        //     child: Column(
+                        //       children: [
+                        //         DropdownButtonHideUnderline(
+                        //           child: DropdownButton<PositionItem>(
+                        //             value: CouleurdepaveselectedValue ??
+                        //                 CouleurdepaveList.first,
+                        //             isExpanded: true,
+                        //             onChanged: (PositionItem? newValue) {
+                        //               setState(() {
+                        //                 CouleurdepaveselectedValue = newValue;
+                        //               });
+                        //             },
+                        //             items: CouleurdepaveList.map(
+                        //                 (PositionItem model) {
+                        //               return DropdownMenuItem<PositionItem>(
+                        //                 value: model,
+                        //                 child: Text(
+                        //                   model.name,
+                        //                   style: const TextStyle(
+                        //                     color: Colors.black,
+                        //                     fontWeight: FontWeight.w300,
+                        //                   ),
+                        //                 ),
+                        //               );
+                        //             }).toList(),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -618,43 +779,158 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                         SizedBox(
                           height: 55,
                           width: Get.width,
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: Colors.grey.shade400),
+                          child: PopupMenuButton<int>(
+                            constraints: BoxConstraints(
+                              maxHeight: 600,
+                              minWidth: MediaQuery.of(context).size.width,
+                              maxWidth: MediaQuery.of(context).size.width,
                             ),
-                            child: Column(
-                              children: [
-                                DropdownButtonHideUnderline(
-                                  child: DropdownButton<PositionItem>(
-                                    value: CouleurdesableselectedValue ??
-                                        CouleurdesableList.first,
-                                    isExpanded: true,
-                                    onChanged: (PositionItem? newValue) {
-                                      setState(() {
-                                        CouleurdesableselectedValue = newValue;
-                                      });
+
+                            position: PopupMenuPosition.under,
+                            offset: Offset.fromDirection(30, 70),
+                            onSelected: (value) {
+                              setState(() {
+                                dropDownValue2.value = getBrandColor
+                                    .value.data![value].brandName
+                                    .toString();
+                              });
+                            },
+                            // icon: Icon(Icons.keyboard_arrow_down),
+                            itemBuilder: (context) => List.generate(
+                              getBrandColor.value.data!.length,
+                              (index) => PopupMenuItem(
+                                  child: Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      dropDownValue3.value = getColor
+                                          .value.data![index].colorName
+                                          .toString();
+                                      // id.value = getBrandColor
+                                      //     .value.data![index].id
+                                      //     .toString();
+                                      statusOfGet.value = RxStatus.empty();
+                                      refreshInt.value =
+                                          DateTime.now().millisecondsSinceEpoch;
+                                      setState(() {});
+                                      // getColors();
+                                      Get.back();
                                     },
-                                    items: CouleurdesableList.map(
-                                        (PositionItem model) {
-                                      return DropdownMenuItem<PositionItem>(
-                                        value: model,
-                                        child: Text(
-                                          model.name,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w300,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 12.0, right: 12),
+                                      child: Expanded(
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  getColor.value.data![index]
+                                                      .colorName
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )),
+                            ),
+
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Colors.grey.shade400),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Obx(() {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            dropDownValue2.value
+                                                    .toString()
+                                                    .isEmpty
+                                                ? "Beige Ivoire"
+                                                : dropDownValue2.value
+                                                    .toString(),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w300,
+                                            ),
                                           ),
                                         ),
-                                      );
-                                    }).toList(),
+                                      ],
+                                    );
+                                  }),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
-                                ),
-                              ],
+                                  const Spacer(),
+                                  const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black54,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
+                        // SizedBox(
+                        //   height: 55,
+                        //   width: Get.width,
+                        //   child: Container(
+                        //     padding: const EdgeInsets.only(left: 10, right: 10),
+                        //     decoration: BoxDecoration(
+                        //       borderRadius: BorderRadius.circular(5),
+                        //       border: Border.all(color: Colors.grey.shade400),
+                        //     ),
+                        //     child: Column(
+                        //       children: [
+                        //         DropdownButtonHideUnderline(
+                        //           child: DropdownButton<PositionItem>(
+                        //             value: CouleurdesableselectedValue ??
+                        //                 CouleurdesableList.first,
+                        //             isExpanded: true,
+                        //             onChanged: (PositionItem? newValue) {
+                        //               setState(() {
+                        //                 CouleurdesableselectedValue = newValue;
+                        //               });
+                        //             },
+                        //             items: CouleurdesableList.map(
+                        //                 (PositionItem model) {
+                        //               return DropdownMenuItem<PositionItem>(
+                        //                 value: model,
+                        //                 child: Text(
+                        //                   model.name,
+                        //                   style: const TextStyle(
+                        //                     color: Colors.black,
+                        //                     fontWeight: FontWeight.w300,
+                        //                   ),
+                        //                 ),
+                        //               );
+                        //             }).toList(),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 10,
                         ),
@@ -842,66 +1118,67 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                 } else {
                                   // Show default upload message
                                   return widget.paveUniData != null &&
-                                      widget.paveUniData!.photoVideo != null
+                                          widget.paveUniData!.photoVideo != null
                                       ? Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(10),
-                                      color: Colors.white,
-                                    ),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 10),
-                                    width: double.maxFinite,
-                                    height: 180,
-                                    alignment: Alignment.center,
-                                    child: Image.network(
-                                      widget.paveUniData!.photoVideo.toString(),
-                                      errorBuilder: (_, __, ___) =>
-                                          Image.network(
-                                            categoryFile.value.path,
-                                            errorBuilder: (_, __, ___) =>
-                                            const SizedBox(),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.white,
                                           ),
-                                    ),
-                                  )
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 10),
+                                          width: double.maxFinite,
+                                          height: 180,
+                                          alignment: Alignment.center,
+                                          child: Image.network(
+                                            widget.paveUniData!.photoVideo
+                                                .toString(),
+                                            errorBuilder: (_, __, ___) =>
+                                                Image.network(
+                                              categoryFile.value.path,
+                                              errorBuilder: (_, __, ___) =>
+                                                  const SizedBox(),
+                                            ),
+                                          ),
+                                        )
                                       : Container(
-                                    padding:
-                                    const EdgeInsets.only(top: 8),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
-                                    width: double.maxFinite,
-                                    height: 150,
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/upload.png',
-                                          height: 60,
-                                          width: 50,
-                                        ),
-                                        const SizedBox(height: 5),
-                                        const Text(
-                                          'Upload Swimming Image And Videos',
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight:
-                                              FontWeight.bold),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Text(
-                                          'Accepted file types: JPEG, Doc, PDF, PNG'
-                                              .tr,
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.black54),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                          padding:
+                                              const EdgeInsets.only(top: 8),
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 8),
+                                          width: double.maxFinite,
+                                          height: 150,
+                                          alignment: Alignment.center,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                'assets/images/upload.png',
+                                                height: 60,
+                                                width: 50,
+                                              ),
+                                              const SizedBox(height: 5),
+                                              const Text(
+                                                'Upload Swimming Image And Videos',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Text(
+                                                'Accepted file types: JPEG, Doc, PDF, PNG'
+                                                    .tr,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black54),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                 }
                               } else {
                                 // Show selected image
@@ -955,10 +1232,9 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                           PositionnementselectedValue!.name,
                                       "client": widget.clientId.toString(),
                                       "superficie": superficieController.text,
-                                      "couleur_de_pave":
-                                          CouleurdepaveselectedValue!.name,
+                                      "couleur_de_pave": dropDownValue2.value,
                                       "polymer_sand_color":
-                                          CouleurdesableselectedValue!.name,
+                                          dropDownValue3.value,
                                       "infrastructure":
                                           InfrastructureeselectedValue!.name,
                                       "type_to_pavage":
@@ -972,15 +1248,14 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                     PaveUniScreenRepo.pavauniScreenRepo(
                                             context: context,
                                             mapData: mapData,
-                                        fieldName1: 'photo_video[]',
-                                        files: images.value)
+                                            fieldName1: 'photo_video[]',
+                                            files: images.value)
                                         .then((value) {
                                       if (value.status == true) {
                                         log("ggggggggg${categoryFile.value.toString()}");
                                         Get.to(PaveuniListScreen(
                                             clientId: widget.clientId));
-                                      }
-                                      else{
+                                      } else {
                                         log(value.status.toString());
                                       }
                                     });
@@ -1027,8 +1302,8 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                               ? TypeofpavageselectedValue!.name
                                               : "",
                                       "type_of_waste":
-                                          TypedeBordureselectedValue != null
-                                              ? TypedeBordureselectedValue!.name
+                                          TypededechetselectedValue != null
+                                              ? TypededechetselectedValue!.name
                                               : "",
                                       "access_a_la_cour":
                                           AccesslacourselectedValue != null
@@ -1040,16 +1315,15 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
                                     PaveUniScreenRepo.pavauniScreenRepo(
                                             context: context,
                                             mapData: mapData,
-                                        fieldName1: 'photo_video[]',
-                                        files: images.value)
+                                            fieldName1: 'photo_video[]',
+                                            files: images.value)
                                         .then((value) {
                                       log("ggggggggg${categoryFile.value.toString()}");
 
                                       if (value.status == true) {
                                         Get.to(PaveuniListScreen(
                                             clientId: widget.clientId));
-                                      }
-                                      else{
+                                      } else {
                                         log(value.message.toString());
                                       }
                                     });
@@ -1079,7 +1353,8 @@ class _PaveUniScreenState extends State<PaveUniScreen> {
       images.value = selectedImages.map((image) => File(image.path)).toList();
       setState(() {});
     }
-  }}
+  }
+}
 
 // class PositionItem {
 //   final int id;

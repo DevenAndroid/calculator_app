@@ -4,16 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/login_mode.dart';
 
-
 class ApiUrl {
-  static const String baseUrl =
-      "https://pc.eoxyslive.com/api/";
+  static const String baseUrl = "https://pc.eoxyslive.com/api/";
   static const String loginUrl = "${baseUrl}login";
   static const String saveclientUrl = "${baseUrl}save-client-info";
   static const String tourbeScreenUrl = "${baseUrl}save-tourbe-data";
   static const String paveUriScreenUrl = "${baseUrl}save-pavuni-data";
   static const String asphalteScreenUrl = "${baseUrl}save-asphalte-data";
-  static const String platesBandesScreenUrl = "${baseUrl}save-platesbandes-data";
+  static const String platesBandesScreenUrl =
+      "${baseUrl}save-platesbandes-data";
   static const String muretScreenUrl = "${baseUrl}save-muret-data";
   static const String margelleScreenUrl = "${baseUrl}save-margelle-data";
   static const String drainScreenUrl = "${baseUrl}save-drain-data";
@@ -31,20 +30,20 @@ class ApiUrl {
   static const String deletecouleurClient = "${baseUrl}clotureData-delete";
   static const String deletepiscinescreen = "${baseUrl}piscinePage-delete";
   static const String piscineScreen = "${baseUrl}piscine-page";
-
+  static const String brandColor = "${baseUrl}brands/COURONNEMENT";
+  static const String colors = "${baseUrl}colors";
 }
 
 Future<String> getUserToken() async {
   SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-  LoginModel model = LoginModel.fromJson(
-      jsonDecode(sharedPreference.getString("userData")!));
+  LoginModel model =
+      LoginModel.fromJson(jsonDecode(sharedPreference.getString("userData")!));
   return model.authToken.toString();
 }
 
 Future<String> getUserId() async {
   SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-  LoginModel model = LoginModel.fromJson(
-      jsonDecode(sharedPreference.getString("userData")!));
+  LoginModel model =
+      LoginModel.fromJson(jsonDecode(sharedPreference.getString("userData")!));
   return model.authToken.toString();
 }
-
